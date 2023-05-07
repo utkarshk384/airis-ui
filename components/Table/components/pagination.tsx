@@ -35,6 +35,8 @@ export const Pagination: React.FC<Props> = (props) => {
     canPreviousPage,
     canNextPage,
     pageCount,
+    nextPage,
+    previousPage,
   } = table;
 
   const countArray = useMemo(
@@ -46,8 +48,8 @@ export const Pagination: React.FC<Props> = (props) => {
   const pageNumberKey = useUniqueId("page-number-");
 
   return (
-    <div className="flex w-1/2 justify-between">
-      <div className="w-1-3 flex items-center gap-2">
+    <div className="grid w-full grid-cols-3 justify-items-center">
+      <div className="w-1-3 flex justify-self-start items-center gap-2">
         <Text>Rows per page:</Text>
         <RawInput
           variant="filled"
@@ -57,7 +59,11 @@ export const Pagination: React.FC<Props> = (props) => {
         />
       </div>
       <div className="flex items-center gap-2">
-        <Button disabled={canPreviousPage} iconButton>
+        <Button
+          disabled={!canPreviousPage}
+          iconButton
+          onClick={() => previousPage()}
+        >
           <ChevronLeftIcon fontSize={24} width={24} height={24} />
         </Button>
         {countArray.length < 10 ? (
@@ -76,7 +82,7 @@ export const Pagination: React.FC<Props> = (props) => {
             pageIndex={state.pageIndex}
           />
         )}
-        <Button disabled={canNextPage} iconButton>
+        <Button disabled={!canNextPage} iconButton onClick={() => nextPage()}>
           <ChevronRightIcon fontSize={24} width={24} height={24} />
         </Button>
       </div>
@@ -87,20 +93,31 @@ export const Pagination: React.FC<Props> = (props) => {
 const PaginationOverflow: React.FC<PaginationOverflowProps> = (props) => {
   const { countArray, ...rest } = props;
 
-  let reducedArray: number[] = countArray.slice(2, countArray.length - 2);
+  const DISPLAY_ITEMS = useMemo(() => 2, []);
+
+  let reducedArray: number[] = useMemo(() => {
+    if (rest.pageIndex <= DISPLAY_ITEMS)
+      return countArray.slice(0, DISPLAY_ITEMS * 2);
+    else if (rest.pageIndex >= countArray.length - DISPLAY_ITEMS)
+      return countArray.slice(
+        rest.pageIndex - DISPLAY_ITEMS,
+        countArray.length
+      );
+
+    return countArray.slice(rest.pageIndex - 1, rest.pageIndex + DISPLAY_ITEMS);
+  }, [DISPLAY_ITEMS, countArray, rest.pageIndex]);
+
   const pageNumberKey = useUniqueId("page-number-");
 
   return (
     <>
-      <PaginationButton {...rest} idx={0} />
-      <PaginationButton {...rest} idx={1} />
-      <PaginationButton {...rest} idx={2} />
-      {rest.pageIndex > 3 && rest.pageIndex < countArray.length - 3 && (
-        <PaginationButton {...rest} idx={rest.pageIndex} />
+      {rest.pageIndex > DISPLAY_ITEMS && <PaginationButton {...rest} idx={0} />}
+      {reducedArray.map((i) => (
+        <PaginationButton key={pageNumberKey + i} {...rest} idx={i} />
+      ))}
+      {rest.pageIndex < countArray.length - DISPLAY_ITEMS && (
+        <PaginationButton {...rest} idx={countArray.length - 1} />
       )}
-      <PaginationButton {...rest} idx={countArray.length - 3} />
-      <PaginationButton {...rest} idx={countArray.length - 2} />
-      <PaginationButton {...rest} idx={countArray.length - 1} />
     </>
   );
 };
