@@ -57,7 +57,12 @@ export const PatientsTab: React.FC<Props> = (props) => {
 
   return (
     <div className="container">
-      <Table cols={cols} rows={rows} title="Patients" />
+      <Table
+        searchPlaceholder="Search patient id, name, Acc no"
+        cols={cols}
+        rows={rows}
+        title="Patients"
+      />
     </div>
   );
 };

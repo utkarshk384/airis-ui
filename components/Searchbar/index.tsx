@@ -6,13 +6,14 @@ import { StyledSearchBar, StyledContainer } from "./styled";
 
 type Props = {
   children?: React.ReactNode;
+  wrapperClassName?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 export const Searchbar: React.FC<Props> = (props) => {
-  const {} = props;
+  const { wrapperClassName = "", ...rest } = props;
   return (
-    <StyledContainer>
-      <StyledSearchBar {...props} />
+    <StyledContainer className={wrapperClassName}>
+      <StyledSearchBar {...rest} />
       <MagnifyingGlassIcon
         stroke="currentColor"
         className="absolute top-0 bottom-0 right-2 my-auto"

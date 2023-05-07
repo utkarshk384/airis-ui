@@ -13,8 +13,10 @@ export const FilterButton: React.FC<Props> = (props) => {
   const { onClick } = props;
 
   return (
-    <Button variant="solid" onClick={onClick} iconButton>
-      <FunnelIcon width={24} height={24} />
-    </Button>
+    <div className="w-1/12">
+      <Button variant="solid" onClick={onClick} iconButton>
+        <FunnelIcon width={24} height={24} />
+      </Button>
+    </div>
   );
 };

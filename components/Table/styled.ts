@@ -1,18 +1,23 @@
 import { styled } from "@/styles/stitches";
 
-export const TableWrapper = styled("div", {
+export const TableComponentContainer = styled("div", {
   display: "flex",
   flexDirection: "column",
   gap: "1.5rem",
 });
 
-export const TableContainer = styled("div", {
+export const TableWrapper = styled("div", {
+  width: "100%",
+  overflow: "hidden",
   borderRadius: "8px",
   border: "1px solid $primary",
   background: "#ffffff",
-  width: "100%",
+});
+
+export const TableContainer = styled("div", {
   height: "60vh",
   overflowY: "scroll",
+  width: "100%",
 });
 
 export const StyledTable = styled("table", {
@@ -30,6 +35,7 @@ export const StyledTableHead = styled("thead", {
 export const StyledTableHeading = styled("th", {
   padding: "0.5rem 1rem",
   textAlign: "left",
+  position: "relative",
 });
 
 export const StyledTableRow = styled("tr", {
