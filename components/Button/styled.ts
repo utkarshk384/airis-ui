@@ -31,6 +31,11 @@ export const StyledButton = styled("button", {
     size: BUTTON_SIZES,
     color: BUTTON_COLORS,
     variant: BUTTON_VARIANTS,
+    noPadding: {
+      true: {
+        padding: 0,
+      },
+    },
   },
 
   compoundVariants: BUTTON_COMPOUND_VARIANTS,

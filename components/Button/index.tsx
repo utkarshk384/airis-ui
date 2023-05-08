@@ -25,6 +25,7 @@ type Props = {
   size?: ButtonSizes;
   color?: ButtonColors;
   as?: "button" | "a";
+  noPadding?: boolean;
   typographyProps?: TypographyProps;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -60,6 +61,7 @@ const DefaultProps = (props: Props) => {
     size: props.size || "base",
     variant: props.variant || "solid",
     as: props.as || "button",
+    noPadding: props.noPadding || false,
   };
 
   return defaultProps;

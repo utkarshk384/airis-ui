@@ -28,13 +28,13 @@ const ForgotPage: React.FC<Props> = (props) => {
           >
             Radiology information system
           </Heading>
-          <Text weight="500">
+          <Text weight="500" className="text-center">
             Please RESET YOUR PASSWORD to view the Patient Study, Report and
             status.
           </Text>
         </div>
         <LoginLayoutCard
-          className="h-[60vh]"
+          className="!h-[60vh]"
           Component={ForgotForm}
           titleText="Forgot Password?"
           subTitleText="Reset your password"

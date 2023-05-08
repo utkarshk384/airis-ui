@@ -7,3 +7,4 @@ export * from "./Icons";
 export * from "./Dropdown";
 export * from "./Searchbar";
 export * from "./Table";
+export * from "./Badge";

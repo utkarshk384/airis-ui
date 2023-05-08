@@ -5,16 +5,18 @@ export const CardContainer = styled("div", {
   boxShadow: "15px 15px 50px 15px rgba(175, 175, 175, 0.25)",
   height: "50vh",
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
+  gridTemplateRows: "1fr 1fr",
   width: "100%",
   maxWidth: "64rem",
   "@lg": {
     borderRadius: "84px",
+    gridTemplateColumns: "1fr 1fr",
+    gridTemplateRows: "1fr",
   },
   overflow: "hidden",
 });
 
-export const WelcomeBanner = styled("div", {
+export const Banner = styled("div", {
   background: "linear-gradient(270deg, #67B2FF 0%, #027FFF 100%)",
   display: "flex",
   justifyContent: "center",

@@ -9,8 +9,13 @@ export const { styled, css, globalCss, keyframes, getCssText, theme } =
         accent: "#027FFF",
         disabled: "#d4d4d8",
         grey: "#9CA3AF",
-        $black: "#000000",
+        black: "#000000",
         white: "#ffffff",
+        red: "#ef4444",
+        green: "#22c55e",
+        blue: "#0ea5e9",
+        yellow: "#eab308",
+        orange: "#f97316",
       },
       fontSizes: {
         xs: "0.75em", // 12px

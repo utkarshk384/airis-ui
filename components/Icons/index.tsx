@@ -63,3 +63,63 @@ export const LogoutIcon: React.FC<BaseProps> = (props) => {
     </svg>
   );
 };
+
+export const AllergyIcon: React.FC<BaseProps> = (props) => {
+  const { fill, ...rest } = props;
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={19}
+      height={20}
+      {...rest}
+      fill="none"
+    >
+      <path
+        fill={fill || "#9CA3AF"}
+        d="M17.08 3.33a1.25 1.25 0 0 0-1.25 1.25v4.59H15V2.08a1.25 1.25 0 0 0-2.5 0v7.09h-.84V1.25a1.25 1.25 0 0 0-2.5 0v7.92h-.83V3.33a1.25 1.25 0 0 0-2.5 0v9.93l-3.59-2a1 1 0 0 0-.5-.14 1 1 0 0 0-.66.25l-1.08 1L6.54 19a3.29 3.29 0 0 0 2.37 1H15a3.33 3.33 0 0 0 3.33-3.33V4.58a1.25 1.25 0 0 0-1.25-1.25ZM8.33 13a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm2 3a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm5-2a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm-1 3a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm-2-4a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"
+      />
+    </svg>
+  );
+};
+
+export const WritingIcon: React.FC<BaseProps> = (props) => {
+  const { fill, ...rest } = props;
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={20}
+      height={19}
+      {...rest}
+      fill="none"
+    >
+      <path
+        fill={fill || "#9CA3AF"}
+        d="M18 7V6l-6-6H2C.89 0 0 .89 0 2v14a2 2 0 0 0 2 2h6v-1.87l8.39-8.39c.44-.44 1-.68 1.61-.74Zm-7-5.5L16.5 7H11V1.5Zm8.85 9.69-.98.98-2.04-2.04.98-.98c.19-.2.52-.2.72 0l1.32 1.32c.2.2.2.53 0 .72Zm-3.72-.36 2.04 2.04L12.04 19H10v-2.04l6.13-6.13Z"
+      />
+    </svg>
+  );
+};
+
+export const UploadIcon: React.FC<BaseProps> = (props) => {
+  const { stroke, ...rest } = props;
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={18}
+      height={18}
+      fill="none"
+      {...rest}
+    >
+      <path
+        stroke={stroke || "#9CA3AF"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M1 13v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-8L9 1m0 0L5 5m4-4v12"
+      />
+    </svg>
+  );
+};

@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import Image from "next/image";
 
 /* Styled */
-import { CardContainer, WelcomeBanner } from "./styled";
+import { CardContainer, Banner } from "./styled";
 
 /* Components */
 import { Text } from "@components";
@@ -28,12 +28,12 @@ export const LoginLayoutCard: React.FC<Props> = (props) => {
           alt="A man using a large machine"
         />
       </div>
-      <div className="flex flex-col gap-6 py-4 pr-4">
-        <WelcomeBanner>
+      <div className="flex flex-col gap-6 py-4 pr-4 bg-white">
+        <Banner>
           <Text size="lg" weight="700" color="white">
             {titleText}
           </Text>
-        </WelcomeBanner>
+        </Banner>
         <div className="flex flex-col items-center justify-center h-2/3 gap-4">
           <Text size="base" weight="500">
             {subTitleText}
