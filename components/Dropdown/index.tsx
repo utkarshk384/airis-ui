@@ -1,19 +1,28 @@
 import React from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-/* Styled */
+/* Components */
+import { Checkbox } from "@components/Checkbox";
 import {
   DropdownContent,
   DropdownLabel,
   DropdownSeparator,
   DropdownItem,
+  CheckboxItem as StyledCheckboxItem,
   DropdownItemGroup,
 } from "./styled";
 
-export type DropdownMenuType = (Dropdown: typeof Menu) => React.ReactNode;
+/* Types */
+
+export type MenuType = typeof Menu;
+export type DropdownMenuType = (Dropdown: MenuType) => React.ReactNode;
+
+type DropdownContentType = React.ComponentProps<typeof DropdownContent>;
 
 type SharedProps = {
   children: DropdownMenuType;
+  dropdownContentProps?: DropdownContentType;
+  contentMaxHeight?: string | number;
 };
 
 type Props = {
@@ -21,8 +30,18 @@ type Props = {
   portal?: boolean;
 } & SharedProps;
 
+type CheckboxItemProps = {
+  children: React.ReactNode;
+} & React.RefAttributes<HTMLInputElement>;
+
 export const Dropdown: React.FC<Props> = (props) => {
-  const { portal, children, TriggerComponent } = props;
+  const {
+    portal,
+    children,
+    TriggerComponent,
+    contentMaxHeight,
+    dropdownContentProps = {},
+  } = props;
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger className="focus-visible:outline-none">
@@ -30,20 +49,35 @@ export const Dropdown: React.FC<Props> = (props) => {
       </DropdownMenu.Trigger>
       {portal ? (
         <DropdownMenu.Portal>
-          <ContentWrapper>{children}</ContentWrapper>
+          <ContentWrapper dropdownContentProps={dropdownContentProps}>
+            {children}
+          </ContentWrapper>
         </DropdownMenu.Portal>
       ) : (
-        <ContentWrapper>{children}</ContentWrapper>
+        <ContentWrapper
+          contentMaxHeight={contentMaxHeight}
+          dropdownContentProps={dropdownContentProps}
+        >
+          {children}
+        </ContentWrapper>
       )}
     </DropdownMenu.Root>
   );
 };
 
 const ContentWrapper: React.FC<SharedProps> = (props) => {
-  const { children } = props;
+  const { children, dropdownContentProps, contentMaxHeight } = props;
 
   return (
-    <DropdownContent avoidCollisions sideOffset={5}>
+    <DropdownContent
+      css={{
+        maxHeight: contentMaxHeight || "auto",
+        overflowY: contentMaxHeight ? "scroll" : "initial",
+      }}
+      avoidCollisions
+      sideOffset={5}
+      {...dropdownContentProps}
+    >
       {children instanceof Function ? children(Menu) : children}
     </DropdownContent>
   );
@@ -53,7 +87,18 @@ const Menu = () => {
   return <></>;
 };
 
+export const CheckboxItem: React.FC<CheckboxItemProps> = (props) => {
+  return (
+    <StyledCheckboxItem>
+      <Checkbox wrapperClassName="px-2 py-3" variant="borderless" {...props} />
+    </StyledCheckboxItem>
+  );
+};
+
+CheckboxItem.displayName = "CheckboxItem";
+
 Menu.Item = DropdownItem;
 Menu.Group = DropdownItemGroup;
 Menu.Label = DropdownLabel;
 Menu.Separator = DropdownSeparator;
+Menu.CheckboxItem = CheckboxItem;

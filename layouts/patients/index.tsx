@@ -1,8 +1,9 @@
 import React, { useMemo } from "react";
 
 /* Components */
-import { Table } from "@components/Table";
 import { COLUMNS } from "./cols";
+import { DropdownContent } from "./filters";
+import { Table } from "@components/Table";
 
 import MOCK_DATA from "./MOCK_DATA.json";
 
@@ -20,7 +21,8 @@ export const PatientsTab: React.FC<Props> = (props) => {
   return (
     <div className="container !bg-white rounded-lg p-4">
       <Table
-        searchPlaceholder="Search patient id, name, Acc no"
+        FilterComponent={DropdownContent}
+        searchPlaceholder="Search patient id, name, acc no, referral doctor..."
         cols={cols}
         rows={rows}
         title="Patients"

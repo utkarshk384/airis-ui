@@ -1,15 +1,16 @@
+import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 
 /* Stores */
 import { useNavigationStore } from "@stores/navigation";
 
 /* Components */
-import { Logo, Button, Avatar, KeyIcon, LogoutIcon } from "@components";
 import { NavigationContainer } from "./styled";
+import { Logo, Button, Avatar, KeyIcon, LogoutIcon, Text } from "@components";
 
 /* Types */
 import type { Routes } from "@stores/navigation";
-import { useRouter } from "next/router";
+import type { MenuType } from "@components/Dropdown";
 
 type Props = {
   children?: React.ReactNode;
@@ -41,28 +42,28 @@ export const NavigationBar: React.FC<Props> = (props) => {
         <NavigationItem route="patients" text="Patients" />
         <NavigationItem route="adminstration" text="Adminstration" />
       </div>
-      <div className="flex gap-4">
-        <Avatar
-          hasDropdown
-          DropdownContent={(Dropdown) => (
-            <>
-              <Dropdown.Label>Dr. John</Dropdown.Label>
-              <Dropdown.Separator />
-              <Dropdown.Item className="flex items-center gap-4">
-                <KeyIcon fill="currentColor" />
-                Change Password
-              </Dropdown.Item>
-              <Dropdown.Item className="flex items-center gap-4">
-                <LogoutIcon stroke="currentColor" />
-                Logout
-              </Dropdown.Item>
-            </>
-          )}
-        />
+      <div className="flex flex-col gap-1 items-center justify-center">
+        <Avatar hasDropdown DropdownContent={DropdownContent} />
+        <Text size="sm">Dr. John</Text>
       </div>
     </NavigationContainer>
   );
 };
+
+const DropdownContent = (Dropdown: MenuType) => (
+  <>
+    <Dropdown.Label>Dr. John</Dropdown.Label>
+    <Dropdown.Separator />
+    {/* <Dropdown.Item className="flex items-center gap-4">
+      <KeyIcon fill="currentColor" />
+      Change Password
+    </Dropdown.Item> */}
+    <Dropdown.Item className="flex items-center gap-4 !text-red-500">
+      <LogoutIcon stroke="currentColor" />
+      Logout
+    </Dropdown.Item>
+  </>
+);
 
 const NavigationItem: React.FC<NavigationItemProps> = (props) => {
   const { text, route } = props;

@@ -5,11 +5,16 @@ import { StyledTableHead, StyledTableHeading, StyledTableRow } from "../styled";
 /* Types */
 import type { TableComponent } from "../types";
 
-export const TableHead: React.FC<TableComponent> = ({ table }) => {
+type Props = {
+  hasStickyHeader: boolean;
+} & TableComponent;
+
+export const TableHead: React.FC<Props> = (props) => {
+  const { table, hasStickyHeader } = props;
   const { headerGroups } = table;
 
   return (
-    <StyledTableHead>
+    <StyledTableHead sticky={hasStickyHeader}>
       {headerGroups.map((headerGroup) => (
         // eslint-disable-next-line react/jsx-key
         <StyledTableRow

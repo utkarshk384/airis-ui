@@ -1,1 +1,1 @@
-export { BadgeColors, BadgeSize } from "./consts";
+export type { BadgeColors, BadgeSize } from "./consts";

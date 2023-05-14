@@ -35,15 +35,17 @@ export const LoginForm: React.FC = (props) => {
           />
 
           <Button
+            typographyProps={{
+              weight: "500",
+              color: "white",
+            }}
             size="lg"
             onClick={(e) => {
               e.preventDefault();
               handleSubmit();
             }}
           >
-            <Text weight="500" color="white" as="p">
-              LOGIN
-            </Text>
+            LOGIN
           </Button>
           <Text size="xs" className="border-b-2 border-accent">
             <Link href="/forgot">Forgot Password?</Link>

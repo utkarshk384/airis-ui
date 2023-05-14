@@ -8,3 +8,4 @@ export * from "./Dropdown";
 export * from "./Searchbar";
 export * from "./Table";
 export * from "./Badge";
+export * from "./Datepicker";

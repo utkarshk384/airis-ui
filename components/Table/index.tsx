@@ -1,42 +1,45 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
-  useFilters,
-  useGlobalFilter,
-  usePagination,
-  useRowSelect,
-  useSortBy,
   useTable,
+  useSortBy,
+  useFilters,
+  usePagination,
+  useGlobalFilter,
 } from "react-table";
 
-/* Hooks */
+/* Consts */
+import { ROW_OPTIONS } from "./consts";
 
 /* Components */
 import { TableHead } from "./components/head";
 import { TableBody } from "./components/body";
-import { GlobalFilter } from "./GlobalFilter";
 import { Heading } from "@components/Typography";
+import { FilterButton } from "./components/filter";
 import { Pagination } from "./components/pagination";
-import { FilterButton } from "./components/filterButton";
+import { GlobalFilter } from "./components/GlobalFilter";
+import { ColumnVisibility } from "./components/columnVisibility";
+
 import {
   StyledTable,
-  TableComponentContainer,
-  TableContainer,
   TableWrapper,
+  TableContainer,
+  TableComponentContainer,
 } from "./styled";
 
 /* Types */
 import type { Column } from "react-table";
+import type { FilterComponentProps } from "./types";
 
 interface Props {
   cols: Array<Column>;
   rows: Record<string, unknown>[];
   title?: string;
   onRowClick?: (original: Object) => void;
+  hasStickyHeader?: boolean;
   // isColoumnWidthEqual?: boolean;
   // isSearchable?: boolean;
   searchPlaceholder?: string;
-  // sortByArray?: SortByItem[];
-  // FilterComponent?: React.FC<TableInstance<{}>> | null;
+  FilterComponent?: React.FC<FilterComponentProps>;
   // filterArray?: {
   //   label: string;
   //   column: string;
@@ -44,68 +47,74 @@ interface Props {
   // }[];
 }
 
-// Define a default UI for filtering
 function DefaultColumnFilter() {
   return <></>;
 }
 
-export const Table: React.FC<Props> = ({
-  cols,
-  rows: Data,
-  onRowClick,
-  title,
-  // isColoumnWidthEqual,
-  // isSearchable = true,
-  searchPlaceholder,
-  // sortByArray = null,
-  // FilterComponent = null,
-  // filterArray,
-}) => {
-  const columns = useMemo(() => cols, [cols]);
-  const data = useMemo(() => Data, [Data]); // no rerender because of this
+export const Table: React.FC<Props> = (props) => {
+  const {
+    cols,
+    rows: Data,
+    hasStickyHeader = true,
+    FilterComponent,
+  } = DefaultProps(props);
 
-  const defaultColumn = useMemo(
-    () => ({
-      // Let's set up our default Filter UI
-      Filter: DefaultColumnFilter,
-    }),
-    []
-  );
+  /* Memos */
+  const columns = useMemo(() => cols, [cols]);
+  const data = useMemo(() => Data, [Data]);
+  const defaultValue = useMemo(() => ROW_OPTIONS[1], []);
 
   const table = useTable(
     {
       columns: columns as Column<Record<string, unknown>>[],
       data,
-      initialState: { pageIndex: 0, pageSize: 10 },
+      initialState: { pageIndex: 0, pageSize: defaultValue.value },
     },
+    useFilters,
     useGlobalFilter,
     useSortBy,
     usePagination
   );
 
-  const { state, setPageSize } = table;
-
   return (
     <TableComponentContainer>
       <div className="grid grid-cols-3">
         <Heading size="2xl" weight="600">
-          {title || " "}
+          {props.title}
         </Heading>
         <div></div>
         <div className="flex w-full gap-4 justify-self-end">
-          <GlobalFilter table={table} searchPlaceholder={searchPlaceholder} />
-          <FilterButton onClick={() => {}} />
+          <GlobalFilter
+            table={table}
+            searchPlaceholder={props.searchPlaceholder}
+          />
+          <FilterButton
+            table={table}
+            FilterComponent={FilterComponent}
+            onClick={() => {}}
+          />
+          <ColumnVisibility table={table} />
         </div>
       </div>
       <TableWrapper>
         <TableContainer>
           <StyledTable {...table.getTableProps()}>
-            <TableHead table={table} />
-            <TableBody table={table} onRowClick={onRowClick} />
+            <TableHead hasStickyHeader={hasStickyHeader} table={table} />
+            <TableBody table={table} onRowClick={props.onRowClick} />
           </StyledTable>
         </TableContainer>
       </TableWrapper>
-      <Pagination table={table} />
+      <Pagination table={table} defaultValue={defaultValue} />
     </TableComponentContainer>
   );
+};
+
+const DefaultProps = (props: Props) => {
+  const defaultProps = {
+    ...props,
+    title: props.title || "",
+    hasStickyHeader: props.hasStickyHeader || true,
+  };
+
+  return defaultProps;
 };

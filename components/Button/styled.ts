@@ -2,7 +2,6 @@ import { styled } from "@/styles/stitches";
 
 /* Consts */
 import {
-  BUTTON_COLORS,
   BUTTON_COMPOUND_VARIANTS,
   BUTTON_SIZES,
   BUTTON_VARIANTS,
@@ -16,6 +15,7 @@ export const StyledButton = styled("button", {
   justifyContent: "center",
   borderRadius: "0.5rem",
   gap: "4px",
+  transition: "all 250ms ease-in-out",
 
   "&:disabled": {
     cursor: "not-allowed",
@@ -29,7 +29,6 @@ export const StyledButton = styled("button", {
       },
     },
     size: BUTTON_SIZES,
-    color: BUTTON_COLORS,
     variant: BUTTON_VARIANTS,
     noPadding: {
       true: {

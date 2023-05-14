@@ -7,7 +7,8 @@ export const StyledBadge = styled("div", {
   placeItems: "center",
   borderRadius: "8px",
   fontWeight: "$600",
-  padding: "0.625rem 0.3125rem",
+  padding: "0.25rem",
+  width: "max-content",
 
   variants: {
     color: ColorVariants,

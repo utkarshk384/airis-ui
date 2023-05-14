@@ -1,4 +1,4 @@
-import { styled } from "@/styles/stitches";
+import { css, styled } from "@/styles/stitches";
 
 export const TableComponentContainer = styled("div", {
   display: "flex",
@@ -28,8 +28,20 @@ export const StyledTable = styled("table", {
 
 export const StyledTableHead = styled("thead", {
   color: "$primary",
+
+  background: "$white",
   fontSize: "$base",
   fontWeight: "$700",
+
+  variants: {
+    sticky: {
+      true: {
+        position: "sticky",
+        top: 0,
+        outline: "2px solid $grey",
+      },
+    },
+  },
 });
 
 export const StyledTableHeading = styled("th", {

@@ -1,6 +1,6 @@
 /* Types */
 export type ButtonVariants = keyof typeof BUTTON_VARIANTS;
-export type ButtonColors = keyof typeof BUTTON_COLORS;
+export type ButtonColors = "primary" | "secondary" | "accent";
 export type ButtonSizes = keyof typeof BUTTON_SIZES;
 
 type CompoundVariantItem = {
@@ -30,46 +30,55 @@ export const BUTTON_SIZES = {
   },
 };
 
-export const BUTTON_COLORS = {
-  accent: {
-    backgroundColor: "$accent",
-    color: "#ffffff",
-  },
-  primary: {
-    backgroundColor: "$primary",
-    color: "#ffffff",
-  },
-  secondary: {
-    backgroundColor: "$secondary",
-    color: "#ffffff",
-  },
-};
-
 export const BUTTON_VARIANTS = {
   solid: {
     backgroundColor: "$accent",
     color: "#ffffff",
+
     "&:disabled": {
       backgroundColor: "$disabled",
       "&:is(p, span)": {
         color: "#000000 !important",
       },
     },
+
+    "&:hover, &:focus": {
+      background: "rgba($rgbAccent, 80%)",
+    },
   },
   outline: {
     backgroundColor: "transparent",
     color: "$accent",
     border: "1px solid $accent",
+
     "&:disabled": {
       borderColor: "$disabled",
       color: "$disabled",
+    },
+
+    "&:hover, &:focus": {
+      background: "rgba($rgbAccent, 30%)",
+      borderColor: "rgba($rgbAccent, 30%)",
     },
   },
   text: {
     backgroundColor: "transparent",
     color: "$accent",
+
     "&:disabled": {
       color: "$disabled",
+    },
+  },
+  icon: {
+    backgroundColor: "transparent",
+    color: "$grey",
+
+    "&:disabled": {
+      color: "$disabled",
+    },
+
+    "&:hover, &:focus": {
+      color: "$accent",
     },
   },
   link: {
@@ -112,6 +121,14 @@ function generateVariants(color: ButtonColors): CompoundVariant {
     {
       color,
       variant: "text",
+      css: {
+        backgroundColor: "transparent",
+        color: `$${color}`,
+      },
+    },
+    {
+      color,
+      variant: "icon",
       css: {
         backgroundColor: "transparent",
         color: `$${color}`,

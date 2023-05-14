@@ -2,18 +2,23 @@ import React, { useMemo } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 /* Components */
+import { Select } from "@components/Select";
 import { Button } from "@components/Button";
-import { RawInput } from "@components/Input";
 import { Text } from "@components/Typography";
+
+/* consts */
+import { ROW_OPTIONS } from "../consts";
 
 /* Hooks */
 import { useUniqueId } from "@src/hooks/useUniqueId";
 
 /* Types */
 import type { TableComponent } from "../types";
+import { DropdownOption } from "@components/sharedTypes";
 
 type Props = {
   children?: React.ReactNode;
+  defaultValue: DropdownOption;
 } & TableComponent;
 
 type ButtonProps = {
@@ -27,7 +32,7 @@ type PaginationOverflowProps = {
 } & Omit<ButtonProps, "idx">;
 
 export const Pagination: React.FC<Props> = (props) => {
-  const { table } = props;
+  const { table, defaultValue } = props;
   const {
     state,
     setPageSize,
@@ -49,13 +54,14 @@ export const Pagination: React.FC<Props> = (props) => {
 
   return (
     <div className="grid w-full grid-cols-3 justify-items-center">
-      <div className="w-1-3 flex justify-self-start items-center gap-2">
-        <Text>Rows per page:</Text>
-        <RawInput
-          variant="filled"
-          name="display-row"
-          value={state.pageSize}
-          onChange={(e) => setPageSize(Number(e.target.value))}
+      <div className="w-full flex justify-self-start items-center gap-2">
+        <Text className="!w-fit">Rows per page:</Text>
+        <Select
+          defaultValue={defaultValue}
+          onChange={(val) => setPageSize(Number(val.value))}
+          placeholder="Select rows per page"
+          options={ROW_OPTIONS}
+          containerClassName="!w-fit min-w-[20rem]"
         />
       </div>
       <div className="flex items-center gap-2">
@@ -124,10 +130,10 @@ const PaginationOverflow: React.FC<PaginationOverflowProps> = (props) => {
 
 const PaginationButton: React.FC<ButtonProps> = (props) => {
   const { gotoPage, idx, pageIndex } = props;
+  console.log(idx === pageIndex ? "solid" : "outline");
   return (
     <Button
       variant={idx === pageIndex ? "solid" : "outline"}
-      color={idx === pageIndex ? "accent" : "primary"}
       onClick={() => gotoPage(idx)}
     >
       {idx + 1}

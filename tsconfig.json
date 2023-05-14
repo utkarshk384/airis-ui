@@ -12,11 +12,11 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@components": ["./components/index.ts"],
+      "@components": ["components/index.ts"],
       "@components/*": ["./components/*"],
       "@layouts/*": ["./layouts/*"],
       "@utils/*": ["./src/utils/*"],

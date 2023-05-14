@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 /* Components */
 import { Searchbar } from "@components/Searchbar";
-import { useAsyncDebounce } from "react-table";
 
 /* Types */
-import type { TableComponent } from "./types";
+import type { TableComponent } from "../types";
+import { useDebouncedCallback } from "@src/hooks";
 
 type Props = {
   children?: React.ReactNode;
@@ -15,18 +15,15 @@ type Props = {
 export const GlobalFilter: React.FC<Props> = (props) => {
   const { table, searchPlaceholder } = props;
   const {
-    preGlobalFilteredRows,
     state: { globalFilter },
     setGlobalFilter,
   } = table;
 
-  const count = preGlobalFilteredRows.length;
   const [value, setValue] = useState(globalFilter);
 
-  // TODO: Add Debounce Event
-  const onChange = (value) => {
+  const onChange = useDebouncedCallback((value) => {
     setGlobalFilter(value || undefined);
-  };
+  }, 500);
 
   return (
     <Searchbar
