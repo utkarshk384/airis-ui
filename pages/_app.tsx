@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import { QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 /* Styles */
 import "../styles/globals.css";
