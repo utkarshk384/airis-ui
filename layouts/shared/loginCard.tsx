@@ -34,7 +34,7 @@ export const LoginLayoutCard: React.FC<Props> = (props) => {
             {titleText}
           </Text>
         </Banner>
-        <div className="flex flex-col items-center justify-center h-2/3 gap-4">
+        <div className="flex flex-col items-center justify-center h-5/6 gap-4">
           <Text size="base" weight="500">
             {subTitleText}
           </Text>

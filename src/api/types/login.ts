@@ -1,3 +1,5 @@
+import type { Failure, Success } from "./shared";
+
 export interface LoginPayload {
   userName: string;
   password: string;
@@ -7,19 +9,11 @@ export interface LoginPayload {
 export interface LoginResponse {
   statusCode: number;
   referenceAPI: string;
-  success: Success;
+  success: Success<LoginResult>;
   failure: Failure;
 }
 
-export interface Failure {
-  message: string;
-}
-
-export interface Success {
-  result: Result;
-}
-
-export interface Result {
+type LoginResult = {
   id: number;
   userId: string;
   organizationId: number;
@@ -39,7 +33,7 @@ export interface Result {
   otpExpiryDatetime: string;
   sourceApp: string;
   token: string;
-}
+};
 
 export interface IPAddressResponse {
   country_code: string;

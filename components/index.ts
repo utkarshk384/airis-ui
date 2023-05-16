@@ -9,3 +9,4 @@ export * from "./Searchbar";
 export * from "./Table";
 export * from "./Badge";
 export * from "./Datepicker";
+export * from "./Toast";

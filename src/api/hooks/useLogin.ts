@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 /* API */
-import { LoginUser, getIPAddress } from "../handlers";
+import { LoginUser, getIPAddress } from "../handlers/login";
 
 import type {
   ResponseType,

@@ -2,7 +2,7 @@ import Axios from "axios";
 
 /* consts */
 import { LOCAL_STORAGE_KEYS } from "@src/consts";
-import { RequestType, ResponseType } from "./types";
+import { RequestType } from "./types";
 
 const axios = Axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -10,7 +10,7 @@ const axios = Axios.create({
 
 export const AxiosWrapper = async <T, K = Record<string, string>>(
   req: RequestType<K>
-): Promise<ResponseType<T>> => {
+): Promise<T> => {
   const {
     body,
     defaultHeaders,
@@ -21,7 +21,7 @@ export const AxiosWrapper = async <T, K = Record<string, string>>(
     baseURL,
   } = req;
 
-  return new Promise<ResponseType<T>>((resolve, reject) => {
+  return new Promise<T>((resolve, reject) => {
     let finalHeaders = headers || {};
 
     if (defaultHeaders)

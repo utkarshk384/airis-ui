@@ -33,3 +33,17 @@ NOTE: You can use `dev-expose` to run the server locally in the network.
 2. Use stitches for custom styling
 3. Any `10px` font size used in the figma design file will be rounded to `12px` in the code
 4. Any `13px` font size used in the figma design file will be rounded to `14px` in the code
+
+## Creating a new API route
+
+Run the command `yarn create-api API_NAME`.
+
+This will create three new files in the `src/api` folder.
+
+1. The first one is the handler file which will contain the logic for the API.
+
+2. The second one is the hook file which will export custom react query hook.
+
+3. Finally, the last is the types file which will contain the types for the API.
+
+NOTE: It is preferrable to use small case for the `API_NAME` while using the command. The text case will be automatically be handled.

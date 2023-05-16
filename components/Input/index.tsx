@@ -15,6 +15,7 @@ type Props = {
   placeholder?: string;
   className?: string;
   variant?: "underlined" | "filled";
+  errorBeforeTouch?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 };
 
@@ -23,9 +24,15 @@ type RawInputProps = {
 } & Props;
 
 export const Input: React.FC<Props> = (props) => {
-  const { label, variant, ...rest } = DefaultProps(props);
+  const {
+    label,
+    variant,
+    errorBeforeTouch = false,
+    ...rest
+  } = DefaultProps(props);
 
   const [field, meta] = useField(rest);
+  const error = useMemo(() => meta.error || "", [meta.error]);
 
   return (
     <fieldset className="flex gap-2">
@@ -38,7 +45,7 @@ export const Input: React.FC<Props> = (props) => {
         <StyledInput variant={variant} {...field} {...rest} />
 
         <Text className="!text-red-500">
-          {(meta.touched && meta.error) || " "}
+          {errorBeforeTouch ? error : meta.touched && error}
         </Text>
       </div>
     </fieldset>

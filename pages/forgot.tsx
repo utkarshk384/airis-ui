@@ -33,7 +33,7 @@ const ForgotPage: React.FC<Props> = (props) => {
           </Text>
         </div>
         <LoginLayoutCard
-          className="!h-[60vh]"
+          className="!h-[65vh]"
           Component={ForgotForm}
           titleText="Forgot Password?"
           subTitleText="Reset your password"

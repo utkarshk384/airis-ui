@@ -40,6 +40,10 @@ export const BUTTON_VARIANTS = {
       "&:is(p, span)": {
         color: "#000000 !important",
       },
+
+      "&:hover": {
+        backgroundColor: "$disabled",
+      },
     },
 
     "&:hover, &:focus": {
@@ -54,6 +58,10 @@ export const BUTTON_VARIANTS = {
     "&:disabled": {
       borderColor: "$disabled",
       color: "$disabled",
+      "&:hover": {
+        backgroundColor: "transparent",
+        borderColor: "$accent",
+      },
     },
 
     "&:hover, &:focus": {
@@ -75,6 +83,9 @@ export const BUTTON_VARIANTS = {
 
     "&:disabled": {
       color: "$disabled",
+      "&:hover": {
+        color: "$disabled",
+      },
     },
 
     "&:hover, &:focus": {

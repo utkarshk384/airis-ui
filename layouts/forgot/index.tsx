@@ -1,39 +1,115 @@
 import Link from "next/link";
 import { Formik } from "formik";
-import { useCallback } from "react";
+import { useRouter } from "next/router";
+import type { ValidationError } from "yup";
+import { useCallback, useEffect, useState } from "react";
 
 /* Components */
-import { Button, Input, Text } from "@components";
+import { Button, Input, Text, Toast } from "@components";
 
-type FormValues = {
-  username: string;
-  password: string;
-};
+/* Validation */
+import { PartialValidate, validationSchema } from "./validation";
+
+/* Types */
+import type { SetFormikError } from "./types";
+import type { ForgotPayload, PartialForgotPayload } from "@src/api/types";
+
+/* APIs */
+import { useForgot } from "@src/api";
 
 export const ForgotForm: React.FC = (props) => {
-  const onSubmit = useCallback((values: FormValues) => {
-    // Handle Submit
+  const { ForgotMutation, OtpMutation } = useForgot();
+
+  const router = useRouter();
+
+  const onSubmit = useCallback((values: ForgotPayload) => {
+    ForgotMutation.mutateAsync(values, {
+      onSuccess() {
+        Toast.success("Password successfully reset.");
+        router.push("/login");
+      },
+      onError() {
+        Toast.error(
+          "Something went wrong while resetting password. Please try again."
+        );
+      },
+    });
   }, []);
+
+  const [isOtpSent, setIsOtpSent] = useState(false);
+
+  const sendOtp = useCallback(
+    (values: PartialForgotPayload, setError: SetFormikError) => {
+      let validatedValues: PartialForgotPayload | null = null;
+      try {
+        validatedValues = PartialValidate.validateSync(values, {
+          stripUnknown: true,
+          abortEarly: false,
+        });
+      } catch (e) {
+        const errors = e as ValidationError;
+        if (errors.inner.length > 0)
+          errors.inner.forEach((err) => {
+            setError(err.path!, err.message);
+          });
+        else setError(errors.path!, errors.message);
+
+        return;
+      }
+      if (!validatedValues) return;
+
+      // Send OTP
+      setIsOtpSent(true);
+      const toastId = Toast.loading("Sending OTP...");
+
+      OtpMutation.mutate(validatedValues, {
+        onSuccess() {
+          Toast.success("Sucessfully sent OTP", { id: toastId });
+        },
+        onError() {
+          Toast.error("An error occured. Please try again.", { id: toastId });
+        },
+      });
+    },
+    []
+  );
+
+  useEffect(() => {}, []);
+
   return (
     <Formik
-      initialValues={{ username: "", password: "" } as FormValues}
+      initialValues={
+        { userId: "", email: "", password: "", otp: "" } as ForgotPayload
+      }
       onSubmit={onSubmit}
+      validationSchema={validationSchema}
     >
-      {({ handleSubmit }) => (
-        <form method="POST" className="flex flex-col gap-4 w-3/5 mx-auto">
+      {({ handleSubmit, values, setFieldError }) => (
+        <form
+          method="POST"
+          className="flex flex-col transition-all duration-200 ease-in-out gap-4 w-3/5 mx-auto"
+        >
           <div className="relative">
             <Input
               variant="underlined"
               className="w-3/4"
               placeholder="Username"
+              name="userId"
+              errorBeforeTouch
+            />
+            <Input
+              variant="underlined"
+              className="w-3/4"
+              placeholder="Email"
               name="email"
+              errorBeforeTouch
             />
             <Button
-              className="absolute -right-20 top-0"
               size="base"
+              className="absolute -right-5 bottom-2"
               onClick={(e) => {
                 e.preventDefault();
-                handleSubmit();
+                sendOtp(values, setFieldError);
               }}
               typographyProps={{
                 size: "xs",
@@ -44,15 +120,18 @@ export const ForgotForm: React.FC = (props) => {
               Send OTP
             </Button>
           </div>
-          <Input variant="underlined" placeholder="Enter OTP" name="otp" />
+          {isOtpSent && (
+            <Input variant="underlined" placeholder="Enter OTP" name="otp" />
+          )}
           <Input
             variant="underlined"
             placeholder="New Password"
-            name="Password"
+            name="password"
+            type="password"
           />
           <div className="flex justify-center w-full">
             <Button
-              disabled
+              disabled={!isOtpSent}
               size="lg"
               onClick={(e) => {
                 e.preventDefault();
