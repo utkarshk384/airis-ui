@@ -24,6 +24,7 @@ export const PatientsTab: React.FC<Props> = (props) => {
         FilterComponent={DropdownContent}
         searchPlaceholder="Search patient id, name, acc no, referral doctor..."
         cols={cols}
+        searchClassName="w-7/12"
         rows={rows}
         title="Patients"
       />

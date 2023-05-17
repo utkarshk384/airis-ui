@@ -26,7 +26,7 @@ export const TableHead: React.FC<Props> = (props) => {
             <StyledTableHeading
               {...column.getHeaderProps(column.getSortByToggleProps())}
             >
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 {column.render("Header")}
                 {column.isSorted ? (
                   column.isSortedDesc ? (

@@ -10,10 +10,11 @@ import { useDebouncedCallback } from "@src/hooks";
 type Props = {
   children?: React.ReactNode;
   searchPlaceholder?: string;
+  searchClassName?: string;
 } & TableComponent;
 
 export const GlobalFilter: React.FC<Props> = (props) => {
-  const { table, searchPlaceholder } = props;
+  const { table, searchPlaceholder, searchClassName } = props;
   const {
     state: { globalFilter },
     setGlobalFilter,
@@ -29,7 +30,7 @@ export const GlobalFilter: React.FC<Props> = (props) => {
     <Searchbar
       placeholder={searchPlaceholder}
       value={value}
-      wrapperClassName="w-11/12"
+      wrapperClassName={`w-11/12 ${searchClassName}`}
       onChange={(e) => {
         setValue(e.target.value);
         onChange(e.target.value);

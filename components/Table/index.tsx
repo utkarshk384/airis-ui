@@ -36,19 +36,9 @@ interface Props {
   title?: string;
   onRowClick?: (original: Object) => void;
   hasStickyHeader?: boolean;
-  // isColoumnWidthEqual?: boolean;
-  // isSearchable?: boolean;
   searchPlaceholder?: string;
+  searchClassName?: string;
   FilterComponent?: React.FC<FilterComponentProps>;
-  // filterArray?: {
-  //   label: string;
-  //   column: string;
-  //   updater: number[] | string | number;
-  // }[];
-}
-
-function DefaultColumnFilter() {
-  return <></>;
 }
 
 export const Table: React.FC<Props> = (props) => {
@@ -78,15 +68,15 @@ export const Table: React.FC<Props> = (props) => {
 
   return (
     <TableComponentContainer>
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-2">
         <Heading size="2xl" weight="600">
           {props.title}
         </Heading>
-        <div></div>
-        <div className="flex w-full gap-4 justify-self-end">
+        <div className="flex w-full gap-4 justify-end">
           <GlobalFilter
             table={table}
             searchPlaceholder={props.searchPlaceholder}
+            searchClassName={props.searchClassName}
           />
           <FilterButton
             table={table}
@@ -114,6 +104,7 @@ const DefaultProps = (props: Props) => {
     ...props,
     title: props.title || "",
     hasStickyHeader: props.hasStickyHeader || true,
+    searchClassName: props.searchClassName || "",
   };
 
   return defaultProps;

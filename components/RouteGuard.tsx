@@ -1,14 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
+import { Player } from "@lottiefiles/react-lottie-player";
+import { useState, useEffect, useCallback } from "react";
+
+/* Animations */
+import * as animationData from "@src/animations/preloader.json";
 
 /* Utils */
 import { getLocalStoragevalue } from "@utils/localStorage";
 
 /* Consts */
 import { LOCAL_STORAGE_KEYS, PUBLIC_PATHS } from "@src/consts";
+import { Heading } from "./Typography";
 
 /* Types */
-
 type Props = {
   children?: React.ReactNode;
 };
@@ -39,5 +43,22 @@ export const RouteGuard: React.FC<Props> = (props) => {
     setAuthorized(authCheck(router.pathname));
   }, [authCheck, router.pathname]);
 
-  return <>{authorized && children}</>;
+  return <>{authorized ? children : <Preloader />}</>;
+};
+
+const Preloader: React.FC = () => {
+  return (
+    <div className="h-screen w-screen fixed grid place-items-center">
+      <div className="flex flex-col relative items-center gap-4 w-64 h-54">
+        <Player autoplay src={animationData} loop />
+        <Heading
+          className="w-fit absolute top-2/3 translate-y-8 left-0 right-0 mx-auto"
+          size="lg"
+          weight="600"
+        >
+          Loading...
+        </Heading>
+      </div>
+    </div>
+  );
 };
