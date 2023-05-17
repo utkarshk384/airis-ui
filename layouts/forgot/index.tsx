@@ -28,7 +28,7 @@ export const ForgotForm: React.FC = (props) => {
         Toast.success("Password successfully reset.");
         router.push("/login");
       },
-      onError() {
+      onError(data) {
         Toast.error(
           "Something went wrong while resetting password. Please try again."
         );

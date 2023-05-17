@@ -130,7 +130,7 @@ const PaginationOverflow: React.FC<PaginationOverflowProps> = (props) => {
 
 const PaginationButton: React.FC<ButtonProps> = (props) => {
   const { gotoPage, idx, pageIndex } = props;
-  console.log(idx === pageIndex ? "solid" : "outline");
+
   return (
     <Button
       variant={idx === pageIndex ? "solid" : "outline"}

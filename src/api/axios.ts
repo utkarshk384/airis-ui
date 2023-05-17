@@ -1,4 +1,4 @@
-import Axios from "axios";
+import Axios, { AxiosResponse } from "axios";
 
 /* consts */
 import { LOCAL_STORAGE_KEYS } from "@src/consts";
@@ -21,7 +21,7 @@ export const AxiosWrapper = async <T, K = Record<string, string>>(
     baseURL,
   } = req;
 
-  return new Promise<T>((resolve, reject) => {
+  return new Promise<T>(async (resolve, reject) => {
     let finalHeaders = headers || {};
 
     if (defaultHeaders)
@@ -35,18 +35,16 @@ export const AxiosWrapper = async <T, K = Record<string, string>>(
       finalHeaders["authToken"] =
         localStorage.getItem(LOCAL_STORAGE_KEYS.token) || "";
 
-    axios({
+    const data: void | AxiosResponse<T, K> = await axios({
       method: method.toLowerCase(),
       headers: finalHeaders,
       data: body,
       url,
       baseURL,
-    })
-      .then((res) => {
-        resolve(res.data);
-      })
-      .catch((err) => {
-        reject(err);
-      });
+    }).catch((err) => {
+      reject(err.response);
+    });
+
+    if (data) resolve(data.data);
   });
 };

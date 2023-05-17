@@ -14,6 +14,7 @@ import { defaultOptions } from "@components";
 
 /* Types */
 import type { AppProps } from "next/app";
+import { RouteGuard } from "@components/RouteGuard";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,7 +28,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <main className={inter.variable}>
-        <Component {...pageProps} />;
+        <RouteGuard>
+          <Component {...pageProps} />;
+        </RouteGuard>
       </main>
       <Toaster toastOptions={defaultToastOpts} />
     </QueryClientProvider>

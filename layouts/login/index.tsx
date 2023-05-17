@@ -1,10 +1,11 @@
+import * as yup from "yup";
 import Link from "next/link";
 import { Formik } from "formik";
-import * as yup from "yup";
 import { useCallback } from "react";
+import { useRouter } from "next/router";
 
 /* Components */
-import { Button, Input, Text } from "@components";
+import { Button, Input, Text, Toast } from "@components";
 import { useLogin } from "@src/api/hooks/useLogin";
 
 /* Consts */
@@ -30,6 +31,7 @@ export const LoginForm: React.FC = (props) => {
     IPQuery,
   } = useLogin();
 
+  const router = useRouter();
   const { setMultipleStorageValues } = useLocalStorage();
 
   const onSubmit = useCallback(
@@ -37,13 +39,31 @@ export const LoginForm: React.FC = (props) => {
       let vals: LoginPayload = { ...values, ipAddress: "" };
       if (IPQuery.data) vals["ipAddress"] = IPQuery.data.IPv4;
 
+      const toastId = Toast.loading("Logging in...");
       mutate(vals, {
         onSuccess(data) {
           const res = data.success.result;
+          const redirect = router.query["redirect_uri"];
+
+          Toast.success("Logged in successfully", { id: toastId });
           setMultipleStorageValues([
             { key: LOCAL_STORAGE_KEYS.token, value: res.token },
             { key: LOCAL_STORAGE_KEYS.userId, value: res.userId },
           ]);
+
+          if (typeof redirect === "string") router.push(redirect);
+          else router.push("/");
+        },
+        onError(error) {
+          if (error.statusCode === 401)
+            Toast.error(
+              "Please check your username or password and try again.",
+              { id: toastId }
+            );
+          else
+            Toast.error("Something went wrong while logging in", {
+              id: toastId,
+            });
         },
       });
     },

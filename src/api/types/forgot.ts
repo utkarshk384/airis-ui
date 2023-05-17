@@ -17,10 +17,6 @@ export interface GenerateOTPResponse {
   failure: Failure;
 }
 
-interface GenerateOTPResult {
-  value: string;
-}
-
 export interface ForgotPasswordResponse {
   statusCode: number;
   referenceAPI: string;

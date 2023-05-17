@@ -11,7 +11,7 @@ import type {
 } from "../types";
 
 export const useLogin = () => {
-  const LoginMutation = useMutation<LoginResponse, ResponseType, LoginPayload>(
+  const LoginMutation = useMutation<LoginResponse, LoginResponse, LoginPayload>(
     LoginUser as any
   );
   const IPQuery = useQuery<IPAddressResponse, ResponseType>(["get-ip"], {

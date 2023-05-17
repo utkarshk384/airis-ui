@@ -6,9 +6,7 @@ import { ForgotPassword, GenerateOtp } from "../handlers/forgot";
 export const useForgot = () => {
   const OtpMutation = useMutation(GenerateOtp);
 
-  const ForgotMutation = useMutation({
-    mutationFn: ForgotPassword,
-  });
+  const ForgotMutation = useMutation(ForgotPassword);
 
   return { OtpMutation, ForgotMutation };
 };
