@@ -32,7 +32,7 @@ export const BUTTON_SIZES = {
 
 export const BUTTON_VARIANTS = {
   solid: {
-    backgroundColor: "$accent",
+    backgroundColor: "$accent !important",
     color: "#ffffff",
 
     "&:disabled": {

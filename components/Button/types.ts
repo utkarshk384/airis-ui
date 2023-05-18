@@ -15,7 +15,7 @@ export type Props = {
   variant?: ButtonVariants;
   iconButton?: boolean;
   size?: ButtonSizes;
-  as?: "button" | "a";
+  as?: "button" | "a" | React.FC;
   noPadding?: boolean;
   typographyProps?: TypographyProps;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;

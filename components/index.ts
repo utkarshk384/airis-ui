@@ -10,3 +10,4 @@ export * from "./Table";
 export * from "./Badge";
 export * from "./Datepicker";
 export * from "./Toast";
+export * from "./Dialog";
