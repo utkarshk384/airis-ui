@@ -17,6 +17,10 @@ export const { styled, css, globalCss, keyframes, getCssText, theme } =
         yellow: "#eab308",
         orange: "#f97316",
         rgbAccent: "2, 127, 255",
+        rgbPrimary: "23, 35, 77",
+        rgbSecondary: "27, 125, 168",
+        rgbRed: "239, 68, 68",
+        rgbGreen: "34, 197, 94",
       },
       fontSizes: {
         xs: "0.75em", // 12px

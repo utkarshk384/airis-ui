@@ -1,14 +1,14 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Column } from "react-table";
 
 /* Components */
+import { NotesComponent } from "./colComponents";
 import {
   AllergyIcon,
   Badge,
   Button,
   UploadIcon,
   WritingIcon,
-  Dialog,
 } from "@components";
 
 /* Types */
@@ -87,28 +87,7 @@ export const COLUMNS: Column[] = [
     accessor: "notes",
     disableGlobalFilter: true,
     disableFilters: true,
-    Cell: () => {
-      const [open, setOpen] = useState(false);
-
-      return (
-        <>
-          <AllergyDialog open={open} setOpen={setOpen} />
-          <div className="flex gap-2">
-            <Button
-              onClick={() => setOpen(true)}
-              iconButton
-              variant="icon"
-              noPadding
-            >
-              <AllergyIcon fill="currentColor" width={20} height={20} />
-            </Button>
-            <Button iconButton variant="icon" noPadding>
-              <WritingIcon fill="currentColor" width={20} height={20} />
-            </Button>
-          </div>
-        </>
-      );
-    },
+    Cell: NotesComponent,
   },
   {
     Header: "Action",
@@ -126,20 +105,3 @@ export const COLUMNS: Column[] = [
     },
   },
 ];
-
-const AllergyDialog: React.FC<{
-  open: boolean;
-  setOpen: (val: boolean) => void;
-}> = (props) => {
-  const { open, setOpen } = props;
-
-  return (
-    <Dialog open={open} onOpenChange={(val) => setOpen(val)}>
-      {(Item) => (
-        <>
-          <Item.Header title="Hello" />
-        </>
-      )}
-    </Dialog>
-  );
-};

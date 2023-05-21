@@ -34,6 +34,7 @@ export const Button: ButtonComponent = (props) => {
 const DefaultProps = (props: Props) => {
   const defaultProps: Props = {
     ...props,
+    color: props.color || "accent",
     iconButton: props.iconButton || false,
     size: props.size || "base",
     variant: props.variant || "solid",

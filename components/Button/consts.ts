@@ -1,6 +1,6 @@
 /* Types */
 export type ButtonVariants = keyof typeof BUTTON_VARIANTS;
-export type ButtonColors = "primary" | "secondary" | "accent";
+export type ButtonColors = keyof typeof BUTTON_COLORS;
 export type ButtonSizes = keyof typeof BUTTON_SIZES;
 
 type CompoundVariantItem = {
@@ -32,8 +32,9 @@ export const BUTTON_SIZES = {
 
 export const BUTTON_VARIANTS = {
   solid: {
-    backgroundColor: "$accent !important",
-    color: "#ffffff",
+    backgroundColor: "var(--main)",
+    color: "var(--support)",
+    border: "1px solid transparent",
 
     "&:disabled": {
       backgroundColor: "$disabled",
@@ -47,31 +48,31 @@ export const BUTTON_VARIANTS = {
     },
 
     "&:hover, &:focus": {
-      background: "rgba($rgbAccent, 80%)",
+      background: "rgba(var(--hover), 80%)",
     },
   },
   outline: {
     backgroundColor: "transparent",
-    color: "$accent",
-    border: "1px solid $accent",
+    color: "var(--main)",
+    border: "1px solid var(--main)",
 
     "&:disabled": {
       borderColor: "$disabled",
       color: "$disabled",
       "&:hover": {
         backgroundColor: "transparent",
-        borderColor: "$accent",
+        borderColor: "$disabled",
       },
     },
 
     "&:hover, &:focus": {
-      background: "rgba($rgbAccent, 30%)",
-      borderColor: "rgba($rgbAccent, 30%)",
+      background: "rgba(var(--hover), 30%)",
+      borderColor: "rgba(var(--hover), 30%)",
     },
   },
   text: {
     backgroundColor: "transparent",
-    color: "$accent",
+    color: "var(--main)",
 
     "&:disabled": {
       color: "$disabled",
@@ -89,12 +90,12 @@ export const BUTTON_VARIANTS = {
     },
 
     "&:hover, &:focus": {
-      color: "$accent",
+      color: "var(--main)",
     },
   },
   link: {
     backgroundColor: "transparent",
-    color: "$accent",
+    color: "var(--main)",
     textDecoration: "underline",
     "&:disabled": {
       color: "$disabled",
@@ -102,56 +103,30 @@ export const BUTTON_VARIANTS = {
   },
 };
 
-const BUTTON_COMPOUND_VARIANTS: CompoundVariant = [];
-
-BUTTON_COMPOUND_VARIANTS.concat(generateVariants("primary"));
-BUTTON_COMPOUND_VARIANTS.concat(generateVariants("secondary"));
-BUTTON_COMPOUND_VARIANTS.concat(generateVariants("accent"));
-
-export { BUTTON_COMPOUND_VARIANTS };
-
-function generateVariants(color: ButtonColors): CompoundVariant {
-  return [
-    {
-      color,
-      variant: "solid",
-      css: {
-        backgroundColor: `$${color}`,
-        color: "#ffffff",
-      },
-    },
-    {
-      color,
-      variant: "outline",
-      css: {
-        backgroundColor: "transparent",
-        borderColor: `$${color}`,
-        color: `$${color}`,
-      },
-    },
-    {
-      color,
-      variant: "text",
-      css: {
-        backgroundColor: "transparent",
-        color: `$${color}`,
-      },
-    },
-    {
-      color,
-      variant: "icon",
-      css: {
-        backgroundColor: "transparent",
-        color: `$${color}`,
-      },
-    },
-    {
-      color,
-      variant: "link",
-      css: {
-        backgroundColor: "transparent",
-        color: `$${color}`,
-      },
-    },
-  ];
-}
+export const BUTTON_COLORS = {
+  primary: {
+    "--main": "var(--colors-primary)",
+    "--support": "var(--colors-white)",
+    "--hover": `var(--colors-rgbPrimary)`,
+  },
+  secondary: {
+    "--main": `var(--colors-secondary)`,
+    "--support": "var(--colors-white)",
+    "--hover": `var(--colors-rgbSecondary)`,
+  },
+  accent: {
+    "--main": `var(--colors-accent)`,
+    "--support": "var(--colors-white)",
+    "--hover": `var(--colors-rgbAccent)`,
+  },
+  red: {
+    "--main": `var(--colors-red)`,
+    "--support": "var(--colors-white)",
+    "--hover": `var(--colors-rgbRed)`,
+  },
+  green: {
+    "--main": `var(--colors-green)`,
+    "--support": "var(--colors-white)",
+    "--hover": `var(--colors-green)`,
+  },
+};

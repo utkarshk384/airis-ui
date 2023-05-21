@@ -1,4 +1,9 @@
-import type { ButtonSizes, ButtonVariants, CompoundVariant } from "./consts";
+import type {
+  ButtonSizes,
+  ButtonVariants,
+  CompoundVariant,
+  ButtonColors,
+} from "./consts";
 import type {
   FontColors,
   FontSizes,
@@ -7,6 +12,8 @@ import type {
 } from "../Typography/types";
 
 export type { ButtonSizes, ButtonVariants, CompoundVariant };
+
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export type Props = {
   children?: React.ReactNode;
@@ -18,7 +25,8 @@ export type Props = {
   as?: "button" | "a" | React.FC;
   noPadding?: boolean;
   typographyProps?: TypographyProps;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+  color?: ButtonColors;
+} & Omit<ButtonProps, "color">;
 
 type TypographyProps = {
   size?: FontSizes;

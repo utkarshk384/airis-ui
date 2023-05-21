@@ -1,11 +1,7 @@
 import { styled } from "@/styles/stitches";
 
 /* Consts */
-import {
-  BUTTON_COMPOUND_VARIANTS,
-  BUTTON_SIZES,
-  BUTTON_VARIANTS,
-} from "./consts";
+import { BUTTON_SIZES, BUTTON_VARIANTS, BUTTON_COLORS } from "./consts";
 
 export const StyledButton = styled("button", {
   width: "fit-content",
@@ -28,6 +24,7 @@ export const StyledButton = styled("button", {
         aspectRatio: "1/1",
       },
     },
+    color: BUTTON_COLORS,
     size: BUTTON_SIZES,
     variant: BUTTON_VARIANTS,
     noPadding: {
@@ -36,6 +33,4 @@ export const StyledButton = styled("button", {
       },
     },
   },
-
-  compoundVariants: BUTTON_COMPOUND_VARIANTS,
 });

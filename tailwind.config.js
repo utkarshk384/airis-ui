@@ -16,6 +16,10 @@ module.exports = {
   },
   corePlugins: {
     container: false,
+    preflight: false,
   },
-  plugins: [require("./plugins/container.js")],
+  plugins: [
+    require("./plugins/container.js"),
+    require("./plugins/scopedPreflight.js"),
+  ],
 };
