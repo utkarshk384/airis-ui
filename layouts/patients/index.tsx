@@ -29,7 +29,7 @@ export const PatientsTab: React.FC<Props> = (props) => {
         title="Patients"
       />
       <div className="my-64"></div>
-      <RichTextEditor />
+      <RichTextEditor height="15rem" scrollable />
       <div className="my-64"></div>
     </div>
   );

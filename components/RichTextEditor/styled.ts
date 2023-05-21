@@ -6,10 +6,58 @@ export const StyledToolbar = styled("div", {
 });
 
 export const QuillCSS = css({
+  /* Round container */
+  ".ql-toolbar.ql-snow": {
+    borderTopLeftRadius: "8px",
+    borderTopRightRadius: "8px",
+  },
   ".ql-container": {
     borderEndStartRadius: "8px",
     borderEndEndRadius: "8px",
-    display: "grid",
+    height: "var(--height, auto) !important",
     gridTemplateColumns: "1fr 1fr",
+  },
+
+  /* Remove second chevron from dropdown */
+  "svg > polygon:last-child": {
+    display: "none",
+  },
+
+  /* Move the first chevron up. */
+  "svg > polygon:first-child": {
+    transform: "translateY(-20%)",
+  },
+
+  /* Target Dropdown menu */
+  ".ql-picker-options": {
+    borderRadius: "8px",
+  },
+
+  /* Remove gray border from dropdown when dropdown is open */
+  ".ql-picker-label": {
+    borderColor: "transparent !important",
+  },
+
+  /* Select background color dropdown menu and it's items. */
+  ":is(.ql-background.ql-expanded, .ql-color.ql-expanded) > .ql-picker-options":
+    {
+      width: "fit-content !important",
+      padding: "0.5rem",
+      display: "grid !important",
+      gridTemplateColumns: "repeat(7, 2rem)",
+      gap: "0.25rem",
+    },
+  ":is(.ql-background, .ql-color) > .ql-picker-options > span.ql-picker-item": {
+    width: "2rem !important",
+    height: "2rem !important",
+    borderRadius: "8px",
+  },
+
+  variants: {
+    scorllable: {
+      ".ql-container": {
+        overflowY: "scroll",
+      },
+    },
   },
 });

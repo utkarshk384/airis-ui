@@ -16,6 +16,7 @@ type Props = {
   defaultValue?: string;
   height?: string;
   maxHeight?: string;
+  scrollable?: boolean;
   readOnly?: boolean;
 };
 
@@ -24,7 +25,8 @@ const MODULES: QuillOptions["modules"] = {
 };
 
 export const RichTextEditor: React.FC<Props> = (props) => {
-  const { onChange, height, maxHeight, ...rest } = DefaultProps(props);
+  const { onChange, height, scrollable, maxHeight, ...rest } =
+    DefaultProps(props);
 
   const [value, setValue] = useState(rest.defaultValue || "");
   const modules = useMemo(() => MODULES, []);
@@ -35,7 +37,12 @@ export const RichTextEditor: React.FC<Props> = (props) => {
   };
 
   return (
-    <div className={`rounded-lg ${QuillCSS({ css: { height, maxHeight } })}`}>
+    <div
+      className={`rounded-lg ${QuillCSS({
+        scrollable,
+        css: { "--height": height, maxHeight },
+      })}`}
+    >
       <ReactQuill
         className="rounded-lg"
         {...rest}
@@ -52,6 +59,7 @@ const DefaultProps = (props: Props) => {
   const defaultProps: Props = {
     ...props,
     readOnly: props.readOnly || false,
+    scrollable: props.scrollable || false,
     height: props.height || "auto",
     maxHeight: props.maxHeight || "auto",
     placeholder: props.placeholder || "Write something...",
