@@ -44,6 +44,7 @@ export const StyledAccordionItem = styled(Expandable.Item, {
   borderTop: "2px solid hsla(220, 13%, 91%, 1)",
   borderRadius: "8px",
   boxShadow: "0px 2px 4px 0px hsla(0, 0%, 0%, 0.25)",
+  overflow: "hidden",
 });
 
 export const StyledAccordionTrigger = styled(Expandable.Trigger, {

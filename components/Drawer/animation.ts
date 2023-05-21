@@ -1,13 +1,13 @@
 import gsap from "gsap";
 
-export const GSAPAnimation = (ref: HTMLElement, isDrawerOpen: boolean) => {
-  const tweenOpts: gsap.TweenVars = {
-    ease: "power3.out",
-    delay: 0.1,
-    transformOrigin: "right",
-  };
+const tweenOpts: gsap.TweenVars = {
+  ease: "power3.out",
+  delay: 0.1,
+  transformOrigin: "right",
+};
 
-  if (isDrawerOpen)
+export const AnimationDrawer = (ref: HTMLElement, isOpen: boolean) => {
+  if (isOpen)
     return gsap.fromTo(
       ref,
 
@@ -16,4 +16,9 @@ export const GSAPAnimation = (ref: HTMLElement, isDrawerOpen: boolean) => {
     );
 
   return gsap.to(ref, { x: "100%", ...tweenOpts });
+};
+
+export const AnimationOverlay = (ref: HTMLElement, isOpen: boolean) => {
+  if (isOpen) return gsap.fromTo(ref, { opacity: 0 }, { opacity: 1 });
+  return gsap.to(ref, { opacity: 0 });
 };

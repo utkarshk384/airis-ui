@@ -4,10 +4,11 @@ import {
 } from "@heroicons/react/20/solid";
 
 /* Components */
-import { Accordion, Drawer, Button, Text } from "@components";
+import { FooterComponent } from "@layouts/shared";
+import { Accordion, Drawer, Button, Text, RichTextEditor } from "@components";
+
+/* Types */
 import { AccordionItemType } from "@components/Accordion/types";
-import { useMemo } from "react";
-import { FooterComponent } from "./shared";
 
 type DrawerProps = {
   open: boolean;
@@ -45,7 +46,7 @@ export const TechnicalNotesDrawer: React.FC<DrawerProps> = (props) => {
             </Accordion.Multiple>
           </div>
           <Footer>
-            <FooterComponent />
+            <FooterComponent onCancel={() => setOpen(false)} />
           </Footer>
         </>
       )}
@@ -57,7 +58,7 @@ const TechnicalNotesItem: React.FC<TechnicalNotesItemProps> = ({ Item }) => {
   return (
     <Item value="tes-1">
       <Item.Trigger>
-        <div className="flex justify-between w-full">
+        <div className="flex items-center justify-between w-full">
           <Text size="base">Item One</Text>
           <div className="flex items-center">
             <Text size="base">02-02-2023 09:30</Text>
@@ -68,8 +69,7 @@ const TechnicalNotesItem: React.FC<TechnicalNotesItemProps> = ({ Item }) => {
         </div>
       </Item.Trigger>
       <Item.Content>
-        Test content. Test contentTest contentTest contentTest contentTest
-        contentTest contentTest contentTest content
+        <RichTextEditor height="15rem" />
       </Item.Content>
     </Item>
   );

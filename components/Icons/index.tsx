@@ -1,7 +1,7 @@
 import React from "react";
 
 /* Types */
-import type { IconWithBgProps, BaseProps } from "./types";
+import type { IconWithBgProps, BaseIconProps as BaseProps } from "./types";
 
 export const UserIcon: React.FC<IconWithBgProps> = (props) => {
   const { bgColor, iconFill, ...rest } = props;

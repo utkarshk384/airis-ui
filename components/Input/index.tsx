@@ -35,9 +35,9 @@ export const Input: React.FC<Props> = (props) => {
   const error = useMemo(() => meta.error || "", [meta.error]);
 
   return (
-    <fieldset className="flex gap-2">
+    <fieldset className="flex gap-2 items-center">
       {label && (
-        <label htmlFor={field.name}>
+        <label className="-translate-y-1" htmlFor={field.name}>
           <Text>{label}</Text>
         </label>
       )}

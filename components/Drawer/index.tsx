@@ -9,7 +9,7 @@ import { Heading } from "@components/Typography";
 import { StyledContent, StyledOverlay, StyledDrawerHeader } from "./styled";
 
 /* Animations */
-import { GSAPAnimation } from "./animation";
+import { AnimationDrawer, AnimationOverlay } from "./animation";
 
 /* Types */
 import type {
@@ -34,6 +34,8 @@ type Props = {
 
 export const Drawer: React.FC<Props> = (props) => {
   const { children, TriggerComponent, size = "small", ...rest } = props;
+
+  const overlayRef = useRef<HTMLDivElement>(null);
   return (
     <Dialog.Root {...rest}>
       {TriggerComponent && (
@@ -41,7 +43,18 @@ export const Drawer: React.FC<Props> = (props) => {
           <TriggerComponent />
         </Dialog.Trigger>
       )}
-      <StyledOverlay />
+      <Transition
+        in={rest.open}
+        unmountOnExit
+        mountOnEnter
+        nodeRef={overlayRef}
+        timeout={500}
+        addEndListener={(done) => {
+          AnimationOverlay(overlayRef.current!, rest.open).then(() => done());
+        }}
+      >
+        <StyledOverlay forceMount ref={overlayRef} />
+      </Transition>
       <Content size={size} open={rest.open}>
         {children}
       </Content>
@@ -61,7 +74,7 @@ const Content: React.FC<SharedProps> = (props) => {
       nodeRef={domRef}
       timeout={500}
       addEndListener={(done) => {
-        GSAPAnimation(domRef.current!, open).then(() => done());
+        AnimationDrawer(domRef.current!, open).then(() => done());
       }}
     >
       <StyledContent size={size} ref={domRef} forceMount>
@@ -77,7 +90,7 @@ const DrawerHeader: React.FC<DrawerHeaderProps> = (props) => {
   const { title } = props;
   return (
     <StyledDrawerHeader>
-      <Heading color="white" weight="400" as="h3">
+      <Heading color="white" size="2xl" weight="400" as="h3">
         {title}
       </Heading>
       <Button as={Dialog.Close} variant="solid" iconButton>

@@ -2,8 +2,8 @@ import React, { useMemo } from "react";
 
 /* Components */
 import { COLUMNS } from "./cols";
+import { Table } from "@components";
 import { DropdownContent } from "./filters";
-import { Table, RichTextEditor } from "@components";
 
 import MOCK_DATA from "./MOCK_DATA.json";
 
@@ -28,9 +28,6 @@ export const PatientsTab: React.FC<Props> = (props) => {
         rows={rows}
         title="Patients"
       />
-      <div className="my-64"></div>
-      <RichTextEditor height="15rem" scrollable />
-      <div className="my-64"></div>
     </div>
   );
 };

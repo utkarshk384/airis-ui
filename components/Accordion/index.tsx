@@ -6,7 +6,10 @@ import { StyledAccordionItem } from "./styled";
 import { AccordionContent, AccordionTrigger } from "./components";
 
 /* Types */
-import type { BaseProps, AccordionItemType } from "./types";
+import type {
+  AccordionItemType,
+  BaseAccordionProps as BaseProps,
+} from "./types";
 
 export type SingleProps = BaseProps<string>;
 export type MultipleProps = BaseProps<string[]>;

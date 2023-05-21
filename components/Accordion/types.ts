@@ -1,4 +1,4 @@
-export type BaseProps<T = string> = {
+export type BaseAccordionProps<T = string> = {
   children?: (Item: AccordionItemType) => React.ReactNode;
   value?: T;
   onValueChange?: (value: T) => void;
