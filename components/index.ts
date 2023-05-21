@@ -12,3 +12,4 @@ export * from "./Datepicker";
 export * from "./Toast";
 export * from "./Drawer";
 export * from "./Accordion";
+export * from "./RichTextEditor";
