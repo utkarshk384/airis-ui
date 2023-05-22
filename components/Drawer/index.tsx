@@ -90,7 +90,7 @@ const DrawerHeader: React.FC<DrawerHeaderProps> = (props) => {
   const { title } = props;
   return (
     <StyledDrawerHeader>
-      <Heading color="white" size="2xl" weight="400" as="h3">
+      <Heading color="white" size="xl" weight="400" as="h3">
         {title}
       </Heading>
       <Button as={Dialog.Close} variant="solid" iconButton>

@@ -78,7 +78,7 @@ export const LoginForm: React.FC = (props) => {
       onSubmit={onSubmit}
     >
       {({ handleSubmit }) => (
-        <form className="flex flex-col items-center gap-4 w-full">
+        <form className="flex flex-col items-center gap-4 w-3/5">
           <Input
             variant="underlined"
             placeholder="Username"

@@ -2,6 +2,7 @@ import { useField } from "formik";
 import React, { ChangeEventHandler, useMemo } from "react";
 
 /* Components */
+import { Label } from "@components/shared";
 import { Text } from "@components/Typography";
 
 /* Styled */
@@ -14,6 +15,7 @@ type Props = {
   label?: string;
   placeholder?: string;
   className?: string;
+  wrapperClassName?: string;
   variant?: "underlined" | "filled";
   errorBeforeTouch?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
@@ -28,6 +30,7 @@ export const Input: React.FC<Props> = (props) => {
     label,
     variant,
     errorBeforeTouch = false,
+    wrapperClassName,
     ...rest
   } = DefaultProps(props);
 
@@ -35,13 +38,13 @@ export const Input: React.FC<Props> = (props) => {
   const error = useMemo(() => meta.error || "", [meta.error]);
 
   return (
-    <fieldset className="flex gap-2 items-center">
-      {label && (
-        <label className="-translate-y-1" htmlFor={field.name}>
-          <Text>{label}</Text>
-        </label>
-      )}
-      <div className="flex flex-col gap-2 w-full">
+    <fieldset
+      className={`grid ${
+        label ? "grid-cols-[1fr_2fr]" : "grid-cols-1"
+      } gap-2 items-center w-full ${wrapperClassName}`}
+    >
+      <Label label={label} htmlFor={field.name} />
+      <div className="flex flex-col gap-2">
         <StyledInput variant={variant} {...field} {...rest} />
 
         <Text className="!text-red-500">
@@ -72,6 +75,8 @@ export const RawInput: React.FC<RawInputProps> = (props) => {
 const DefaultProps = (props: Props) => {
   const defaultProps: Props = {
     ...props,
+    wrapperClassName: props.wrapperClassName || "",
+    className: props.className || "",
     type: props.type || "text",
   };
 

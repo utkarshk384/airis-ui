@@ -4,7 +4,7 @@ import {
 } from "@heroicons/react/20/solid";
 
 /* Components */
-import { FooterComponent } from "@layouts/shared";
+import { FooterComponent } from "@layouts/shared/footer";
 import { Accordion, Drawer, Button, Text, RichTextEditor } from "@components";
 
 /* Types */
