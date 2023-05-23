@@ -9,7 +9,6 @@ export const DropdownContent = styled(DropdownMenu.Content, {
   height: "fit-content",
   boxShadow: "0 1px 6px 0 rgba(0, 0, 0, 0.2)",
   border: "1px solid rgba(0, 0, 0, 0.1)",
-  paddingBlock: "1.25rem",
   "--content-padding": "1rem",
 });
 
@@ -34,11 +33,10 @@ const MenuItemStyles = {
   color: "$black",
   border: "none",
   padding: "0.65rem var(--content-padding)",
-  borderRadius: "4px",
   cursor: "pointer",
   userSelect: "none",
   "&:hover": {
-    backgroundColor: "rgba($rgbAccent, 0.25)",
+    background: "rgb(0 0 0 / 10%)",
     outline: "none",
   },
 };
@@ -47,6 +45,7 @@ export const DropdownItem = styled(DropdownMenu.Item, MenuItemStyles);
 export const CheckboxItem = styled("div", {
   ...MenuItemStyles,
   padding: 0,
+  borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
 });
 
 export const DropdownItemGroup = styled(DropdownMenu.Group, {

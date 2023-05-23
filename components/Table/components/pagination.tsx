@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 /* Components */
-import { Select } from "@components/Select";
+import { Select } from "@components/Select/Select";
 import { Button } from "@components/Button";
 import { Text } from "@components/Typography";
 

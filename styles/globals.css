@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
 * {
     box-sizing: border-box;
     line-height: 1.5;

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Select } from "@components/Select";
+import { Select } from "@components/Select/Select";
 
 /* Types */
 import type { DropdownOption } from "@components/sharedTypes";

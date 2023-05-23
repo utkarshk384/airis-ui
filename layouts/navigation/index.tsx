@@ -51,7 +51,7 @@ export const NavigationBar: React.FC<Props> = (props) => {
 };
 
 const DropdownContent = (Dropdown: MenuType) => (
-  <>
+  <div className="py-2">
     <Dropdown.Label>Dr. John</Dropdown.Label>
     <Dropdown.Separator />
     {/* <Dropdown.Item className="flex items-center gap-4">
@@ -62,7 +62,7 @@ const DropdownContent = (Dropdown: MenuType) => (
       <LogoutIcon stroke="currentColor" />
       Logout
     </Dropdown.Item>
-  </>
+  </div>
 );
 
 const NavigationItem: React.FC<NavigationItemProps> = (props) => {

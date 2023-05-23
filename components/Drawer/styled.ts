@@ -14,6 +14,9 @@ export const StyledDrawerHeader = styled("header", {
   padding: "1rem 2rem",
   backgroundColor: "$primary",
   color: "$white",
+  zIndex: 10,
+  position: "sticky",
+  top: 0,
 });
 
 export const StyledOverlay = styled(Dialog.Overlay, {
@@ -36,6 +39,7 @@ export const StyledContent = styled(Dialog.Content, {
   width: "40vw",
   height: "100vh",
   zIndex: 9,
+  overflowY: "scroll",
 
   "&:focus": { outline: "none" },
 

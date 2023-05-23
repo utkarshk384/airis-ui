@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
+import React from "react";
 import SelectComponent from "react-select";
 
 /* Components */
-import { ComponentCSS } from "./styled";
+import { ComponentCSS } from "../styled";
 
 /* Types */
 import type { ActionMeta } from "react-select";

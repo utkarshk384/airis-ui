@@ -10,7 +10,7 @@ export const Label: React.FC<LabelProps> = (props) => {
   return (
     <>
       {label && (
-        <label className="-translate-y-1" htmlFor={htmlFor}>
+        <label className="justify-self-end" htmlFor={htmlFor}>
           <Text size="base">{label}</Text>
         </label>
       )}

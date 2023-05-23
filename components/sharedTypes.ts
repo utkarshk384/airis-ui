@@ -1,4 +1,4 @@
-export type DropdownOption = {
+export type DropdownOption<T = any> = {
   label: string;
-  value: any;
+  value: T;
 };

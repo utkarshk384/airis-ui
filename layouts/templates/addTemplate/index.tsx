@@ -15,6 +15,7 @@ import {
   RadioGroup,
 } from "@components";
 import { Formik } from "formik";
+import { MultiSelect } from "@components/Select";
 
 type DrawerProps = {
   open: boolean;
@@ -86,10 +87,35 @@ const Content: React.FC<ContentProps> = (props) => {
                 { label: "Private", value: "private" },
               ]}
             />
-            <div></div>
+            <MultiSelect
+              name="tags"
+              options={[
+                {
+                  label: "Abdomen",
+                  value: "abdomen",
+                },
+                {
+                  label: "Abdomen1",
+                  value: "abdomen1",
+                },
+                {
+                  label: "Abdomen2",
+                  value: "abdomen2",
+                },
+                {
+                  label: "Abdomen3",
+                  value: "abdomen3",
+                },
+                {
+                  label: "Abdomen4",
+                  value: "abdomen4",
+                },
+              ]}
+              label="Tags:"
+            />
           </div>
           <div className="p-4 h-full flex justify-stretch w-full flex-col">
-            <RichTextEditor height="40vh" />
+            <RichTextEditor height="70vh" />
           </div>
         </div>
       )}

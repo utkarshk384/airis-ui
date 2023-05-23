@@ -39,9 +39,9 @@ export const Input: React.FC<Props> = (props) => {
 
   return (
     <fieldset
-      className={`grid ${
-        label ? "grid-cols-[1fr_2fr]" : "grid-cols-1"
-      } gap-2 items-center w-full ${wrapperClassName}`}
+      className={`fieldset-grid ${
+        label ? "fieldset-label" : "fieldset-no-label"
+      } ${wrapperClassName}`}
     >
       <Label label={label} htmlFor={field.name} />
       <div className="flex flex-col gap-2">

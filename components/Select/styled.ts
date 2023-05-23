@@ -19,7 +19,11 @@ export const ComponentCSS = css({
     color: "$grey",
   },
 
-  ".react-select__indicators": {},
+  ".react-select__indicators": {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.05rem",
+  },
   ".react-select__menu": {
     background: "white",
     borderRadius: "var(--radius)",
@@ -31,9 +35,29 @@ export const ComponentCSS = css({
   ".react-select__option": {
     padding: "0.5rem 1rem",
     transition: "all 250ms ease-in-out",
-    borderBottom: "1px solid $grey",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
     "&:hover": {
       background: "rgb(0 0 0 / 10%)",
     },
   },
+
+  /* Multiselect */
+  ".react-select__multi-value": {
+    background: "$secondary",
+    color: "$white",
+    padding: "0.25rem 0.5rem",
+    borderRadius: "8px",
+  },
+  ".react-select__multi-value__label": {
+    fontSize: "$sm",
+  },
+  ".react-select__multi-value__remove > svg": {
+    width: "1rem",
+    height: "1rem",
+  },
+  ".react-select__value-container.react-select__value-container--is-multi.react-select__value-container--has-value":
+    {
+      display: "flex",
+      gap: "0.35rem",
+    },
 });

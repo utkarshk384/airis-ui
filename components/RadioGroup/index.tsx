@@ -39,8 +39,12 @@ export const RadioGroup: React.FC<Props> = (props) => {
   };
 
   return (
-    <div className="grid grid-cols-[1fr_2fr] items-center w-full">
-      <Label label={mainProps.label} />
+    <div
+      className={`fieldset-grid ${
+        mainProps.label ? "fieldset-label" : "fieldset-no-label"
+      }`}
+    >
+      {mainProps.label && <Label label={mainProps.label} />}
       <StyledContainer itemFlow={mainProps.orientation}>
         {mainProps.variant === "button" &&
           mainProps.items.map((item, i) => (

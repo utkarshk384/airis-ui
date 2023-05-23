@@ -20,6 +20,7 @@ module.exports = {
   },
   plugins: [
     require("./plugins/container.js"),
+    require("./plugins/customUtils.js"),
     require("./plugins/scopedPreflight.js"),
   ],
 };
