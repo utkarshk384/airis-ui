@@ -115,7 +115,7 @@ const Content: React.FC<ContentProps> = (props) => {
             />
           </div>
           <div className="p-4 h-full flex justify-stretch w-full flex-col">
-            <RichTextEditor height="70vh" />
+            <RichTextEditor height="50vh" />
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import SelectComponent from "react-select";
 
 /* Components */
@@ -8,25 +8,16 @@ import { Label } from "@components/shared";
 /* Types */
 import type { ActionMeta, MultiValue } from "react-select";
 import type { DropdownOption } from "@components/sharedTypes";
-
-type SelectProps = React.ComponentProps<typeof SelectComponent>;
+import type { SelectSharedProps } from "../types";
 
 type Props = {
-  children?: React.ReactNode;
-  placeholder?: string;
-  width?: string;
-  label?: string;
   name: string;
-  containerClassName?: string;
   onChange?: (
     value: MultiValue<DropdownOption>,
     action: ActionMeta<DropdownOption>
   ) => void;
   defaultValue?: DropdownOption[];
-  menuPlacement?: SelectProps["menuPlacement"];
-  maxMenuHeight?: SelectProps["maxMenuHeight"];
-  options: DropdownOption[];
-};
+} & SelectSharedProps;
 
 export const MultiSelect: React.FC<Props> = (props) => {
   const { containerClassName, label, width, ...rest } = DefaultProps(props);

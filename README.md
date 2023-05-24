@@ -47,3 +47,12 @@ This will create three new files in the `src/api` folder.
 3. Finally, the last is the types file which will contain the types for the API.
 
 NOTE: It is preferrable to use small case for the `API_NAME` while using the command. The text case will be automatically be handled.
+
+## Steps to deploy
+
+NOTE: These are the steps to deploy is only applicable if the project is being deployed directly on a server with no intermediatery like what Vercel / Netlify does. The application runs on port `3000` by default.
+
+1. Install all the depedenices using `yarn install` or `npm install` or `pnpm install`.
+2. Rename the `.env.example` file to `.env` and fill in the required values.
+3. Run `yarn build` or `npm run build` or `pnpm build` to build the project.
+4. Run `yarn start` or `npm run start` or `pnpm start` to start the project.

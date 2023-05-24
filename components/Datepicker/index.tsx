@@ -85,7 +85,7 @@ export const Datepicker: React.FC<ExampleProps> = ({
       // onRangeChange={onRangeValueChange}
     >
       <Styled.MonthsLayout>
-        <Styled.MonthButton
+        {/* <Styled.MonthButton
           css={{ gridArea: "prevMonth" }}
           onClick={() => {
             setViewInfo((v) => ({ ...v, month: v.month - 1 }));
@@ -100,7 +100,7 @@ export const Datepicker: React.FC<ExampleProps> = ({
           }}
         >
           &gt;
-        </Styled.MonthButton>
+        </Styled.MonthButton> */}
         <Styled.MonthLabel css={{ gridArea: "leftMonth" }}>
           {monthLabel}
         </Styled.MonthLabel>

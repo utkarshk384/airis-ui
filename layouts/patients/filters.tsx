@@ -36,6 +36,7 @@ export const DropdownContent: React.FC<FilterComponentProps> = (props) => {
     <div className="flex flex-col w-full px-4">
       <Dropdown.Label>Status</Dropdown.Label>
       <Select
+        name="status"
         options={statusOption}
         onChange={(val) =>
           setFilter("status", val.value === "All" ? "" : val.value)

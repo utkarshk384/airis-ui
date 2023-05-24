@@ -7,49 +7,51 @@ import { ComponentCSS } from "../styled";
 /* Types */
 import type { ActionMeta } from "react-select";
 import type { DropdownOption } from "@components/sharedTypes";
+import type { SelectSharedProps } from "../types";
+import { Label } from "@components/shared";
 
 type SelectProps = React.ComponentProps<typeof SelectComponent>;
 
 type Props = {
-  children?: React.ReactNode;
-  placeholder?: string;
-  width?: string;
-  containerClassName?: string;
   onChange?: (
     value: DropdownOption,
     action: ActionMeta<DropdownOption>
   ) => void;
   defaultValue?: SelectProps["defaultValue"];
-  menuPlacement?: SelectProps["menuPlacement"];
-  maxMenuHeight?: SelectProps["maxMenuHeight"];
-  options: DropdownOption[];
-};
+} & SelectSharedProps;
 
 export const Select: React.FC<Props> = (props) => {
-  const { containerClassName, width, ...rest } = DefaultProps(props);
+  const { containerClassName, width, label, ...rest } = DefaultProps(props);
 
   if (!rest.options) throw new Error("Options is required");
 
   return (
-    <SelectComponent
-      {...rest}
-      onChange={(value, action) => {
-        rest?.onChange?.(
-          value as DropdownOption,
-          action as ActionMeta<DropdownOption>
-        );
-      }}
-      className={`${ComponentCSS({ css: { width } })} ${containerClassName}`}
-      classNamePrefix="react-select"
-      unstyled
-      styles={{
-        indicatorsContainer(_, props) {
-          return {
-            color: props.hasValue ? "black" : "var(--grey-color)",
-          };
-        },
-      }}
-    />
+    <fieldset
+      className={`fieldset-grid ${
+        label ? "fieldset-label" : "fieldset-no-label"
+      }`}
+    >
+      {label && <Label htmlFor={rest.name} label={label} />}
+      <SelectComponent
+        {...rest}
+        onChange={(value, action) => {
+          rest?.onChange?.(
+            value as DropdownOption,
+            action as ActionMeta<DropdownOption>
+          );
+        }}
+        className={`${ComponentCSS({ css: { width } })} ${containerClassName}`}
+        classNamePrefix="react-select"
+        unstyled
+        styles={{
+          indicatorsContainer(_, props) {
+            return {
+              color: props.hasValue ? "black" : "var(--grey-color)",
+            };
+          },
+        }}
+      />
+    </fieldset>
   );
 };
 

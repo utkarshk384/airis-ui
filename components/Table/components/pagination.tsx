@@ -57,6 +57,7 @@ export const Pagination: React.FC<Props> = (props) => {
       <div className="w-full flex justify-self-start items-center gap-2">
         <Text className="!w-fit">Rows per page:</Text>
         <Select
+          name="page-size"
           defaultValue={defaultValue}
           onChange={(val) => setPageSize(Number(val.value))}
           placeholder="Select rows per page"
