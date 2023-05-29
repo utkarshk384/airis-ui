@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 /* Components */
-import { Select } from "@components/Select/Select";
+import { Select } from "@components/Searchbar/Select/Select";
 import { Button } from "@components/Button";
 import { Text } from "@components/Typography";
 
@@ -54,14 +54,15 @@ export const Pagination: React.FC<Props> = (props) => {
 
   return (
     <div className="grid w-full grid-cols-3 justify-items-center">
-      <div className="w-full flex justify-self-start items-center gap-2">
-        <Text className="!w-fit">Rows per page:</Text>
+      <div className="flex justify-self-start items-center gap-2">
         <Select
+          label="Rows per page: "
           name="page-size"
           defaultValue={defaultValue}
           onChange={(val) => setPageSize(Number(val.value))}
           placeholder="Select rows per page"
           options={ROW_OPTIONS}
+          labelClassName="!justify-self-start"
           containerClassName="!w-fit min-w-[20rem]"
         />
       </div>

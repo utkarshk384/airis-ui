@@ -13,9 +13,10 @@ import {
   RichTextEditor,
   Input,
   RadioGroup,
+  SearhableDropdown,
 } from "@components";
 import { Formik } from "formik";
-import { MultiSelect } from "@components/Select";
+import { MultiSelect } from "@components/Searchbar/Select";
 
 type DrawerProps = {
   open: boolean;
@@ -65,11 +66,32 @@ const Content: React.FC<ContentProps> = (props) => {
               label="Radiologist / Author:"
               variant="filled"
             />
-            <Input
+            <SearhableDropdown
               name="modaility"
               placeholder="eg: CT Scan"
               label="Modaility:"
-              variant="filled"
+              options={[
+                {
+                  label: "Abdomen",
+                  value: "abdomen",
+                },
+                {
+                  label: "Abdomen1",
+                  value: "abdomen1",
+                },
+                {
+                  label: "Abdomen2",
+                  value: "abdomen2",
+                },
+                {
+                  label: "Abdomen3",
+                  value: "abdomen3",
+                },
+                {
+                  label: "Abdomen4",
+                  value: "abdomen4",
+                },
+              ]}
             />
             <Input
               name="exam"
@@ -88,6 +110,7 @@ const Content: React.FC<ContentProps> = (props) => {
               ]}
             />
             <MultiSelect
+              placeholder="Select tags..."
               name="tags"
               options={[
                 {

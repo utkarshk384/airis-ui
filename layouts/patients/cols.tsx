@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Column } from "react-table";
 
 /* Components */
@@ -13,6 +13,7 @@ import {
 
 /* Types */
 import type { Patient } from "./type";
+import { useRouter } from "next/router";
 
 export const COLUMNS: Column[] = [
   {
@@ -29,6 +30,21 @@ export const COLUMNS: Column[] = [
     Header: "Acc No",
     accessor: "acc_no",
     disableFilters: true,
+    Cell: (props) => {
+      const row = props.row.original as Patient;
+
+      const router = useRouter();
+
+      const handleClick = useCallback(() => {
+        router.push(`/patients/${row.acc_no}`);
+      }, [router, row.acc_no]);
+
+      return (
+        <Button as="a" variant="link" className="p-0" onClick={handleClick}>
+          {row.acc_no}
+        </Button>
+      );
+    },
   },
   {
     Header: "Age(years)",

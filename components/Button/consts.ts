@@ -36,7 +36,7 @@ export const BUTTON_VARIANTS = {
     color: "var(--support)",
     border: "1px solid transparent",
 
-    "&:disabled": {
+    '&[data-state="disabled"]': {
       backgroundColor: "$disabled",
       "&:is(p, span)": {
         color: "#000000 !important",
@@ -56,7 +56,7 @@ export const BUTTON_VARIANTS = {
     color: "var(--main)",
     border: "1px solid var(--main)",
 
-    "&:disabled": {
+    '&[data-state="disabled"]': {
       borderColor: "$disabled",
       color: "$disabled",
       "&:hover": {
@@ -74,7 +74,7 @@ export const BUTTON_VARIANTS = {
     backgroundColor: "transparent",
     color: "var(--main)",
 
-    "&:disabled": {
+    '&[data-state="disabled"]': {
       color: "$disabled",
     },
   },
@@ -82,7 +82,7 @@ export const BUTTON_VARIANTS = {
     backgroundColor: "transparent",
     color: "$grey",
 
-    "&:disabled": {
+    '&[data-state="disabled"]': {
       color: "$disabled",
       "&:hover": {
         color: "$disabled",
@@ -97,7 +97,7 @@ export const BUTTON_VARIANTS = {
     backgroundColor: "transparent",
     color: "var(--main)",
     textDecoration: "underline",
-    "&:disabled": {
+    '&[data-state="disabled"]': {
       color: "$disabled",
     },
   },

@@ -18,10 +18,12 @@ type Props = {
     action: ActionMeta<DropdownOption>
   ) => void;
   defaultValue?: SelectProps["defaultValue"];
+  labelClassName?: string;
 } & SelectSharedProps;
 
 export const Select: React.FC<Props> = (props) => {
-  const { containerClassName, width, label, ...rest } = DefaultProps(props);
+  const { containerClassName, width, label, labelClassName, ...rest } =
+    DefaultProps(props);
 
   if (!rest.options) throw new Error("Options is required");
 
@@ -31,7 +33,13 @@ export const Select: React.FC<Props> = (props) => {
         label ? "fieldset-label" : "fieldset-no-label"
       }`}
     >
-      {label && <Label htmlFor={rest.name} label={label} />}
+      {label && (
+        <Label
+          htmlFor={rest.name}
+          label={label}
+          labelClassName={labelClassName}
+        />
+      )}
       <SelectComponent
         {...rest}
         onChange={(value, action) => {
@@ -58,6 +66,7 @@ export const Select: React.FC<Props> = (props) => {
 const DefaultProps = (props: Props) => {
   const defaultProps = {
     ...props,
+    labelClassName: props.labelClassName || "",
     placeholder: props.placeholder || "",
     width: props.width || "100%",
     containerClassName: props.containerClassName || "",

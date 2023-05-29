@@ -15,11 +15,12 @@ export const Button: ButtonComponent = (props) => {
     leftIcon: LeftIcon,
     rightIcon: RightIcon,
     typographyProps,
+    isLoading,
     ...rest
   } = DefaultProps(props);
 
   return (
-    <StyledButton {...rest}>
+    <StyledButton {...rest} data-state={rest.disabled ? "disabled" : "active"}>
       {LeftIcon && <LeftIcon />}
       {typographyProps ? (
         <Text {...typographyProps}>{children}</Text>
@@ -27,6 +28,7 @@ export const Button: ButtonComponent = (props) => {
         children
       )}
       {RightIcon && <RightIcon />}
+      {isLoading && <Spinner />}
     </StyledButton>
   );
 };
@@ -43,4 +45,16 @@ const DefaultProps = (props: Props) => {
   };
 
   return defaultProps;
+};
+
+const Spinner: React.FC<Props> = (props) => {
+  const {} = props;
+  return (
+    <div>
+      <div
+        style={{ borderTopColor: "transparent" }}
+        className="-mt-1 ml-2 w-4 h-4 border-2 border-white border-solid rounded-full animate-spin"
+      ></div>
+    </div>
+  );
 };

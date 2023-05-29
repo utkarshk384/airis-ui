@@ -16,6 +16,7 @@ export type { ButtonSizes, ButtonVariants, CompoundVariant };
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export type Props = {
+  isLoading?: boolean;
   children?: React.ReactNode;
   leftIcon?: React.FC;
   rightIcon?: React.FC;

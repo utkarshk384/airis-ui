@@ -11,10 +11,19 @@ import { queryClient } from "@src/queryClient";
 
 /* Components */
 import { defaultOptions } from "@components";
+import { RouteGuard } from "@components/RouteGuard";
 
 /* Types */
+import type { NextPage } from "next";
 import type { AppProps } from "next/app";
-import { RouteGuard } from "@components/RouteGuard";
+
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: React.ReactElement) => React.ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,15 +31,16 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const defaultToastOpts = useMemo(() => defaultOptions, []);
+
+  /* Get available layouts */
+  const getLayout = Component.getLayout || ((page) => page);
 
   return (
     <QueryClientProvider client={queryClient}>
       <main className={inter.variable}>
-        <RouteGuard>
-          <Component {...pageProps} />;
-        </RouteGuard>
+        <RouteGuard>{getLayout(<Component {...pageProps} />)}</RouteGuard>
       </main>
       <Toaster toastOptions={defaultToastOpts} />
     </QueryClientProvider>

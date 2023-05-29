@@ -21,6 +21,11 @@ type NavigationItemProps = {
   route: Routes;
 };
 
+const isRootPath = (path: string) => {
+  const split = path.split("/");
+  return split.length === 1;
+};
+
 export const NavigationBar: React.FC<Props> = (props) => {
   const {} = props;
 
@@ -29,6 +34,7 @@ export const NavigationBar: React.FC<Props> = (props) => {
   const route = useNavigationStore((s) => s.route);
 
   useEffect(() => {
+    if (!isRootPath(router.asPath)) return;
     const { tab } = router.query;
     if (!tab) router.push("/", `/?tab=${route}`, { shallow: true });
 
@@ -36,7 +42,7 @@ export const NavigationBar: React.FC<Props> = (props) => {
   }, []);
 
   return (
-    <NavigationContainer className="container">
+    <NavigationContainer className="container bg-slate-100">
       <div className="flex gap-4">
         <Logo alt="Rxmed Logo" width={140} height={52} />
         <NavigationItem route="patients" text="Patients" />

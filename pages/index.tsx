@@ -1,8 +1,8 @@
 import React from "react";
 
 /* Layouts */
+import { AppLayout } from "@layouts/layout";
 import { PatientsTab } from "@layouts/patients";
-import { NavigationBar } from "@layouts/navigation";
 
 /* Stores */
 import { useNavigationStore } from "@stores/navigation";
@@ -12,21 +12,27 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const DashboardPage: React.FC<Props> = (props) => {
+type Page = React.FC<Props> & {
+  getLayout: (page: React.ReactNode) => React.ReactNode;
+};
+
+const DashboardPage: Page = (props) => {
   const {} = props;
 
   const route = useNavigationStore((s) => s.route);
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div>
-      <NavigationBar />
-      <div className="my-10" />
+    <>
       {route === "patients" && <PatientsTab />}
       <button onClick={() => setOpen(true)}>Click</button>
       <AddTemplate open={open} setOpen={setOpen} />
-    </div>
+    </>
   );
+};
+
+DashboardPage.getLayout = (page) => {
+  return <AppLayout>{page}</AppLayout>;
 };
 
 export default DashboardPage;

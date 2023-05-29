@@ -27,7 +27,7 @@ const validationSchema = yup.object().shape({
 
 export const LoginForm: React.FC = (props) => {
   const {
-    LoginMutation: { mutate },
+    LoginMutation: { mutate, isLoading },
     IPQuery,
   } = useLogin();
 
@@ -93,6 +93,7 @@ export const LoginForm: React.FC = (props) => {
           />
 
           <Button
+            isLoading={isLoading}
             variant="solid"
             typographyProps={{
               weight: "500",
