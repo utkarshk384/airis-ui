@@ -3,27 +3,21 @@ import SelectComponent from "react-select";
 
 /* Components */
 import { ComponentCSS } from "../styled";
-
-/* Types */
-import type { ActionMeta } from "react-select";
-import type { DropdownOption } from "@components/sharedTypes";
-import type { SelectSharedProps } from "../types";
 import { Label } from "@components/shared";
 
-type SelectProps = React.ComponentProps<typeof SelectComponent>;
+/* Types */
+import type { ActionMeta, MultiValue } from "react-select";
+import type { DropdownOption } from "@components/sharedTypes";
+import type { SelectSharedProps } from "../types";
 
 type Props = {
-  onChange?: (
-    value: DropdownOption,
-    action: ActionMeta<DropdownOption>
-  ) => void;
-  defaultValue?: SelectProps["defaultValue"];
-  labelClassName?: string;
+  name: string;
+  onChange?: (value: MultiValue<DropdownOption>) => void;
+  defaultValue?: DropdownOption[];
 } & SelectSharedProps;
 
-export const Select: React.FC<Props> = (props) => {
-  const { containerClassName, width, label, labelClassName, ...rest } =
-    DefaultProps(props);
+export const MultiSelect: React.FC<Props> = (props) => {
+  const { containerClassName, label, width, ...rest } = DefaultProps(props);
 
   if (!rest.options) throw new Error("Options is required");
 
@@ -33,24 +27,20 @@ export const Select: React.FC<Props> = (props) => {
         label ? "fieldset-label" : "fieldset-no-label"
       }`}
     >
-      {label && (
-        <Label
-          htmlFor={rest.name}
-          label={label}
-          labelClassName={labelClassName}
-        />
-      )}
+      {label && <Label htmlFor={rest.name} label={label} />}
       <SelectComponent
         {...rest}
         onChange={(value, action) => {
           rest?.onChange?.(
-            value as DropdownOption,
+            value as MultiValue<DropdownOption>,
             action as ActionMeta<DropdownOption>
           );
         }}
         className={`${ComponentCSS({ css: { width } })} ${containerClassName}`}
         classNamePrefix="react-select"
         unstyled
+        isMulti
+        closeMenuOnSelect={false}
         styles={{
           indicatorsContainer(_, props) {
             return {
@@ -66,7 +56,6 @@ export const Select: React.FC<Props> = (props) => {
 const DefaultProps = (props: Props) => {
   const defaultProps = {
     ...props,
-    labelClassName: props.labelClassName || "",
     placeholder: props.placeholder || "",
     width: props.width || "100%",
     containerClassName: props.containerClassName || "",

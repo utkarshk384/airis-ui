@@ -14,4 +14,4 @@ export * from "./Drawer";
 export * from "./Accordion";
 export * from "./RichTextEditor";
 export * from "./RadioGroup";
-export * from "./SearchableDropdown";
+export * from "./Select";

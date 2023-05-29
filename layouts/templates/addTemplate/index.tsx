@@ -5,18 +5,9 @@ import {
 
 /* Components */
 import { FooterComponent } from "@layouts/shared/footer";
-import {
-  Accordion,
-  Drawer,
-  Button,
-  Text,
-  RichTextEditor,
-  Input,
-  RadioGroup,
-  SearhableDropdown,
-} from "@components";
+import { Drawer, RichTextEditor, Input, Select, RadioGroup } from "@components";
 import { Formik } from "formik";
-import { MultiSelect } from "@components/Searchbar/Select";
+import { MultiSelect } from "@components/Select";
 
 type DrawerProps = {
   open: boolean;
@@ -66,10 +57,11 @@ const Content: React.FC<ContentProps> = (props) => {
               label="Radiologist / Author:"
               variant="filled"
             />
-            <SearhableDropdown
+            <Select
               name="modaility"
               placeholder="eg: CT Scan"
               label="Modaility:"
+              isSearchable
               options={[
                 {
                   label: "Abdomen",

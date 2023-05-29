@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 /* Components */
-import { Select } from "@components/Searchbar/Select/Select";
+import { Select } from "@components/Select/Select";
 import { Button } from "@components/Button";
 import { Text } from "@components/Typography";
 
@@ -62,6 +62,7 @@ export const Pagination: React.FC<Props> = (props) => {
           onChange={(val) => setPageSize(Number(val.value))}
           placeholder="Select rows per page"
           options={ROW_OPTIONS}
+          menuPlacement="top"
           labelClassName="!justify-self-start"
           containerClassName="!w-fit min-w-[20rem]"
         />

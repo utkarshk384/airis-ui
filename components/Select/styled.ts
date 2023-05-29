@@ -1,4 +1,4 @@
-import { css } from "@/styles/stitches";
+import { css, styled } from "@/styles/stitches";
 
 export const ComponentCSS = css({
   "--radius": "0.5rem",
@@ -60,4 +60,72 @@ export const ComponentCSS = css({
       display: "flex",
       gap: "0.35rem",
     },
+});
+
+export const StyledValueContainer = styled("div", {
+  display: "flex",
+  border: "1px solid $grey",
+  borderRadius: "8px",
+  padding: "0 0.5rem 0 1rem",
+});
+
+export const StyledSearchBar = styled("input", {
+  background: "$white",
+  width: "100%",
+  padding: 0,
+
+  "&:focus": {
+    outline: "none",
+  },
+  "& ::placeholder": {
+    color: "#BAB8B8",
+  },
+});
+
+export const DropdownContainer = styled("div", {
+  position: "absolute",
+  display: "grid",
+  gridTemplateRows: "repeat(1fr)",
+  width: "100%",
+  zIndex: 20,
+  cursor: "default",
+  maxHeight: "var(--max-height, 20rem)",
+  overflow: "hidden auto",
+  "-webkit-user-select": "none",
+  backgroundColor: "$white",
+  border: "1px solid $grey",
+  borderRadius: "6px",
+
+  variants: {
+    isMenuOpen: {
+      false: {
+        borderWidth: 0,
+      },
+    },
+
+    menuPlacement: {
+      top: {
+        bottom: "100%",
+        left: 0,
+      },
+      bottom: {
+        top: "100%",
+        left: 0,
+      },
+    },
+  },
+});
+
+export const DropdownItem = styled("button", {
+  fontSize: "$base",
+  fontWeight: "$400",
+  textAlign: "left",
+  padding: "0.5rem 1.25rem",
+  variants: {
+    selected: {
+      true: {
+        background: "rgb(0 0 0 / 10%)",
+      },
+    },
+  },
 });

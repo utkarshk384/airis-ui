@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 /* Layouts */
 import { AppLayout } from "@layouts/layout";
@@ -20,7 +20,7 @@ const DashboardPage: Page = (props) => {
   const {} = props;
 
   const route = useNavigationStore((s) => s.route);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <>
