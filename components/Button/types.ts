@@ -17,6 +17,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export type Props = {
   isLoading?: boolean;
+  tooltip?: string;
   children?: React.ReactNode;
   leftIcon?: React.FC;
   rightIcon?: React.FC;

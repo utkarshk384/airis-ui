@@ -33,16 +33,18 @@ export const DropdownContent: React.FC<FilterComponentProps> = (props) => {
   const { setFilter } = table;
 
   return (
-    <div className="flex flex-col w-full px-4">
-      <Dropdown.Label>Status</Dropdown.Label>
-      <Select
-        name="status"
-        options={statusOption}
-        onChange={(val) =>
-          setFilter("status", val.value === "All" ? "" : val.value)
-        }
-        defaultValue={statusOption[0]}
-      />
+    <div className="flex flex-col w-full min-h-[18rem] p-4 gap-8">
+      <div className="flex gap-2 flex-col">
+        <Dropdown.Label>Status</Dropdown.Label>
+        <Select
+          name="status"
+          options={statusOption}
+          onChange={(val) =>
+            setFilter("status", val.value === "All" ? "" : val.value)
+          }
+          defaultValue={statusOption[0]}
+        />
+      </div>
     </div>
   );
 };

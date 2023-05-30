@@ -80,6 +80,10 @@ export const StyledSearchBar = styled("input", {
   "& ::placeholder": {
     color: "#BAB8B8",
   },
+
+  "&:read-only::selection": {
+    background: "transparent",
+  },
 });
 
 export const DropdownContainer = styled("div", {
@@ -95,6 +99,7 @@ export const DropdownContainer = styled("div", {
   backgroundColor: "$white",
   border: "1px solid $grey",
   borderRadius: "6px",
+  boxShadow: "$dropdown",
 
   variants: {
     isMenuOpen: {
@@ -120,6 +125,7 @@ export const DropdownItem = styled("button", {
   fontSize: "$base",
   fontWeight: "$400",
   textAlign: "left",
+  borderBottom: "1px solid $grey",
   padding: "0.5rem 1.25rem",
   variants: {
     selected: {

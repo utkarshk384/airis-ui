@@ -23,6 +23,7 @@ export const StyledOverlay = styled(Dialog.Overlay, {
   backgroundColor: "#00000080",
   position: "fixed",
   inset: 0,
+  zIndex: 20,
   "@media (prefers-reduced-motion: no-preference)": {
     animation: `${overlayShow} 500ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },
@@ -38,7 +39,7 @@ export const StyledContent = styled(Dialog.Content, {
   right: 0,
   width: "40vw",
   height: "100vh",
-  zIndex: 9,
+  zIndex: 20,
   overflowY: "scroll",
 
   "&:focus": { outline: "none" },

@@ -7,8 +7,8 @@ export const DropdownContent = styled(DropdownMenu.Content, {
   backgroundColor: "#ffffff",
   borderRadius: "8px",
   height: "fit-content",
-  boxShadow: "0 1px 6px 0 rgba(0, 0, 0, 0.2)",
-  border: "1px solid rgba(0, 0, 0, 0.1)",
+  boxShadow: "$dropdown",
+  border: "1px solid $grey",
   "--content-padding": "1rem",
 });
 
@@ -16,6 +16,7 @@ export const DropdownLabel = styled(DropdownMenu.Label, {
   fontSize: "$base",
   fontWeight: "$400",
   color: "#475569",
+  marginLeft: "-0.5rem",
   padding: "0rem var(--content-padding)",
 });
 
@@ -27,7 +28,7 @@ export const DropdownSeparator = styled(DropdownMenu.Separator, {
 });
 
 const MenuItemStyles = {
-  fontSize: "$sm",
+  fontSize: "$base",
   fontWeight: "$400",
   transition: "background-color 0.25s ease-in-out, color 0.25s ease-in-out",
   color: "$black",

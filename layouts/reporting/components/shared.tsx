@@ -8,7 +8,7 @@ export const ListItem: React.FC<ListItemProps> = (props) => {
 
   return (
     <div className="flex flex-col gap-1">
-      <Heading color={color} size="sm" weight="700">
+      <Heading color={color} size="sm" weight="600">
         {props.title}
       </Heading>
       <div className="flex gap-2">

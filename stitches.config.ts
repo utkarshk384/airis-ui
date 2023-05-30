@@ -3,6 +3,9 @@ import { createStitches } from "@stitches/react";
 export const { styled, css, globalCss, keyframes, getCssText, theme } =
   createStitches({
     theme: {
+      shadows: {
+        dropdown: "0 0 15px 1px rgba(0, 0, 0, 0.25)",
+      },
       colors: {
         primary: "#17234D",
         secondary: "#1B7DA8",

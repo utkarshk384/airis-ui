@@ -9,6 +9,7 @@ import { BorderedContainer } from "./components/styled";
 /* Contexts */
 import { TabProvider } from "./context/tabs";
 import { TabContent } from "./components/tabContent";
+import { Footer } from "./components/footer";
 
 type Props = {
   children?: React.ReactNode;
@@ -30,12 +31,14 @@ export const ReportingComponent: React.FC<Props> = (props) => {
       <TabProvider>
         <BorderedContainer className="overflow-hidden">
           <Tabbar />
+          <div className="my-2" />
           <TabContent />
         </BorderedContainer>
         <BorderedContainer>
           <RichTextEditor height="20rem" />
         </BorderedContainer>
       </TabProvider>
+      <Footer />
     </div>
   );
 };

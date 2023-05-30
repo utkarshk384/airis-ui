@@ -77,7 +77,7 @@ export const Select: React.FC<Props> = (props) => {
           labelClassName={rest.labelClassName}
         />
       )}
-      <div className="relative">
+      <div className="relative bg-white">
         <StyledValueContainer>
           <StyledSearchBar
             {...ComboBox.getInputProps({
@@ -87,7 +87,7 @@ export const Select: React.FC<Props> = (props) => {
                 if (rest.isSearchable) e.target.select();
               },
               onBlur: () => setIsMenuOpen(false),
-              onClick: () => setIsMenuOpen(true),
+              onClick: () => toggleMenu(),
               readOnly: !rest.isSearchable,
             })}
           />

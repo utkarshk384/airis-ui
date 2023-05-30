@@ -2,14 +2,13 @@ import React from "react";
 
 /* Styled */
 import { StyledButton } from "./styled";
+import { withTooltip } from "./hoc";
 import { Text } from "@components/Typography";
 
 /* Types */
 import type { Props } from "./types";
 
-type ButtonComponent = React.FC<Props>;
-
-export const Button: ButtonComponent = (props) => {
+const BaseButton = React.forwardRef<HTMLButtonElement, Props>((props, ref) => {
   const {
     children,
     leftIcon: LeftIcon,
@@ -20,7 +19,11 @@ export const Button: ButtonComponent = (props) => {
   } = DefaultProps(props);
 
   return (
-    <StyledButton {...rest} data-state={rest.disabled ? "disabled" : "active"}>
+    <StyledButton
+      ref={ref}
+      {...rest}
+      data-state={rest.disabled ? "disabled" : "active"}
+    >
       {LeftIcon && <LeftIcon />}
       {typographyProps ? (
         <Text {...typographyProps}>{children}</Text>
@@ -31,7 +34,9 @@ export const Button: ButtonComponent = (props) => {
       {isLoading && <Spinner />}
     </StyledButton>
   );
-};
+});
+
+BaseButton.displayName = "Button";
 
 const DefaultProps = (props: Props) => {
   const defaultProps: Props = {
@@ -58,3 +63,5 @@ const Spinner: React.FC<Props> = (props) => {
     </div>
   );
 };
+
+export const Button = withTooltip(BaseButton);

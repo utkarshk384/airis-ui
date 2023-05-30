@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 /* Layouts */
 import { AppLayout } from "@layouts/layout";
@@ -6,7 +6,6 @@ import { PatientsTab } from "@layouts/patients";
 
 /* Stores */
 import { useNavigationStore } from "@stores/navigation";
-import { AddTemplate } from "@layouts/templates";
 
 type Props = {
   children?: React.ReactNode;
@@ -20,15 +19,7 @@ const DashboardPage: Page = (props) => {
   const {} = props;
 
   const route = useNavigationStore((s) => s.route);
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-      {route === "patients" && <PatientsTab />}
-      <button onClick={() => setOpen(true)}>Click</button>
-      <AddTemplate open={open} setOpen={setOpen} />
-    </>
-  );
+  return <>{route === "patients" && <PatientsTab />}</>;
 };
 
 DashboardPage.getLayout = (page) => {
