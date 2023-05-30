@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { FunnelIcon } from "@heroicons/react/20/solid";
 
 /* Components */
-import { Select } from "@components/Select/Select";
+import { Select } from "@components/Select/Single";
 import { Text } from "@components/Typography";
 import { DropdownButton } from "@components/Button";
 

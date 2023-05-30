@@ -5,7 +5,6 @@ export type SelectSharedProps = {
   placeholder?: string;
   label?: string;
   name: string;
-  isSearchable?: boolean;
   containerClassName?: string;
   labelClassName?: string;
   menuPlacement?: "top" | "bottom";

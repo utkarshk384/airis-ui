@@ -129,3 +129,25 @@ export const DropdownItem = styled("button", {
     },
   },
 });
+
+export const MultiSelectedItemsContainer = styled("div", {
+  display: "flex",
+  flexDirection: "row",
+  paddingBlock: "0.35rem",
+  gap: "0.3rem",
+  flexWrap: "wrap",
+  flex: "1",
+});
+
+export const MultiSelectedItem = styled("div", {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "0.5rem",
+  background: "rgba($rgbSecondary, 0.9)",
+  color: "$white",
+  paddingLeft: "0.5rem",
+  borderRadius: "8px",
+  fontSize: "$sm",
+  fontWeight: "$400",
+});

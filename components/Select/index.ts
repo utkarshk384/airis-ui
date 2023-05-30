@@ -1,2 +1,2 @@
 export * from "./Multiselect";
-export * from "./Select";
+export * from "./Single";

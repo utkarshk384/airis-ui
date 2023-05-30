@@ -22,6 +22,7 @@ import type { DropdownOption } from "@components/sharedTypes";
 
 type Props = {
   onChange?: (value: DropdownOption) => void;
+  isSearchable?: boolean;
   defaultValue?: DropdownOption;
 } & SelectSharedProps;
 
