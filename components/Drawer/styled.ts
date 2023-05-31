@@ -40,11 +40,20 @@ export const StyledContent = styled(Dialog.Content, {
   width: "40vw",
   height: "100vh",
   zIndex: 20,
-  overflowY: "scroll",
+  overflow: "hidden",
 
   "&:focus": { outline: "none" },
 
   variants: {
     size: DRAWER_SIZES,
   },
+});
+
+export const StyledContainer = styled("div", {
+  position: "relative",
+  isolation: "isolate",
+  height: "100vh",
+  overflowY: "scroll",
+  overflowX: "hidden",
+  width: "var(--drawer-width)",
 });

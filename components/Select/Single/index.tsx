@@ -53,7 +53,9 @@ export const Select: React.FC<Props> = (props) => {
       setItems(rest.options);
       return;
     }
-    const newItems = rest.options.filter((item) => item.label.includes(value));
+    const newItems = rest.options.filter((item) =>
+      item.label.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+    );
     setItems(newItems);
   }, 350);
 
@@ -83,11 +85,13 @@ export const Select: React.FC<Props> = (props) => {
             {...ComboBox.getInputProps({
               ...input,
               onFocus: (e) => {
-                setIsMenuOpen(true);
                 if (rest.isSearchable) e.target.select();
               },
               onBlur: () => setIsMenuOpen(false),
-              onClick: () => toggleMenu(),
+              onClick: () => {
+                toggleMenu();
+                if (!isMenuOpen) setItems(rest.options);
+              },
               readOnly: !rest.isSearchable,
             })}
           />

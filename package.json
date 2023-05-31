@@ -27,6 +27,7 @@
     "@tippyjs/react": "^4.2.6",
     "axios": "^1.4.0",
     "calendar-blocks": "^0.3.0",
+    "date-fns": "^2.30.0",
     "downshift": "^7.6.0",
     "formik": "^2.2.9",
     "gsap": "^3.11.5",

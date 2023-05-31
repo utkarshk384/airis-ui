@@ -23,6 +23,7 @@ export const RadioButton: React.FC<Props> = (props) => {
         value={item.value}
         id={item.id}
         name={name}
+        onChange={() => {}}
         disabled={disabled}
         checked={checked === item.value}
         className="absolute invisible"

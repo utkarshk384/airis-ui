@@ -3,7 +3,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Transition } from "react-transition-group";
 
 /* Components */
-import { StyledContent, StyledOverlay } from "./styled";
+import { StyledContainer, StyledContent, StyledOverlay } from "./styled";
 import { DrawerFooter, DrawerHeader } from "./components";
 
 /* Animations */
@@ -76,9 +76,9 @@ export const Content: React.FC<SharedDrawerProps> = (props) => {
         ref={domRef}
         forceMount
       >
-        <div className="relative h-screen isolate">
+        <StyledContainer>
           {children instanceof Function ? children(DrawerItem) : children}
-        </div>
+        </StyledContainer>
       </StyledContent>
     </Transition>
   );

@@ -92,7 +92,7 @@ const NavigationItem: React.FC<NavigationItemProps> = (props) => {
         size: "base",
         textCase: "capitalize",
       }}
-      className={`border-b-2 !rounded-none ${
+      className={`cursor-pointer border-b-2 !rounded-none ${
         currentRoute === route ? "border-accent" : "border-transparent"
       }`}
       onClick={onClickHandler}

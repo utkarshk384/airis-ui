@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { Column } from "react-table";
 
 /* Components */
@@ -111,9 +111,30 @@ export const COLUMNS: Column[] = [
     disableGlobalFilter: true,
     disableFilters: true,
     Cell: () => {
+      const fileRef = useRef<HTMLInputElement>(null);
+
+      /* Handlers */
+      const UploadeFile = () => {
+        fileRef.current?.click();
+      };
+
       return (
-        <div className="flex gap-2">
-          <Button iconButton variant="icon" noPadding>
+        <div className="flex gap-2 relative">
+          <input
+            type="file"
+            name="dr-form"
+            ref={fileRef}
+            onChange={(e) => {
+              const formData = new FormData();
+              formData.append("file", e.target.files?.[0] as File);
+
+              // Call API to upload.
+
+              // References: https://stackoverflow.com/questions/72832238/how-to-upload-file-from-frontend-to-backend
+            }}
+            className="invisible absolute"
+          />
+          <Button onClick={UploadeFile} iconButton variant="icon" noPadding>
             <UploadIcon stroke="currentColor" width={20} height={20} />
           </Button>
         </div>

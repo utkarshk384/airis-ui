@@ -68,19 +68,19 @@ const Content: React.FC<ContentProps> = (props) => {
                   value: "abdomen",
                 },
                 {
-                  label: "Abdomen1",
+                  label: "Modality",
                   value: "abdomen1",
                 },
                 {
-                  label: "Abdomen2",
+                  label: "Tests",
                   value: "abdomen2",
                 },
                 {
-                  label: "Abdomen3",
+                  label: "CT Scan",
                   value: "abdomen3",
                 },
                 {
-                  label: "Abdomen4",
+                  label: "Tags",
                   value: "abdomen4",
                 },
               ]}
@@ -110,26 +110,26 @@ const Content: React.FC<ContentProps> = (props) => {
                   value: "abdomen",
                 },
                 {
-                  label: "Abdomen1",
+                  label: "Modality",
                   value: "abdomen1",
                 },
                 {
-                  label: "Abdomen2",
+                  label: "Tests",
                   value: "abdomen2",
                 },
                 {
-                  label: "Abdomen3",
+                  label: "CT Scan",
                   value: "abdomen3",
                 },
                 {
-                  label: "Abdomen4",
+                  label: "Tags",
                   value: "abdomen4",
                 },
               ]}
               label="Tags:"
             />
           </div>
-          <div className="p-4 h-full flex justify-stretch w-full flex-col">
+          <div className="p-4 h-full flex justify-stretch w-full max-w-[var(--drawer-width)] flex-col">
             <RichTextEditor height="50vh" />
           </div>
         </div>
