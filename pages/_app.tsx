@@ -5,6 +5,9 @@ import { QueryClientProvider } from "@tanstack/react-query";
 
 /* Styles */
 import "../styles/globals.css";
+import "react-day-picker/dist/style.css";
+import "react-quill/dist/quill.snow.css";
+import "tippy.js/dist/tippy.css"; // optional
 
 /* React Query */
 import { queryClient } from "@src/queryClient";

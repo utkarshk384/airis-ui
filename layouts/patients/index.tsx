@@ -32,13 +32,14 @@ export const PatientsTab: React.FC<Props> = (props) => {
       </Button>
       <AddTemplate open={open} setOpen={setOpen} />
       <Table
-        FilterComponent={DropdownContent}
         searchPlaceholder="Search patient id, name, acc no, referral doctor..."
         cols={cols}
         searchClassName="w-7/12"
         rows={rows}
         title="Patients"
-      />
+      >
+        {(table) => <DropdownContent table={table} />}
+      </Table>
     </div>
   );
 };

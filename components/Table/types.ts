@@ -12,7 +12,3 @@ export interface SortByItem {
 export type TableComponent<T extends Record<string, unknown> = {}> = {
   table: TableInstance<T>;
 };
-
-export type FilterComponentProps = {
-  Dropdown: MenuType;
-} & TableComponent;

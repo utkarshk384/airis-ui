@@ -1,3 +1,4 @@
+import React from "react";
 import { DrawerSizes } from "./consts";
 
 export type DrawerHeaderProps = {
@@ -15,7 +16,10 @@ export type * from "./consts";
 export type SharedDrawerProps = {
   open: boolean;
   size?: DrawerSizes;
-  children: (DrawerItem: DrawerItemType) => React.ReactNode;
+  unstyledContent?: boolean;
+  unstyledCSS?: React.CSSProperties;
+  unstyledClassName?: string;
+  children: React.ReactNode | ((DrawerItem: DrawerItemType) => React.ReactNode);
 };
 
 export type DrawerItemType = React.FC & {

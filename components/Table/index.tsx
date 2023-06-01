@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import {
   useTable,
   useSortBy,
@@ -14,7 +14,6 @@ import { ROW_OPTIONS } from "./consts";
 import { TableHead } from "./components/head";
 import { TableBody } from "./components/body";
 import { Heading } from "@components/Typography";
-import { FilterButton } from "./components/filter";
 import { Pagination } from "./components/pagination";
 import { GlobalFilter } from "./components/GlobalFilter";
 import { ColumnVisibility } from "./components/columnVisibility";
@@ -27,10 +26,10 @@ import {
 } from "./styled";
 
 /* Types */
-import type { Column } from "react-table";
-import type { FilterComponentProps } from "./types";
+import type { Column, TableInstance } from "react-table";
 
 interface Props {
+  children?: React.ReactNode | ((table: TableInstance) => React.ReactNode);
   cols: Array<Column>;
   rows: Record<string, unknown>[];
   title?: string;
@@ -38,7 +37,6 @@ interface Props {
   hasStickyHeader?: boolean;
   searchPlaceholder?: string;
   searchClassName?: string;
-  FilterComponent?: React.FC<FilterComponentProps>;
 }
 
 export const Table: React.FC<Props> = (props) => {
@@ -46,7 +44,7 @@ export const Table: React.FC<Props> = (props) => {
     cols,
     rows: Data,
     hasStickyHeader = true,
-    FilterComponent,
+    children,
   } = DefaultProps(props);
 
   /* Memos */
@@ -69,20 +67,22 @@ export const Table: React.FC<Props> = (props) => {
   return (
     <TableComponentContainer>
       <div className="grid grid-cols-2">
-        <Heading size="2xl" weight="600">
+        <Heading size="2xl" className="mt-1" weight="600">
           {props.title}
         </Heading>
+
         <div className="flex w-full gap-4 justify-end">
           <GlobalFilter
             table={table}
             searchPlaceholder={props.searchPlaceholder}
             searchClassName={props.searchClassName}
           />
-          <FilterButton
+          {children instanceof Function ? children(table) : children}
+          {/* <FilterButton
             table={table}
             FilterComponent={FilterComponent}
             onClick={() => {}}
-          />
+          /> */}
           <ColumnVisibility table={table} />
         </div>
       </div>

@@ -1,8 +1,5 @@
 import React, { useMemo, useState } from "react";
 
-/* CSS */
-import "react-quill/dist/quill.snow.css";
-
 /* Components */
 import { ReactQuill } from "./rte";
 import { TOOLBAR_OPTS } from "./toolbar";

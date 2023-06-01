@@ -49,6 +49,11 @@ export const StyledContent = styled(Dialog.Content, {
   },
 });
 
+export const UnStyledContent = styled(Dialog.Content, {
+  zIndex: 20,
+  "&:focus": { outline: "none" },
+});
+
 export const StyledContainer = styled("div", {
   position: "relative",
   isolation: "isolate",

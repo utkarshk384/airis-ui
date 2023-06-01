@@ -1,5 +1,4 @@
 import Tooltip from "@tippyjs/react";
-import "tippy.js/dist/tippy.css"; // optional
 
 /* Types */
 import type { Props } from "./types";

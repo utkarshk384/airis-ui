@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   ArrowTopRightOnSquareIcon as ExternalLinkIcon,
   PlusIcon,

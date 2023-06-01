@@ -1,125 +1,61 @@
-import React, { useCallback, useState } from "react";
-import { Calendar, CalendarDays } from "calendar-blocks";
+import { useState } from "react";
+import { DayPicker } from "react-day-picker";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
-/* Components */
-import { Styled } from "./styled";
+export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
-type Props = {
-  children?: React.ReactNode;
-};
+function Calendar({
+  className,
+  classNames,
+  showOutsideDays = false,
+  ...props
+}: CalendarProps) {
+  const [selectedDay, setSelectedDay] = useState<Date[]>([new Date()]);
 
-type DateState = {
-  month: number;
-  year: number;
-};
-
-type useViewInfoReturn = [DateState, (state: DateState) => void];
-
-export const useViewInfo = (month: number, year: number): useViewInfoReturn => {
-  const [viewInfo, setViewInfo] = useState<DateState>({
-    month,
-    year,
-  });
-
-  return [viewInfo, setViewInfo];
-};
-
-export interface ExampleProps {
-  viewInfo: useViewInfoReturn[0];
-  setViewInfo: useViewInfoReturn[1];
-  rangeValue: { start: Date | null; end: Date | null };
-  onRangeValueChange?: (value: {
-    start: Date | null;
-    end: Date | null;
-  }) => void;
+  return (
+    <DayPicker
+      onDayClick={(day) => setSelectedDay([day])}
+      selected={selectedDay as any}
+      showOutsideDays={showOutsideDays}
+      className="p-3"
+      captionLayout="dropdown"
+      fromYear={2015}
+      toYear={2025}
+      classNames={{
+        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+        month: "space-y-4",
+        caption: "flex justify-center pt-1 relative items-center",
+        // caption_label: "text-sm font-medium",
+        nav: "space-x-1 left-0 flex items-center",
+        nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+        nav_button_previous: "absolute left-1",
+        nav_button_next: "absolute right-1",
+        // table: "w-full border-collapse space-y-1",
+        // head_row: "flex",
+        button_reset: "absolute",
+        // head_cell:
+        //   "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
+        // row: "flex w-full mt-2",
+        // cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+        // day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100",
+        // day_selected:
+        //   "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
+        // day_today: "bg-accent text-accent-foreground",
+        // day_outside: "text-muted-foreground opacity-50",
+        // day_disabled: "text-muted-foreground opacity-50",
+        // day_range_middle:
+        //   "aria-selected:bg-accent aria-selected:text-accent-foreground",
+        // day_hidden: "invisible",
+        ...classNames,
+      }}
+      components={{
+        IconLeft: ({ ...props }) => <ChevronLeftIcon className="h-6 w-6" />,
+        IconRight: ({ ...props }) => <ChevronRightIcon className="h-6 w-6" />,
+      }}
+      {...props}
+    />
+  );
 }
+Calendar.displayName = "Calendar";
 
-const DayLabels = () => {
-  return (
-    <>
-      {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
-        <Styled.DayLabel key={index}>{day}</Styled.DayLabel>
-      ))}
-    </>
-  );
-};
-
-export const Datepicker: React.FC<ExampleProps> = ({
-  viewInfo: { month, year },
-  setViewInfo,
-  rangeValue,
-  onRangeValueChange,
-}) => {
-  const onMonthChange = useCallback(
-    ({ month: newMonth, year: newYear }: DateState) => {
-      if (newMonth === month + 1 && newYear === year) {
-        return; // ignore movement from the first to the second frame
-      }
-
-      setViewInfo({
-        month: newMonth,
-        year: newYear,
-      });
-    },
-    [setViewInfo, month, year]
-  );
-
-  const monthLabel = new Date(year, month).toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
-
-  // used for the two-calendar demo
-  const nextMonth = new Date(year, month + 1);
-  const nextMonthLabel = nextMonth.toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
-
-  return (
-    <Calendar
-      displayMonth={month}
-      displayYear={year}
-      onDisplayChange={onMonthChange}
-      // rangeValue={rangeValue}
-      // onRangeChange={onRangeValueChange}
-    >
-      <Styled.MonthsLayout>
-        {/* <Styled.MonthButton
-          css={{ gridArea: "prevMonth" }}
-          onClick={() => {
-            setViewInfo((v) => ({ ...v, month: v.month - 1 }));
-          }}
-        >
-          &lt;
-        </Styled.MonthButton>
-        <Styled.MonthButton
-          css={{ gridArea: "nextMonth" }}
-          onClick={() => {
-            setViewInfo((v) => ({ ...v, month: v.month + 1 }));
-          }}
-        >
-          &gt;
-        </Styled.MonthButton> */}
-        <Styled.MonthLabel css={{ gridArea: "leftMonth" }}>
-          {monthLabel}
-        </Styled.MonthLabel>
-        <Styled.MonthLabel css={{ gridArea: "rightMonth" }}>
-          {nextMonthLabel}
-        </Styled.MonthLabel>
-        <Styled.CalendarGrid css={{ gridArea: "leftGrid" }}>
-          <DayLabels />
-          <CalendarDays>
-            {(value) => <Styled.Day value={value} key={value.key} />}
-          </CalendarDays>
-        </Styled.CalendarGrid>
-        <Styled.CalendarGrid css={{ gridArea: "rightGrid" }}>
-          <DayLabels />
-          <CalendarDays monthOffset={1}>
-            {(value) => <Styled.Day value={value} key={value.key} />}
-          </CalendarDays>
-        </Styled.CalendarGrid>
-      </Styled.MonthsLayout>
-    </Calendar>
-  );
-};
+export { Calendar as Datepicker };

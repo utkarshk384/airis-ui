@@ -71,7 +71,7 @@ export const COLUMNS: Column[] = [
     disableFilters: true,
   },
   {
-    Header: "Visit Date",
+    Header: "Visit Time",
     accessor: "visit_date",
     disableGlobalFilter: true,
   },

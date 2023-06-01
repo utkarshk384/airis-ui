@@ -3,8 +3,13 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Transition } from "react-transition-group";
 
 /* Components */
-import { StyledContainer, StyledContent, StyledOverlay } from "./styled";
 import { DrawerFooter, DrawerHeader } from "./components";
+import {
+  StyledContainer,
+  StyledContent,
+  StyledOverlay,
+  UnStyledContent,
+} from "./styled";
 
 /* Animations */
 import { AnimationDrawer, AnimationOverlay } from "./animation";
@@ -21,7 +26,13 @@ type Props = {
 } & SharedDrawerProps;
 
 export const Drawer: React.FC<Props> = (props) => {
-  const { children, TriggerComponent, size = "small", ...rest } = props;
+  const {
+    children,
+    TriggerComponent,
+    size = "small",
+    unstyledContent = false,
+    ...rest
+  } = props;
 
   const overlayRef = useRef<HTMLDivElement>(null);
   return (
@@ -43,7 +54,13 @@ export const Drawer: React.FC<Props> = (props) => {
       >
         <StyledOverlay forceMount ref={overlayRef} />
       </Transition>
-      <Content size={size} open={rest.open}>
+      <Content
+        unstyledCSS={props.unstyledCSS}
+        unstyledClassName={props.unstyledClassName}
+        unstyledContent={unstyledContent}
+        size={size}
+        open={rest.open}
+      >
         {children}
       </Content>
     </Dialog.Root>
@@ -54,9 +71,17 @@ const DrawerItem = () => <></>;
 
 DrawerItem.Header = DrawerHeader;
 DrawerItem.Footer = DrawerFooter;
+DrawerItem.UnstyledContent = Dialog.Content;
 
 export const Content: React.FC<SharedDrawerProps> = (props) => {
-  const { children, open, size } = props;
+  const {
+    children,
+    open,
+    size,
+    unstyledContent,
+    unstyledCSS = {},
+    unstyledClassName = "",
+  } = props;
 
   const domRef = useRef<HTMLDivElement>(null);
   return (
@@ -70,16 +95,24 @@ export const Content: React.FC<SharedDrawerProps> = (props) => {
         AnimationDrawer(domRef.current!, open).then(() => done());
       }}
     >
-      <StyledContent
-        className="custom-scroll-bar"
-        size={size}
-        ref={domRef}
-        forceMount
-      >
-        <StyledContainer>
-          {children instanceof Function ? children(DrawerItem) : children}
-        </StyledContainer>
-      </StyledContent>
+      {unstyledContent ? (
+        <UnStyledContent css={unstyledCSS as any} className={unstyledClassName}>
+          <div>
+            {children instanceof Function ? children(DrawerItem) : children}
+          </div>
+        </UnStyledContent>
+      ) : (
+        <StyledContent
+          className="custom-scroll-bar"
+          size={size}
+          ref={domRef}
+          forceMount
+        >
+          <StyledContainer>
+            {children instanceof Function ? children(DrawerItem) : children}
+          </StyledContainer>
+        </StyledContent>
+      )}
     </Transition>
   );
 };

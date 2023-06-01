@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 
 /* Components */
-import { AllergyDrawer } from "./components/allergyDrawer";
 import { AllergyIcon, Button, WritingIcon } from "@components";
-import { TechnicalNotesDrawer } from "./components/technicalNotesDrawer";
+import { TechnicalNotesDrawer, AllergyDrawer } from "@layouts/shared/drawer";
 
 export const NotesComponent: React.FC = (props) => {
   const [openAllergy, setOpenAllergy] = useState(false);
