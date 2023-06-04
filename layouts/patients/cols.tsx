@@ -7,9 +7,13 @@ import {
   AllergyIcon,
   Badge,
   Button,
+  Text,
   UploadIcon,
   WritingIcon,
 } from "@components";
+
+/* Utils */
+import { parseISO, FormatDate } from "@utils/dates-fns";
 
 /* Types */
 import type { Patient } from "./type";
@@ -72,8 +76,30 @@ export const COLUMNS: Column[] = [
   },
   {
     Header: "Visit Time",
+    id: "visit_time",
     accessor: "visit_date",
     disableGlobalFilter: true,
+    filter: (rows, _, filterValues) => {
+      const date = FormatDate(filterValues, "dd-MM-yyyy");
+
+      return rows.filter((row) => {
+        const parsedDate = parseISO(row.values.visit_time);
+        const formattedDate = FormatDate(parsedDate, "dd-MM-yyyy");
+
+        return formattedDate === date;
+      });
+    },
+    Cell: (props) => {
+      const row = props.row.original as Patient;
+
+      const parsedDate = useMemo(() => parseISO(row.visit_date), []);
+      const formattedDate = useMemo(
+        () => FormatDate(parsedDate, "HH:mm"),
+        [parsedDate]
+      );
+
+      return <Text size="sm">{formattedDate}</Text>;
+    },
   },
   {
     Header: "Referral Doctor",

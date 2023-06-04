@@ -67,6 +67,16 @@ export const StyledValueContainer = styled("div", {
   border: "1px solid $grey",
   borderRadius: "8px",
   padding: "0 0.5rem 0 1rem",
+
+  variants: {
+    unstyled: {
+      true: {
+        border: "none",
+        borderRadius: "0",
+        padding: "0",
+      },
+    },
+  },
 });
 
 export const StyledSearchBar = styled("input", {
@@ -117,6 +127,10 @@ export const DropdownContainer = styled("div", {
         top: "100%",
         left: 0,
       },
+      center: {
+        top: "50%",
+        left: 0,
+      },
     },
   },
 });
@@ -131,6 +145,12 @@ export const DropdownItem = styled("button", {
     selected: {
       true: {
         background: "rgb(0 0 0 / 10%)",
+      },
+    },
+
+    unstyled: {
+      true: {
+        padding: "0.25rem 0.75rem",
       },
     },
   },

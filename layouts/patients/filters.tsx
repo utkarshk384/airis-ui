@@ -33,7 +33,25 @@ export const DropdownContent: React.FC<TableComponent> = (props) => {
     []
   );
 
-  const { setFilter } = table;
+  const {
+    setFilter,
+    state: { filters },
+  } = table;
+
+  const statusDefaultValue = useMemo(() => {
+    const filter = filters.find((filter) => filter.id === "status");
+    if (!filter) return statusOption[0];
+
+    return statusOption.find((option) => option.value === filter.value);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
+
+  const vistDateDefaultValue = useMemo(() => {
+    return (
+      filters.find((filter) => filter.id === "visit_time")?.value || undefined
+    );
+  }, [filters]);
 
   return (
     <DropdownButton
@@ -55,12 +73,18 @@ export const DropdownContent: React.FC<TableComponent> = (props) => {
                 onChange={(val) =>
                   setFilter("status", val.value === "All" ? "" : val.value)
                 }
-                defaultValue={statusOption[0]}
+                defaultValue={statusDefaultValue}
               />
             </div>
             <div className="gap-2 flex flex-col">
               <Dropdown.Label>Visit Date</Dropdown.Label>
-              <Datepicker />
+              <Datepicker
+                defaultValue={vistDateDefaultValue}
+                mode="single"
+                onChange={(day) => {
+                  setFilter("visit_time", day);
+                }}
+              />
             </div>
           </div>
         </>

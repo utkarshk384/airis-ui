@@ -8,7 +8,7 @@ export type SelectSharedProps = {
   width?: string | number;
   containerClassName?: string;
   labelClassName?: string;
-  menuPlacement?: "top" | "bottom";
+  menuPlacement?: "top" | "bottom" | "center";
   maxMenuHeight?: number | string;
   options: DropdownOption[];
 };

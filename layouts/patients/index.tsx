@@ -17,7 +17,7 @@ type Props = {
 export const PatientsTab: React.FC<Props> = (props) => {
   const {} = props;
 
-  const rows = useMemo(() => MOCK_DATA.data, []);
+  const rows = useMemo(() => MOCK_DATA, []);
   const cols = useMemo(() => COLUMNS, []);
   const [open, setOpen] = React.useState(false);
 

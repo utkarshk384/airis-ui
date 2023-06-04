@@ -8,7 +8,7 @@ export const StyledContainer = styled("div", {
   transition: "all 0.2s ease-in-out",
   "&:focus-within": {
     outline: "$accent 1px solid",
-    color: "$black",
+    color: "$accent",
   },
 });
 

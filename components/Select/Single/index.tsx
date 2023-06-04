@@ -24,10 +24,13 @@ type Props = {
   onChange?: (value: DropdownOption) => void;
   isSearchable?: boolean;
   defaultValue?: DropdownOption;
+  unstyled?: boolean;
+  dropdownIconSize?: number;
 } & SelectSharedProps;
 
 export const Select: React.FC<Props> = (props) => {
-  const { input, label, ...rest } = DefaultProps(props);
+  const { input, label, unstyled, dropdownIconSize, ...rest } =
+    DefaultProps(props);
 
   if (!rest.options) throw new Error("Options is required");
 
@@ -80,7 +83,7 @@ export const Select: React.FC<Props> = (props) => {
         />
       )}
       <div className="relative bg-white">
-        <StyledValueContainer>
+        <StyledValueContainer unstyled={unstyled}>
           <StyledSearchBar
             {...ComboBox.getInputProps({
               ...input,
@@ -97,6 +100,7 @@ export const Select: React.FC<Props> = (props) => {
           />
           <Button
             onClick={toggleMenu}
+            onBlur={() => setIsMenuOpen(false)}
             iconButton
             variant="icon"
             className={`justify-self-end ${
@@ -104,8 +108,8 @@ export const Select: React.FC<Props> = (props) => {
             }`}
           >
             <ChevronDownIcon
-              width={24}
-              height={24}
+              width={dropdownIconSize}
+              height={dropdownIconSize}
               className={`transition-transform ease-out duration-500 ${
                 isMenuOpen ? "rotate-180" : "rotate-0"
               }`}
@@ -123,6 +127,7 @@ export const Select: React.FC<Props> = (props) => {
             (items.length > 0 ? (
               items.map((item, i) => (
                 <DropdownItem
+                  unstyled={unstyled}
                   selected={ComboBox.highlightedIndex === i}
                   key={uniqueId + i}
                   {...ComboBox.getItemProps({ item, index: i })}
@@ -147,6 +152,8 @@ const DefaultProps = (props: Props) => {
       id: props.name,
       placeholder: props.placeholder,
     },
+    dropdownIconSize: props.dropdownIconSize || 24,
+    unstyled: props.unstyled || false,
     isSearchable: props.isSearchable || false,
     labelClassName: props.labelClassName || "",
     containerClassName: props.containerClassName || "",
