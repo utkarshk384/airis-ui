@@ -1,12 +1,12 @@
 export type Patient = {
   patient_name: string;
-  patient_id: string;
+  patient_id: number;
   acc_no: string;
   age: number;
-  gender: "Male" | "Female";
+  gender: string; //"Male" | "Female"
   modality: string;
   examination: string;
   visit_date: string;
   referral_doctor: string;
-  status: "In Progress" | "Completed" | "Not Started";
+  status: string; //"In Progress" | "Completed" | "Not Started";
 };

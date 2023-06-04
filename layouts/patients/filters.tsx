@@ -1,15 +1,22 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { Select } from "@components/Select/Single";
-import { DayPicker } from "react-day-picker";
-
-/* Types */
-import type { DropdownOption } from "@components/sharedTypes";
-import type { TableComponent } from "@components/types";
-import { Datepicker, DropdownButton } from "@components";
 import { FunnelIcon } from "@heroicons/react/20/solid";
 
-export const DropdownContent: React.FC<TableComponent> = (props) => {
+/* Components */
+import { Datepicker, DropdownButton } from "@components";
+
+/* Types */
+import type { Patient } from "./types";
+import type { TableComponent } from "@components/types";
+import type { DropdownOption } from "@components/sharedTypes";
+import { usePatientList } from "@src/api";
+
+type Props = {} & TableComponent;
+
+export const DropdownContent: React.FC<Props> = (props) => {
   const { table } = props;
+
+  const { PatientListMutation, branchId, orgId } = usePatientList();
 
   const statusOption: DropdownOption[] = useMemo(
     () => [
@@ -83,6 +90,11 @@ export const DropdownContent: React.FC<TableComponent> = (props) => {
                 mode="single"
                 onChange={(day) => {
                   setFilter("visit_time", day);
+                  PatientListMutation.mutate({
+                    branchId,
+                    orgId,
+                    referenceDate: day,
+                  });
                 }}
               />
             </div>

@@ -16,7 +16,7 @@ import {
 import { parseISO, FormatDate } from "@utils/dates-fns";
 
 /* Types */
-import type { Patient } from "./type";
+import type { Patient } from "./types";
 import { useRouter } from "next/router";
 
 export const COLUMNS: Column[] = [

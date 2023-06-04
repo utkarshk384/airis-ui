@@ -45,10 +45,20 @@ export const LoginForm: React.FC = (props) => {
           const res = data.success.result;
           const redirect = router.query["redirect_uri"];
 
+          const { token, userId, organizationId, branchId } = res;
+
           Toast.success("Logged in successfully", { id: toastId });
           setMultipleStorageValues([
-            { key: LOCAL_STORAGE_KEYS.token, value: res.token },
-            { key: LOCAL_STORAGE_KEYS.userId, value: res.userId },
+            { key: LOCAL_STORAGE_KEYS.token, value: token },
+            { key: LOCAL_STORAGE_KEYS.userId, value: userId },
+            {
+              key: LOCAL_STORAGE_KEYS.orgId,
+              value: organizationId.toString(),
+            },
+            {
+              key: LOCAL_STORAGE_KEYS.branchId,
+              value: branchId.toString(),
+            },
           ]);
 
           if (typeof redirect === "string") router.push(redirect);
