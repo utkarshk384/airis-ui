@@ -46,7 +46,7 @@ This will create three new files in the `src/api` folder.
 
 3. Finally, the last is the types file which will contain the types for the API.
 
-NOTE: It is preferrable to use small case for the `API_NAME` while using the command. The text case will be automatically be handled.
+NOTE: It is preferrable to use camel case for the `API_NAME` while using the command. The text case will be automatically be handled.
 
 ## Steps to deploy
 

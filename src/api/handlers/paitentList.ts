@@ -20,6 +20,7 @@ export const Dashboard = async (data: PatientListPayload) => {
     method: "POST",
     url: ENDPOINTS.getPatientList,
     defaultHeaders: true,
+    needsAuth: true,
     body,
   });
 };

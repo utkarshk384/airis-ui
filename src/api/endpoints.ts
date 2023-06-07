@@ -3,4 +3,6 @@ export const ENDPOINTS = {
   generateOtp: "/risGateway/user/resetPCodeValidate",
   forgot: "/risGateway/user/createPassword",
   getPatientList: "/risGateway/api/getPatientVisitList",
+  getRadioloistTemplate: "/risGateway/api/getRadiologistTemplates",
+  getRadiologistList: "/risGateway/api/getRadiologistList",
 };

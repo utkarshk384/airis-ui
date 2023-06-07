@@ -16,7 +16,7 @@ export const AxiosWrapper = async <T, K = Record<string, string>>(
     defaultHeaders,
     headers,
     method,
-    isAuth = false,
+    needsAuth = false,
     url,
     baseURL,
   } = req;
@@ -31,7 +31,7 @@ export const AxiosWrapper = async <T, K = Record<string, string>>(
         Accept: "application/json",
       };
 
-    if (isAuth)
+    if (needsAuth)
       finalHeaders["authToken"] =
         localStorage.getItem(LOCAL_STORAGE_KEYS.token) || "";
 

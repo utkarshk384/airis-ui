@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { PlusIcon } from "@heroicons/react/20/solid";
+
+/* Components */
+import { ListItem } from "./shared";
+import { DrFormDrawer } from "@layouts/shared/drawer/drFormDrawer";
+import { TechnicalNotesDrawer, AllergyDrawer } from "@layouts/shared/drawer";
 import {
   AllergyIcon,
   Button,
   DrFormIcon,
   Select,
   WritingIcon,
+  useDropdown,
 } from "@components";
-import { PlusIcon } from "@heroicons/react/20/solid";
 
-/* Components */
-import { ListItem } from "./shared";
-import { TechnicalNotesDrawer, AllergyDrawer } from "@layouts/shared/drawer";
-import { DrFormDrawer } from "@layouts/shared/drawer/drFormDrawer";
+/* APIs */
+import { useTemplates } from "@src/api";
 
 /* Types */
+import type { DropdownOption } from "@components/sharedTypes";
 
 type Props = {
   children?: React.ReactNode;
@@ -22,9 +27,23 @@ type Props = {
 export const TabContent: React.FC<Props> = (props) => {
   const {} = props;
 
+  /* States */
   const [isAllergyOpen, setIsAllergyOpen] = useState(false);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [templates, setTemplates] = useDropdown();
+
+  const { getRadiologistTemplate } = useTemplates();
+
+  useEffect(() => {
+    if (getRadiologistTemplate.isSuccess)
+      setTemplates(getRadiologistTemplate.data, [
+        "reportTemplate",
+        "reportTemplateId",
+      ]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getRadiologistTemplate.isSuccess]);
 
   return (
     <>
@@ -50,7 +69,7 @@ export const TabContent: React.FC<Props> = (props) => {
               labelClassName="!justify-self-start"
               name="template"
               placeholder="Select Template..."
-              options={[]}
+              options={templates}
             />
             <Button
               variant="solid"

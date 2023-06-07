@@ -1,5 +1,13 @@
+import React, { useEffect } from "react";
+
+/* Components */
 import { Button, Select } from "@components";
-import React from "react";
+
+/* APIs */
+import { useRadiologistList } from "@src/api";
+
+/* Hooks */
+import { useDropdown } from "@components/Select/useDropdown";
 
 type Props = {
   children?: React.ReactNode;
@@ -7,13 +15,27 @@ type Props = {
 
 export const Footer: React.FC<Props> = (props) => {
   const {} = props;
+
+  const { getRadiologistList } = useRadiologistList();
+  const [dropdownData, setDropdownData] = useDropdown();
+
+  useEffect(() => {
+    if (getRadiologistList.isSuccess)
+      setDropdownData(getRadiologistList.data, [
+        "radiologistSignatureName",
+        "radiologistId",
+      ]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getRadiologistList.isSuccess]);
+
   return (
     <div className="grid grid-cols-2 gap-10 justify-items-end">
       <div>
         <Select
           name="radiologist"
           label="Consultant Radiologist:"
-          options={[]}
+          options={dropdownData}
         />
       </div>
       <div className="flex gap-4 items-start">

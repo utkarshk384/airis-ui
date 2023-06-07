@@ -10,5 +10,5 @@ export type RequestType<T> = {
   body?: T;
   defaultHeaders?: boolean;
   baseURL?: string;
-  isAuth?: boolean;
+  needsAuth?: boolean;
 };
