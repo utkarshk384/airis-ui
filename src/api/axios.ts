@@ -1,8 +1,10 @@
 import Axios, { AxiosResponse } from "axios";
 
 /* consts */
-import { LOCAL_STORAGE_KEYS } from "@src/consts";
+import { COOKIE_KEYS } from "@src/consts";
 import { RequestType } from "./types";
+
+import { getCookie } from "@utils/cookie";
 
 const axios = Axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -32,8 +34,7 @@ export const AxiosWrapper = async <T, K = Record<string, string>>(
       };
 
     if (needsAuth)
-      finalHeaders["authToken"] =
-        localStorage.getItem(LOCAL_STORAGE_KEYS.token) || "";
+      finalHeaders["authToken"] = getCookie(COOKIE_KEYS.token) || "";
 
     const data: void | AxiosResponse<T, K> = await axios({
       method: method.toLowerCase(),

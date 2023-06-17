@@ -9,7 +9,7 @@ type Values<T = unknown> = {
 };
 type setMultipleInterface<T> = (values: Values<T>[]) => void;
 
-const useLocalStorage = <T = string>() => {
+export const useLocalStorage = <T = string>() => {
   const getStorageValue = useCallback(getLocalStoragevalue, []);
   const setStorageValue = useCallback<SetValueInterface<T>>(
     setLocalStoragevalue,
@@ -27,5 +27,3 @@ const useLocalStorage = <T = string>() => {
 
   return { getStorageValue, setStorageValue, setMultipleStorageValues };
 };
-
-export default useLocalStorage;

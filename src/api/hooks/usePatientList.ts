@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useMemo } from "react";
 import { useMutation } from "@tanstack/react-query";
 
 /* API */
 import { Dashboard } from "../handlers/paitentList";
 
 /* Hooks */
-import useLocalStorage from "@src/hooks/useLocalStorage";
+import { useLocalStorage } from "@src/hooks";
 
 /* Consts */
 import { LOCAL_STORAGE_KEYS } from "@src/consts";
@@ -16,10 +16,22 @@ import type {
   PatientListPayload,
 } from "../types/patientList";
 
-export const useGetId = () => {};
+export const useGetId = () => {
+  const { getStorageValue } = useLocalStorage();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const orgId = useMemo(() => getStorageValue(LOCAL_STORAGE_KEYS.orgId), []);
+  const branchId = useMemo(
+    () => getStorageValue(LOCAL_STORAGE_KEYS.branchId),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  return { orgId, branchId };
+};
 
 export const usePatientList = () => {
-  const { getStorageValue } = useLocalStorage();
+  const { orgId, branchId } = useGetId();
 
   const PatientListMutation = useMutation<
     PatientListResponse,
@@ -27,15 +39,5 @@ export const usePatientList = () => {
     PatientListPayload
   >(Dashboard as any);
 
-  const IdRef = useRef({ orgId: "", branchId: "" });
-
-  useEffect(() => {
-    const orgId = getStorageValue(LOCAL_STORAGE_KEYS.orgId);
-    const branchId = getStorageValue(LOCAL_STORAGE_KEYS.branchId);
-
-    IdRef.current = { orgId, branchId };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return { PatientListMutation, ...IdRef.current };
+  return { PatientListMutation, orgId, branchId };
 };

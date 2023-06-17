@@ -10,7 +10,7 @@ export const CardContainer = styled("div", {
   maxWidth: "64rem",
   "@lg": {
     height: "50vh",
-    borderRadius: "84px",
+    borderRadius: "42px",
     gridTemplateColumns: "1fr 1fr",
     gridTemplateRows: "1fr",
   },

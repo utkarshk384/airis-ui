@@ -56,7 +56,7 @@ export const PatientsTab: React.FC<Props> = (props) => {
       const formattedData = TransformToTableRows(PatientListMutation.data);
       setData(formattedData);
     }
-  }, []);
+  }, [PatientListMutation.data, PatientListMutation.isSuccess]);
 
   return (
     <div className="container !bg-white rounded-lg p-4 !mb-16">

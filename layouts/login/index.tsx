@@ -8,12 +8,14 @@ import { useRouter } from "next/router";
 import { Button, Input, Text, Toast } from "@components";
 import { useLogin } from "@src/api/hooks/useLogin";
 
+/* Hooks */
+import { useCookie, useLocalStorage } from "@src/hooks";
+
 /* Consts */
-import { LOCAL_STORAGE_KEYS } from "@src/consts";
+import { COOKIE_KEYS, LOCAL_STORAGE_KEYS } from "@src/consts";
 
 /* Types */
 import { LoginPayload } from "@src/api/types";
-import useLocalStorage from "@src/hooks/useLocalStorage";
 
 type FormValues = {
   userName: string;
@@ -32,6 +34,7 @@ export const LoginForm: React.FC = (props) => {
   } = useLogin();
 
   const router = useRouter();
+  const { setCookies } = useCookie();
   const { setMultipleStorageValues } = useLocalStorage();
 
   const onSubmit = useCallback(
@@ -48,9 +51,12 @@ export const LoginForm: React.FC = (props) => {
           const { token, userId, organizationId, branchId } = res;
 
           Toast.success("Logged in successfully", { id: toastId });
+          setCookies([
+            { name: COOKIE_KEYS.token, value: token },
+            { name: COOKIE_KEYS.userId, value: userId },
+          ]);
+
           setMultipleStorageValues([
-            { key: LOCAL_STORAGE_KEYS.token, value: token },
-            { key: LOCAL_STORAGE_KEYS.userId, value: userId },
             {
               key: LOCAL_STORAGE_KEYS.orgId,
               value: organizationId.toString(),

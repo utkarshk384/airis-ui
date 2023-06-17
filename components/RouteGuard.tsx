@@ -6,10 +6,10 @@ import { useState, useEffect, useCallback } from "react";
 import * as animationData from "@src/animations/preloader.json";
 
 /* Utils */
-import { getLocalStoragevalue } from "@utils/localStorage";
+import { getCookie } from "@utils/cookie";
 
 /* Consts */
-import { LOCAL_STORAGE_KEYS, PUBLIC_PATHS } from "@src/consts";
+import { COOKIE_KEYS, PUBLIC_PATHS } from "@src/consts";
 import { Heading } from "./Typography";
 
 /* Types */
@@ -27,8 +27,8 @@ export const RouteGuard: React.FC<Props> = (props) => {
     (path: string) => {
       if (PUBLIC_PATHS.includes(path)) return true;
 
-      const token = getLocalStoragevalue(LOCAL_STORAGE_KEYS.token);
-      const userId = getLocalStoragevalue(LOCAL_STORAGE_KEYS.userId);
+      const token = getCookie(COOKIE_KEYS.token);
+      const userId = getCookie(COOKIE_KEYS.userId);
 
       if (token && userId) return true;
       else {
