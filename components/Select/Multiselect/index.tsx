@@ -31,13 +31,12 @@ type Props = {
 
 export const MultiSelect: React.FC<Props> = (props) => {
   const { input, label, ...rest } = DefaultProps(props);
-
   if (!rest.options) throw new Error("Options is required");
 
   /* States */
   const [items, setItems] = useState(rest.options);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [serach, setSearch] = useState("");
+  const [search, setSearch] = useState("");
 
   const MultiSelectBox = useMultipleSelection({
     itemToString: (item) => item?.label || "",
@@ -53,13 +52,9 @@ export const MultiSelect: React.FC<Props> = (props) => {
 
   const ComboBox = useCombobox({
     items,
-    inputValue: serach,
+    inputValue: search,
     itemToString: (item) => item?.label || "",
-    onStateChange({
-      inputValue: newInputValue,
-      type,
-      selectedItem: newSelectedItem,
-    }) {
+    onStateChange({ inputValue, type, selectedItem: newSelectedItem }) {
       switch (type) {
         case useCombobox.stateChangeTypes.InputKeyDownEnter:
         case useCombobox.stateChangeTypes.ItemClick:
@@ -69,9 +64,16 @@ export const MultiSelect: React.FC<Props> = (props) => {
               ...MultiSelectBox.selectedItems,
               newSelectedItem,
             ]);
+          else if (rest.createOptions && !newSelectedItem && search)
+            createItem({ label: search, value: search });
+
         // Intentionally fall through to clear input (no break)
         case useCombobox.stateChangeTypes.ItemClick:
           setSearch("");
+          break;
+        case useCombobox.stateChangeTypes.InputChange:
+          handleSearch(inputValue);
+          setSearch(inputValue || "");
           break;
         default:
           break;
@@ -79,12 +81,36 @@ export const MultiSelect: React.FC<Props> = (props) => {
     },
   });
 
+  const uniqueId = useUniqueId("dropdown-");
+  const uniqueIdSelected = useUniqueId("dropdown-selected-");
+
+  /* Handlers */
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
 
-  const uniqueId = useUniqueId("dropdown-");
-  const uniqueIdSelected = useUniqueId("dropdown-selected-");
+  const handleSearch = debounce((value?: string) => {
+    if (!rest.isSearchable) return;
+
+    if (!value || value === "") {
+      setItems(rest.options);
+      return;
+    }
+    const newItems = rest.options.filter((item) =>
+      item.label.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+    );
+    setItems(newItems);
+  }, 350);
+
+  const createItem = (item: DropdownOption) => {
+    /* Add items */
+    rest.options.push(item);
+    const newSelectedItems = Array.from(MultiSelectBox.selectedItems);
+    newSelectedItems.push(item);
+    /* Set States */
+    MultiSelectBox.setSelectedItems(newSelectedItems);
+    setItems(rest.options);
+  };
 
   return (
     <fieldset
@@ -109,7 +135,7 @@ export const MultiSelect: React.FC<Props> = (props) => {
                   selectedItem: item,
                   index: i,
                 })}
-                key={uniqueIdSelected + item.value}
+                key={uniqueIdSelected + item.value + i}
               >
                 {item.label}
 
@@ -130,10 +156,13 @@ export const MultiSelect: React.FC<Props> = (props) => {
             <StyledSearchBar
               {...ComboBox.getInputProps({
                 ...input,
+                onFocus: (e) => {
+                  if (rest.isSearchable) e.target.select();
+                },
                 ...MultiSelectBox.getDropdownProps({
                   preventKeyAction: isMenuOpen,
                 }),
-                readOnly: true,
+                readOnly: !rest.isSearchable,
               })}
               onBlur={() => setIsMenuOpen(false)}
               onClick={() => setIsMenuOpen(true)}
@@ -173,6 +202,8 @@ export const MultiSelect: React.FC<Props> = (props) => {
                   {item.label}
                 </DropdownItem>
               ))
+            ) : rest.createOptions ? (
+              <DropdownItem selected>Create new item</DropdownItem>
             ) : (
               <DropdownItem>No items found</DropdownItem>
             ))}
@@ -190,6 +221,8 @@ const DefaultProps = (props: Props) => {
       id: props.name,
       placeholder: props.placeholder,
     },
+    createOptions: props.createOptions || false,
+    isSearchable: props.isSearchable || false,
     defaultValue: props.defaultValue || [],
     labelClassName: props.labelClassName || "",
     containerClassName: props.containerClassName || "",

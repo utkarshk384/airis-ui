@@ -1,12 +1,14 @@
 import { DropdownOption } from "@components/sharedTypes";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 type HandlerType = (
   data: Record<string, unknown>[],
   keys: [string, string]
 ) => void;
 
-type UseDropdownType = () => [DropdownOption[], HandlerType];
+type DispatchAction = React.Dispatch<React.SetStateAction<DropdownOption[]>>;
+
+type UseDropdownType = () => [DropdownOption[], HandlerType, DispatchAction];
 
 export const useDropdown: UseDropdownType = () => {
   const [options, setOptions] = useState<DropdownOption[]>([]);
@@ -20,5 +22,5 @@ export const useDropdown: UseDropdownType = () => {
     setOptions(newData);
   }, []);
 
-  return [options, handler];
+  return [options, handler, setOptions];
 };

@@ -1,13 +1,14 @@
-import {
-  ArrowTopRightOnSquareIcon as ExternalLinkIcon,
-  PlusIcon,
-} from "@heroicons/react/20/solid";
+import { Formik } from "formik";
+import { useEffect, useState } from "react";
 
 /* Components */
+import { MultiSelect, Toast, useDropdown } from "@components";
 import { FooterComponent } from "@layouts/shared/footer";
 import { Drawer, RichTextEditor, Input, Select, RadioGroup } from "@components";
-import { Formik } from "formik";
-import { MultiSelect } from "@components/Select";
+
+/* Types */
+import type { TemplatePayload } from "@src/api/types";
+import { useRadiologistList, useTemplates } from "@src/api";
 
 type DrawerProps = {
   open: boolean;
@@ -16,8 +17,10 @@ type DrawerProps = {
 };
 
 type ContentProps = {
-  initalValues: Record<string, unknown>;
+  initalValues: FormikProps;
 };
+
+type FormikProps = Omit<TemplatePayload, "text">;
 
 export const AddTemplate: React.FC<DrawerProps> = (props) => {
   const { open, setOpen, isEdit } = props;
@@ -27,7 +30,17 @@ export const AddTemplate: React.FC<DrawerProps> = (props) => {
       {({ Header, Footer }) => (
         <>
           <Header title={`${isEdit ? "Edit" : "Add"} Template`} />
-          <Content initalValues={{}} />
+          <Content
+            initalValues={{
+              exam: 0,
+              bodyPart: "",
+              modality: 0,
+              radiologist: "",
+              tags: "",
+              templateName: "",
+              visibilty: "private",
+            }}
+          />
           <Footer>
             <FooterComponent onCancel={() => setOpen(false)} />
           </Footer>
@@ -38,24 +51,54 @@ export const AddTemplate: React.FC<DrawerProps> = (props) => {
 };
 
 const Content: React.FC<ContentProps> = (props) => {
-  const handleSubmit = (values: any) => {};
+  const [text, setText] = useState("");
+
+  const { addUpdateTemplate } = useTemplates();
+  const { getRadiologistList } = useRadiologistList();
+  const [options, setOptsData] = useDropdown();
+
+  useEffect(() => {
+    if (getRadiologistList.data)
+      setOptsData(getRadiologistList.data, [
+        "radiologistFullName",
+        "mcrnumber",
+      ]);
+  }, [getRadiologistList.data, setOptsData]);
+
+  /* Handlers */
+  const handleSubmit = async (values: FormikProps) => {
+    const data: TemplatePayload = {
+      ...values,
+      text,
+    };
+
+    const toastId = Toast.loading("Saving template...");
+    const res = await addUpdateTemplate.mutateAsync(data, {
+      onSuccess: () =>
+        Toast.success("Template saved successfully", { id: toastId }),
+      onError: () =>
+        Toast.error("An error occured. Please try again.", { id: toastId }),
+    });
+  };
 
   return (
     <Formik initialValues={props.initalValues} onSubmit={handleSubmit}>
-      {() => (
+      {({ setFieldValue }) => (
         <div className="grid grid-rows-[1fr_2fr]">
           <div className="p-4 gap-4 grid grid-cols-2 justify-items-end">
             <Input
-              name="template-name"
+              name="templateName"
               placeholder="eg:  Hand Injury template"
               label="Template Name:"
               variant="filled"
             />
-            <Input
+            <Select
               name="radiologist"
-              placeholder="Add your initials..."
+              placeholder="Select radiologist"
               label="Radiologist / Author:"
-              variant="filled"
+              isSearchable
+              options={options}
+              onChange={(val) => setFieldValue("radiologist", val.value)}
             />
             <Select
               name="modaility"
@@ -84,12 +127,40 @@ const Content: React.FC<ContentProps> = (props) => {
                   value: "abdomen4",
                 },
               ]}
+              onChange={(val) => setFieldValue("modality", val.value)}
             />
-            <Input
+            <Select
               name="exam"
               placeholder="eg:  EXM2020"
               label="Exam Name:"
-              variant="filled"
+              options={[]}
+              onChange={(val) => setFieldValue("exam", val.value)}
+            />
+            <MultiSelect
+              createOptions
+              placeholder="Select body parts..."
+              name="bodyPart"
+              isSearchable
+              options={[]}
+              label="Body Part:"
+              onChange={(opts) => {
+                setFieldValue(
+                  "bodyPart",
+                  opts.map((opt) => opt.value).join(", ")
+                );
+                console.log(opts.map((opt) => opt.value).join(", "));
+              }}
+            />
+            <MultiSelect
+              createOptions
+              placeholder="Select tags..."
+              name="tags"
+              isSearchable
+              options={[]}
+              label="Tags:"
+              onChange={(opts) =>
+                setFieldValue("tags", opts.map((opt) => opt.value).join(", "))
+              }
             />
             <RadioGroup
               label="Visibility:"
@@ -100,37 +171,11 @@ const Content: React.FC<ContentProps> = (props) => {
                 { label: "Public", value: "public" },
                 { label: "Private", value: "private" },
               ]}
-            />
-            <MultiSelect
-              placeholder="Select tags..."
-              name="tags"
-              options={[
-                {
-                  label: "Abdomen",
-                  value: "abdomen",
-                },
-                {
-                  label: "Modality",
-                  value: "abdomen1",
-                },
-                {
-                  label: "Tests",
-                  value: "abdomen2",
-                },
-                {
-                  label: "CT Scan",
-                  value: "abdomen3",
-                },
-                {
-                  label: "Tags",
-                  value: "abdomen4",
-                },
-              ]}
-              label="Tags:"
+              onChange={(val) => setFieldValue("visibilty", val)}
             />
           </div>
           <div className="p-4 h-full flex justify-stretch w-full max-w-[var(--drawer-width)] flex-col">
-            <RichTextEditor height="50vh" />
+            <RichTextEditor height="50vh" onChange={(val) => setText(val)} />
           </div>
         </div>
       )}

@@ -1,11 +1,15 @@
 import { AxiosWrapper } from "../axios";
 import { ENDPOINTS } from "../endpoints";
 
-export const RadiologistList = async () => {
+/* Types */
+import type { GetIdType } from "../types/getId";
+
+export const RadiologistList = async (ids: GetIdType) => {
   return await AxiosWrapper({
-    method: "GET",
+    method: "POST",
     url: ENDPOINTS.getRadiologistList,
     needsAuth: true,
     defaultHeaders: true,
+    body: ids,
   });
 };

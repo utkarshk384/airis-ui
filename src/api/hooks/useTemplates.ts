@@ -1,11 +1,23 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 
-/* API */
-import { ListRadiologistTemplate } from "../handlers/templates";
+/* Hooks */
+import { useGetId } from "./useGetId";
 
-import type { ListRadiologistTemplateResponse } from "../types/templates";
+/* API */
+import {
+  ListRadiologistTemplate,
+  AddUpdateTemplate,
+} from "../handlers/templates";
+
+import type {
+  TemplatePayload,
+  AddUpdateTemplateResponse,
+  ListRadiologistTemplateResponse,
+} from "../types/templates";
 
 export const useTemplates = () => {
+  const ids = useGetId();
+
   const getRadiologistTemplate = useQuery<
     ListRadiologistTemplateResponse,
     unknown
@@ -13,5 +25,11 @@ export const useTemplates = () => {
     queryFn: ListRadiologistTemplate as any,
   });
 
-  return { getRadiologistTemplate };
+  const addUpdateTemplate = useMutation<
+    AddUpdateTemplateResponse,
+    unknown,
+    TemplatePayload
+  >((data) => AddUpdateTemplate({ ...data, ...ids }) as any);
+
+  return { getRadiologistTemplate, addUpdateTemplate };
 };

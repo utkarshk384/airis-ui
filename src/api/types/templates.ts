@@ -16,3 +16,48 @@ export type TemplateType = {
   templateLocked: boolean;
   templateStatus: boolean;
 };
+
+export type TemplatePayload = {
+  reportTemplateId?: number;
+  templateName: string;
+  radiologist: string;
+  modality: number;
+  exam: number;
+  visibilty: "public" | "private";
+  tags: string;
+  text: string;
+  bodyPart: string;
+};
+
+export type TemplateBody = {
+  reportTemplateId: number;
+  organizationId: number;
+  branchId: number;
+  reportTemplate: string;
+  reportTemplateTags: string;
+  procedureMasterId: number;
+  isPrivate: number;
+  radiologistMCRID: string;
+  abnormalityTags: string | null;
+  bodyPart: string | null;
+  enteredBy: number | null;
+  templateLocked: number | null;
+  templateStatus: number | null;
+};
+
+export type AddUpdateTemplateResponse = {
+  reportTemplateId: number;
+  organizationId: number;
+  modalityId: number | null;
+  reportTemplate: string;
+  reportTemplateTags: string;
+  procedureMasterId: number | null;
+  isPrivate: boolean;
+  radiologistMCRID: string;
+  abnormalityTags: string | null;
+  bodyPart: string | null;
+  enteredBy: string | null;
+  enteredDateTime: string;
+  templateLocked: boolean;
+  templateStatus: boolean;
+};
