@@ -7,9 +7,11 @@ import * as animationData from "@src/animations/preloader.json";
 
 /* Utils */
 import { getCookie } from "@utils/cookie";
+import { parseISO, isBefore } from "@utils/dates-fns";
+import { getLocalStoragevalue } from "@utils/localStorage";
 
 /* Consts */
-import { COOKIE_KEYS, PUBLIC_PATHS } from "@src/consts";
+import { COOKIE_KEYS, LOCAL_STORAGE_KEYS, PUBLIC_PATHS } from "@src/consts";
 import { Heading } from "./Typography";
 
 /* Types */
@@ -27,10 +29,14 @@ export const RouteGuard: React.FC<Props> = (props) => {
     (path: string) => {
       if (PUBLIC_PATHS.includes(path)) return true;
 
+      const validity = getLocalStoragevalue(LOCAL_STORAGE_KEYS.tokenValidity);
       const token = getCookie(COOKIE_KEYS.token);
       const userId = getCookie(COOKIE_KEYS.userId);
 
-      if (token && userId) return true;
+      let expiry = new Date();
+      if (validity) expiry = parseISO(validity);
+      console.log({ current: new Date(), expiry, validity });
+      if (token && userId && isBefore(new Date(), expiry)) return true;
       else {
         router.push(`/login?redirect_uri=${path}`);
         return false;

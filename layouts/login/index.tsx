@@ -5,17 +5,19 @@ import { useCallback } from "react";
 import { useRouter } from "next/router";
 
 /* Components */
-import { Button, Input, Text, Toast } from "@components";
 import { useLogin } from "@src/api/hooks/useLogin";
-
-/* Hooks */
-import { useCookie, useLocalStorage } from "@src/hooks";
+import { Button, Input, Text, Toast } from "@components";
 
 /* Consts */
 import { COOKIE_KEYS, LOCAL_STORAGE_KEYS } from "@src/consts";
 
+/* Utils */
+import { setCookies } from "@utils/cookie";
+import { ParseStringDate, addMinutes } from "@utils/dates-fns";
+import { setLocalStoragevalue } from "@utils/localStorage";
+
 /* Types */
-import { LoginPayload } from "@src/api/types";
+import type { LoginPayload, LoginResult } from "@src/api/types";
 
 type FormValues = {
   userName: string;
@@ -27,6 +29,33 @@ const validationSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 
+const setValues = (res: LoginResult) => {
+  const {
+    token,
+    userId,
+    organizationId,
+    branchId,
+    fullName,
+    otpExpiryDatetime,
+    id,
+  } = res;
+
+  /* TODO: Get Expiry from backend */
+  const parsed = new Date();
+  const expiryDate = addMinutes(parsed, 14).toISOString();
+
+  setCookies([
+    { name: COOKIE_KEYS.token, value: token },
+    { name: COOKIE_KEYS.userId, value: userId },
+    { name: COOKIE_KEYS.id, value: id },
+  ]);
+
+  setLocalStoragevalue(LOCAL_STORAGE_KEYS.name, fullName);
+  setLocalStoragevalue(LOCAL_STORAGE_KEYS.branchId, branchId.toString());
+  setLocalStoragevalue(LOCAL_STORAGE_KEYS.orgId, organizationId.toString());
+  setLocalStoragevalue(LOCAL_STORAGE_KEYS.tokenValidity, expiryDate.toString());
+};
+
 export const LoginForm: React.FC = (props) => {
   const {
     LoginMutation: { mutate, isLoading },
@@ -34,8 +63,6 @@ export const LoginForm: React.FC = (props) => {
   } = useLogin();
 
   const router = useRouter();
-  const { setCookies } = useCookie();
-  const { setMultipleStorageValues } = useLocalStorage();
 
   const onSubmit = useCallback(
     (values: FormValues) => {
@@ -47,25 +74,8 @@ export const LoginForm: React.FC = (props) => {
         onSuccess(data) {
           const res = data.success.result;
           const redirect = router.query["redirect_uri"];
-
-          const { token, userId, organizationId, branchId } = res;
-
+          setValues(res);
           Toast.success("Logged in successfully", { id: toastId });
-          setCookies([
-            { name: COOKIE_KEYS.token, value: token },
-            { name: COOKIE_KEYS.userId, value: userId },
-          ]);
-
-          setMultipleStorageValues([
-            {
-              key: LOCAL_STORAGE_KEYS.orgId,
-              value: organizationId.toString(),
-            },
-            {
-              key: LOCAL_STORAGE_KEYS.branchId,
-              value: branchId.toString(),
-            },
-          ]);
 
           if (typeof redirect === "string") router.push(redirect);
           else router.push("/");

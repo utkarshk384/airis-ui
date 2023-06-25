@@ -1,2 +1,2 @@
 export * from "./date";
-export { parseISO } from "date-fns";
+export * from "date-fns";

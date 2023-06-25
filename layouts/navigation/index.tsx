@@ -1,12 +1,27 @@
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 
 /* Stores */
 import { useNavigationStore } from "@stores/navigation";
 
 /* Components */
 import { NavigationContainer } from "./styled";
-import { Logo, Button, Avatar, KeyIcon, LogoutIcon, Text } from "@components";
+import {
+  Logo,
+  Button,
+  Avatar,
+  KeyIcon,
+  LogoutIcon,
+  Text,
+  Toast,
+} from "@components";
+
+/* APIs */
+import { useLogout } from "@src/api";
+
+/* Utils */
+import { deleteCookie, getCookie } from "@utils/cookie";
+import { getLocalStoragevalue } from "@utils/localStorage";
 
 /* Types */
 import type { Routes } from "@stores/navigation";
@@ -33,6 +48,8 @@ export const NavigationBar: React.FC<Props> = (props) => {
   const router = useRouter();
   const route = useNavigationStore((s) => s.route);
 
+  const name = useMemo(() => getLocalStoragevalue("name"), []);
+
   useEffect(() => {
     if (!isRootPath(router.asPath)) return;
     const { tab } = router.query;
@@ -50,26 +67,62 @@ export const NavigationBar: React.FC<Props> = (props) => {
       </div>
       <div className="flex flex-col gap-1 items-center justify-center">
         <Avatar hasDropdown DropdownContent={DropdownContent} />
-        <Text size="sm">Dr. John</Text>
+        <Text size="sm">{name}</Text>
       </div>
     </NavigationContainer>
   );
 };
 
-const DropdownContent = (Dropdown: MenuType) => (
-  <div className="py-2">
-    <Dropdown.Label>Dr. John</Dropdown.Label>
-    <Dropdown.Separator />
-    {/* <Dropdown.Item className="flex items-center gap-4">
-      <KeyIcon fill="currentColor" />
-      Change Password
-    </Dropdown.Item> */}
-    <Dropdown.Item className="flex items-center gap-4 !text-red-500">
-      <LogoutIcon stroke="currentColor" />
-      Logout
-    </Dropdown.Item>
-  </div>
-);
+const DropdownContent = (Dropdown: MenuType) => {
+  const { userLogout } = useLogout();
+  const router = useRouter();
+
+  const name = useMemo(() => getLocalStoragevalue("name"), []);
+
+  const clearValues = useCallback(() => {
+    localStorage.clear();
+    deleteCookie("id");
+    deleteCookie("token");
+    deleteCookie("userId");
+  }, []);
+
+  const logoutUser = () => {
+    const userId = getCookie("id");
+    const token = getCookie("token");
+    if (userId && token) {
+      const toastId = Toast.loading("Logging out...");
+      userLogout.mutate(
+        { userId, token },
+        {
+          onSuccess: () => {
+            Toast.success("Logged out successfully", { id: toastId });
+            clearValues();
+            router.push("/login");
+          },
+          onError: () => Toast.error("Something went wrong", { id: toastId }),
+        }
+      );
+    } else console.warn("Couldn't find userId or token");
+  };
+
+  return (
+    <div className="py-2">
+      <Dropdown.Label>{name}</Dropdown.Label>
+      <Dropdown.Separator />
+      {/* <Dropdown.Item className="flex items-center gap-4">
+              <KeyIcon fill="currentColor" />
+              Change Password
+            </Dropdown.Item> */}
+      <Dropdown.Item
+        onClick={logoutUser}
+        className="flex items-center gap-4 !text-red-500"
+      >
+        <LogoutIcon stroke="currentColor" />
+        Logout
+      </Dropdown.Item>
+    </div>
+  );
+};
 
 const NavigationItem: React.FC<NavigationItemProps> = (props) => {
   const { text, route } = props;

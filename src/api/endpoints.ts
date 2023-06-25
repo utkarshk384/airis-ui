@@ -7,4 +7,5 @@ export const ENDPOINTS = {
   getRadiologistList: "/risGateway/api/getRadiologistList",
   addUpdateTemplate: "/risGateway/api/addUpdateTemplate",
   getPatientHistory: "/risGateway/api/getPatientVisitHistory",
+  logout: "/risGateway/user/logout",
 };

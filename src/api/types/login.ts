@@ -13,7 +13,7 @@ export interface LoginResponse {
   failure: Failure;
 }
 
-type LoginResult = {
+export type LoginResult = {
   id: number;
   userId: string;
   organizationId: number;
