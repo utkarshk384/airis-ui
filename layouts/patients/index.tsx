@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { COLUMNS } from "./cols";
 import { DropdownContent } from "./filters";
 import { Button, Table } from "@components";
-import { AddTemplate } from "@layouts/templates";
+import { AddTemplate } from "@layouts/modals";
 
 import MOCK_DATA from "./MOCK_DATA.json";
 
@@ -47,7 +47,12 @@ export const PatientsTab: React.FC<Props> = (props) => {
   const { PatientListMutation, branchId, orgId } = usePatientList();
 
   useEffect(() => {
-    PatientListMutation.mutate({ branchId, orgId, referenceDate: new Date() });
+    if (branchId && orgId)
+      PatientListMutation.mutate({
+        branchId,
+        orgId,
+        referenceDate: new Date(),
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -35,7 +35,7 @@ export const RouteGuard: React.FC<Props> = (props) => {
 
       let expiry = new Date();
       if (validity) expiry = parseISO(validity);
-      console.log({ current: new Date(), expiry, validity });
+
       if (token && userId && isBefore(new Date(), expiry)) return true;
       else {
         router.push(`/login?redirect_uri=${path}`);

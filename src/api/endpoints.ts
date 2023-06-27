@@ -8,4 +8,5 @@ export const ENDPOINTS = {
   addUpdateTemplate: "/risGateway/api/addUpdateTemplate",
   getPatientHistory: "/risGateway/api/getPatientVisitHistory",
   logout: "/risGateway/user/logout",
+  optionList: "/risGateway/api/getOptionList",
 };

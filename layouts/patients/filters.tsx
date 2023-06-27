@@ -90,11 +90,12 @@ export const DropdownContent: React.FC<Props> = (props) => {
                 mode="single"
                 onChange={(day) => {
                   setFilter("visit_time", day);
-                  PatientListMutation.mutate({
-                    branchId,
-                    orgId,
-                    referenceDate: day,
-                  });
+                  if (branchId && orgId)
+                    PatientListMutation.mutate({
+                      branchId,
+                      orgId,
+                      referenceDate: day,
+                    });
                 }}
               />
             </div>

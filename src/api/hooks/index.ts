@@ -5,3 +5,4 @@ export * from "./useTemplates";
 export * from "./useRadiologistList";
 export * from "./usePatientHistory";
 export * from "./useLogout";
+export * from "./useOptionList";

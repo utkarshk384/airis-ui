@@ -21,7 +21,7 @@ export type TemplatePayload = {
   reportTemplateId?: number;
   templateName: string;
   radiologist: string;
-  modality: number;
+  modality: string;
   exam: number;
   visibilty: "public" | "private";
   tags: string;

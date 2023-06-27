@@ -22,6 +22,7 @@ export const TableContainer = styled("div", {
 
 export const StyledTable = styled("table", {
   width: "100%",
+  isolation: "isolate",
   borderCollapse: "collapse",
   overflow: "scroll",
 });
@@ -32,7 +33,7 @@ export const StyledTableHead = styled("thead", {
   background: "$white",
   fontSize: "$base",
   fontWeight: "$700",
-
+  zIndex: 1,
   variants: {
     sticky: {
       true: {

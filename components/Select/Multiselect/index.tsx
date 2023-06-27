@@ -1,5 +1,5 @@
 import { useCombobox, useMultipleSelection } from "downshift";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import debounce from "lodash.debounce";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
@@ -37,6 +37,10 @@ export const MultiSelect: React.FC<Props> = (props) => {
   const [items, setItems] = useState(rest.options);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    setItems(rest.options);
+  }, [rest.options]);
 
   const MultiSelectBox = useMultipleSelection({
     itemToString: (item) => item?.label || "",

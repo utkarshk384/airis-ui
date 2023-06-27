@@ -1,5 +1,5 @@
 import { useField } from "formik";
-import React, { ChangeEventHandler, useMemo } from "react";
+import React, { ChangeEventHandler, useMemo, useState } from "react";
 
 /* Components */
 import { Label } from "@components/shared";
@@ -7,6 +7,7 @@ import { Text } from "@components/Typography";
 
 /* Styled */
 import { StyledInput } from "./styled";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 
 type Props = {
   children?: React.ReactNode;
@@ -35,8 +36,8 @@ export const Input: React.FC<Props> = (props) => {
   } = DefaultProps(props);
 
   const [field, meta] = useField(rest);
+  const [type, setType] = useState(rest.type);
   const error = useMemo(() => meta.error || "", [meta.error]);
-
   return (
     <fieldset
       className={`fieldset-grid ${
@@ -45,7 +46,24 @@ export const Input: React.FC<Props> = (props) => {
     >
       <Label label={label} htmlFor={field.name} />
       <div className="flex flex-col gap-2">
-        <StyledInput variant={variant} {...field} {...rest} />
+        <span className="relative">
+          <StyledInput variant={variant} {...field} {...rest} type={type} />
+          {rest.type === "password" && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setType((prev) => (prev === "password" ? "text" : "password"));
+              }}
+            >
+              {type === "password" ? (
+                <EyeIcon className="w-4 h-4 absolute my-auto inset-0 left-auto" />
+              ) : (
+                <EyeSlashIcon className="w-4 h-4 absolute my-auto inset-0 left-auto" />
+              )}
+            </button>
+          )}
+        </span>
 
         <Text className="!text-red-500">
           {errorBeforeTouch ? error : meta.touched && error}

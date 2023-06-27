@@ -13,8 +13,9 @@ import { COOKIE_KEYS, LOCAL_STORAGE_KEYS } from "@src/consts";
 
 /* Utils */
 import { setCookies } from "@utils/cookie";
-import { ParseStringDate, addMinutes } from "@utils/dates-fns";
+import { PasswordValidation } from "../shared/validation";
 import { setLocalStoragevalue } from "@utils/localStorage";
+import { ParseStringDate, addMinutes } from "@utils/dates-fns";
 
 /* Types */
 import type { LoginPayload, LoginResult } from "@src/api/types";
@@ -26,7 +27,7 @@ type FormValues = {
 
 const validationSchema = yup.object().shape({
   userName: yup.string().required("Username is required"),
-  password: yup.string().required("Password is required"),
+  password: PasswordValidation,
 });
 
 const setValues = (res: LoginResult) => {
@@ -102,6 +103,8 @@ export const LoginForm: React.FC = (props) => {
       validationSchema={validationSchema}
       initialValues={{ userName: "", password: "" } as FormValues}
       onSubmit={onSubmit}
+      validateOnBlur={false}
+      validateOnChange={false}
     >
       {({ handleSubmit }) => (
         <form className="flex flex-col items-center gap-4 w-3/5">

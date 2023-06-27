@@ -25,7 +25,7 @@ const LoginPage: React.FC<Props> = (props) => {
             color="primary"
             className="text-center"
           >
-            Radiology information system
+            Radiology Information System
           </Heading>
           <Text weight="500">
             Please login to AIRIS to view the Patient Study, Report and status.
@@ -33,8 +33,8 @@ const LoginPage: React.FC<Props> = (props) => {
         </div>
         <LoginLayoutCard
           Component={LoginForm}
-          titleText="Welcome Back"
-          subTitleText="Login to your account"
+          titleText="Login to AIRIS Account"
+          subTitleText=""
         />
       </div>
     </div>

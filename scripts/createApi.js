@@ -26,28 +26,22 @@ const HOOKS_CONTENT = `
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 /* API */
-import { ${capitalize(NAME)} } from "../handlers/${NAME.toLowerCase()}";
+import { ${capitalize(NAME)} } from "../handlers/${NAME}";
 `;
 
 // Create new handler file.
-fs.writeFileSync(
-  `${PATH_API}/handlers/${NAME.toLowerCase()}.ts`,
-  HANDLER_CONTENT
-);
+fs.writeFileSync(`${PATH_API}/handlers/${NAME}.ts`, HANDLER_CONTENT);
 
 // Create new hook file.
 fs.writeFileSync(`${PATH_API}/hooks/use${capitalize(NAME)}.ts`, HOOKS_CONTENT);
 
 // Create new types file.
-fs.writeFileSync(
-  path.join(PATH_API, "types", `${NAME.toLowerCase()}.ts`),
-  TYPES_CONTENT
-);
+fs.writeFileSync(path.join(PATH_API, "types", `${NAME}.ts`), TYPES_CONTENT);
 
 // Update types/index.ts
 fs.appendFileSync(
   `${PATH_API}/types/index.ts`,
-  `export type * from "./${NAME.toLowerCase()}";\n`
+  `export type * from "./${NAME}";\n`
 );
 
 // Update hooks/index.ts

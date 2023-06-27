@@ -74,8 +74,6 @@ export const ForgotForm: React.FC = (props) => {
     []
   );
 
-  useEffect(() => {}, []);
-
   return (
     <Formik
       initialValues={
@@ -121,14 +119,17 @@ export const ForgotForm: React.FC = (props) => {
             </Button>
           </div>
           {isOtpSent && (
-            <Input variant="underlined" placeholder="Enter OTP" name="otp" />
+            <>
+              <Input variant="underlined" placeholder="Enter OTP" name="otp" />
+              <Input
+                variant="underlined"
+                placeholder="New Password"
+                name="password"
+                type="password"
+              />
+            </>
           )}
-          <Input
-            variant="underlined"
-            placeholder="New Password"
-            name="password"
-            type="password"
-          />
+
           <div className="flex justify-center w-full">
             <Button
               disabled={!isOtpSent}

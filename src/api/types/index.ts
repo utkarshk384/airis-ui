@@ -6,3 +6,4 @@ export type * from "./templates";
 export type * from "./radiologistlist";
 export type * from "./patienthistory";
 export type * from "./logout";
+export type * from "./optionList";

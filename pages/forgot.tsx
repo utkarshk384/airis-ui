@@ -25,7 +25,7 @@ const ForgotPage: React.FC<Props> = (props) => {
             color="primary"
             className="text-center"
           >
-            Radiology information system
+            Radiology Information System
           </Heading>
           <Text weight="500" className="text-center">
             Please RESET YOUR PASSWORD to view the Patient Study, Report and
