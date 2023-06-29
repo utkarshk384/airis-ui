@@ -1,5 +1,4 @@
 /* Types */
-import type { MenuType } from "@components/Dropdown";
 import type { TableInstance, Column } from "react-table";
 export type ColumnType = Column;
 
@@ -11,4 +10,9 @@ export interface SortByItem {
 
 export type TableComponent<T extends Record<string, unknown> = {}> = {
   table: TableInstance<T>;
+};
+
+export type DefaultFilter = {
+  id: string;
+  value: unknown;
 };

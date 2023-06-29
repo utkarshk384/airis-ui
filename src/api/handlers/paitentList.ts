@@ -1,6 +1,9 @@
 import { AxiosWrapper } from "../axios";
 import { ENDPOINTS } from "../endpoints";
 
+/* Utils */
+import { FormatDate } from "@utils/dates-fns";
+
 /* Types */
 import type {
   PatientListPayload,
@@ -13,7 +16,7 @@ export const Dashboard = async (data: PatientListPayload) => {
   const body: PatientListRequest = {
     branchId: typeof branchId === "string" ? parseInt(branchId) : branchId,
     orgId: typeof orgId === "string" ? parseInt(orgId) : orgId,
-    referenceDate: referenceDate.toISOString(),
+    referenceDate: FormatDate(referenceDate, "dd-MM-yyyy"),
   };
 
   return await AxiosWrapper({

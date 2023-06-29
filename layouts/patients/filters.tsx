@@ -1,15 +1,16 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Select } from "@components/Select/Single";
 import { FunnelIcon } from "@heroicons/react/20/solid";
 
 /* Components */
 import { Datepicker, DropdownButton } from "@components";
 
+/* APIs */
+import { usePatientList } from "@src/api";
+
 /* Types */
-import type { Patient } from "./types";
 import type { TableComponent } from "@components/types";
 import type { DropdownOption } from "@components/sharedTypes";
-import { usePatientList } from "@src/api";
 
 type Props = {} & TableComponent;
 

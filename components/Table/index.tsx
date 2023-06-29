@@ -26,8 +26,8 @@ import {
 } from "./styled";
 
 /* Types */
+import type { DefaultFilter } from "./types";
 import type { Column, TableInstance } from "react-table";
-
 interface Props {
   children?: React.ReactNode | ((table: TableInstance) => React.ReactNode);
   cols: Array<Column>;
@@ -36,6 +36,7 @@ interface Props {
   onRowClick?: (original: Object) => void;
   hasStickyHeader?: boolean;
   searchPlaceholder?: string;
+  defaultFilters?: DefaultFilter[];
   searchClassName?: string;
 }
 
@@ -45,6 +46,7 @@ export const Table: React.FC<Props> = (props) => {
     rows: Data,
     hasStickyHeader = true,
     children,
+    defaultFilters,
   } = DefaultProps(props);
 
   /* Memos */
@@ -56,7 +58,11 @@ export const Table: React.FC<Props> = (props) => {
     {
       columns: columns as Column<Record<string, unknown>>[],
       data,
-      initialState: { pageIndex: 0, pageSize: defaultValue.value },
+      initialState: {
+        pageIndex: 0,
+        pageSize: defaultValue.value,
+        filters: defaultFilters,
+      },
     },
     useFilters,
     useGlobalFilter,
@@ -102,6 +108,7 @@ export const Table: React.FC<Props> = (props) => {
 const DefaultProps = (props: Props) => {
   const defaultProps = {
     ...props,
+    defaultFilters: props.defaultFilters || [],
     title: props.title || "",
     hasStickyHeader: props.hasStickyHeader || true,
     searchClassName: props.searchClassName || "",

@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useState, useEffect, useCallback } from "react";
 
@@ -38,7 +38,8 @@ export const RouteGuard: React.FC<Props> = (props) => {
 
       if (token && userId && isBefore(new Date(), expiry)) return true;
       else {
-        router.push(`/login?redirect_uri=${path}`);
+        if (!path.includes("/login"))
+          router.push(`/login?redirect_uri=${path}`);
         return false;
       }
     },
@@ -48,6 +49,26 @@ export const RouteGuard: React.FC<Props> = (props) => {
   useEffect(() => {
     setAuthorized(authCheck(router.pathname));
   }, [authCheck, router.pathname]);
+
+  // useEffect(() => {
+  //   const interval = setTimeout(() => {
+  //     const path = Router.pathname;
+  //     if (PUBLIC_PATHS.includes(path)) return true;
+
+  //     const validity = getLocalStoragevalue(LOCAL_STORAGE_KEYS.tokenValidity);
+  //     if (!validity) return;
+
+  //     let expiry = parseISO(validity);
+  //     console.log({ expiry });
+  //     if (isBefore(new Date(), expiry)) setAuthorized(true);
+  //     else {
+  //       setAuthorized(false);
+  //       Router.push(`/login?redirect_uri=${path}`);
+  //     }
+  //   }, 1000);
+
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return <>{authorized ? children : <Preloader />}</>;
 };

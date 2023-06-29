@@ -20,7 +20,8 @@ import {
 import { useLogout } from "@src/api";
 
 /* Utils */
-import { deleteCookie, getCookie } from "@utils/cookie";
+import { getCookie } from "@utils/cookie";
+import { ClearStorages } from "@layouts/shared/functions";
 import { getLocalStoragevalue } from "@utils/localStorage";
 
 /* Types */
@@ -79,12 +80,7 @@ const DropdownContent = (Dropdown: MenuType) => {
 
   const name = useMemo(() => getLocalStoragevalue("name"), []);
 
-  const clearValues = useCallback(() => {
-    localStorage.clear();
-    deleteCookie("id");
-    deleteCookie("token");
-    deleteCookie("userId");
-  }, []);
+  const clearValues = useCallback(ClearStorages, []);
 
   const logoutUser = () => {
     const userId = getCookie("id");

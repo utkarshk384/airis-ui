@@ -103,6 +103,7 @@ export const ForgotForm: React.FC = (props) => {
               errorBeforeTouch
             />
             <Button
+              isLoading={OtpMutation.isLoading}
               size="base"
               className="absolute -right-5 bottom-2"
               onClick={(e) => {
@@ -132,6 +133,7 @@ export const ForgotForm: React.FC = (props) => {
 
           <div className="flex justify-center w-full">
             <Button
+              isLoading={ForgotMutation.isLoading}
               disabled={!isOtpSent}
               size="lg"
               onClick={(e) => {

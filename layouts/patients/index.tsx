@@ -77,7 +77,8 @@ export const PatientsTab: React.FC<Props> = (props) => {
         searchPlaceholder="Search patient id, name, acc no, referral doctor..."
         cols={cols}
         searchClassName="w-7/12"
-        rows={rows}
+        rows={data}
+        defaultFilters={[{ id: "visit_time", value: new Date() }]}
         title="Patients"
       >
         {(table) => <DropdownContent table={table} />}

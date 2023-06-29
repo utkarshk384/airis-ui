@@ -81,16 +81,11 @@ export const LoginForm: React.FC = (props) => {
           if (typeof redirect === "string") router.push(redirect);
           else router.push("/");
         },
-        onError(error) {
-          if (error.statusCode === 401)
-            Toast.error(
-              "Please check your username or password and try again.",
-              { id: toastId }
-            );
-          else
-            Toast.error("Something went wrong while logging in", {
-              id: toastId,
-            });
+        onError(data) {
+          const error = data?.data?.failure?.message?.failure?.message;
+          Toast.error(error || "Something went wrong", {
+            id: toastId,
+          });
         },
       });
     },
