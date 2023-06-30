@@ -144,7 +144,6 @@ const Content: React.FC<ContentProps> = (props) => {
             isSearchable
             options={modalityDropdown}
             onChange={(val) => {
-              console.log({ val });
               setFieldValue("modality", val.value);
             }}
           />
@@ -167,7 +166,6 @@ const Content: React.FC<ContentProps> = (props) => {
                 "bodyPart",
                 opts.map((opt) => opt.value).join(", ")
               );
-              console.log(opts.map((opt) => opt.value).join(", "));
             }}
           />
           <MultiSelect

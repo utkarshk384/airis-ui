@@ -2,7 +2,7 @@ export type DateType = number | Date;
 
 export type ParseStringDateInterface = (
   date: DateType | string,
-  format: string
+  format: FormatOpts
 ) => Date;
 
 export type FormatOpts =

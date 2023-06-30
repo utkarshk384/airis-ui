@@ -44,24 +44,14 @@ export const PatientsTab: React.FC<Props> = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const [data, setData] = useState<Patient[]>([]);
-  const { PatientListMutation, branchId, orgId } = usePatientList();
+  const { PatientList } = usePatientList();
 
   useEffect(() => {
-    if (branchId && orgId)
-      PatientListMutation.mutate({
-        branchId,
-        orgId,
-        referenceDate: new Date(),
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (PatientListMutation.isSuccess) {
-      const formattedData = TransformToTableRows(PatientListMutation.data);
+    if (PatientList.isSuccess) {
+      const formattedData = TransformToTableRows(PatientList.data);
       setData(formattedData);
     }
-  }, [PatientListMutation.data, PatientListMutation.isSuccess]);
+  }, [PatientList.data, PatientList.isSuccess]);
 
   return (
     <div className="container !bg-white rounded-lg p-4 !mb-16">

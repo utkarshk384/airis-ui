@@ -1,5 +1,6 @@
-import { useCallback, useMemo, useRef } from "react";
 import { Column } from "react-table";
+import { useRouter } from "next/router";
+import { useCallback, useMemo, useRef } from "react";
 
 /* Components */
 import { NotesComponent } from "./colComponents";
@@ -17,7 +18,6 @@ import { parseISO, FormatDate } from "@utils/dates-fns";
 
 /* Types */
 import type { Patient } from "./types";
-import { useRouter } from "next/router";
 
 export const COLUMNS: Column[] = [
   {
@@ -39,9 +39,19 @@ export const COLUMNS: Column[] = [
 
       const router = useRouter();
 
+      const parsedDate = useMemo(
+        () => parseISO(row.visit_date),
+        [row.visit_date]
+      );
+
       const handleClick = useCallback(() => {
-        router.push(`/patients/${row.acc_no}`);
-      }, [router, row.acc_no]);
+        router.push(
+          `/patients/${row.patient_id}?ref=${FormatDate(
+            parsedDate,
+            "dd-MM-yyyy"
+          )}`
+        );
+      }, [parsedDate, router, row.patient_id]);
 
       return (
         <Button as="a" variant="link" className="p-0" onClick={handleClick}>
@@ -92,7 +102,10 @@ export const COLUMNS: Column[] = [
     Cell: (props) => {
       const row = props.row.original as Patient;
 
-      const parsedDate = useMemo(() => parseISO(row.visit_date), []);
+      const parsedDate = useMemo(
+        () => parseISO(row.visit_date),
+        [row.visit_date]
+      );
       const formattedDate = useMemo(
         () => FormatDate(parsedDate, "HH:mm"),
         [parsedDate]

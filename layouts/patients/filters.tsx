@@ -17,7 +17,7 @@ type Props = {} & TableComponent;
 export const DropdownContent: React.FC<Props> = (props) => {
   const { table } = props;
 
-  const { PatientListMutation, branchId, orgId } = usePatientList();
+  const { setReferenceDate } = usePatientList();
 
   const statusOption: DropdownOption[] = useMemo(
     () => [
@@ -91,12 +91,7 @@ export const DropdownContent: React.FC<Props> = (props) => {
                 mode="single"
                 onChange={(day) => {
                   setFilter("visit_time", day);
-                  if (branchId && orgId)
-                    PatientListMutation.mutate({
-                      branchId,
-                      orgId,
-                      referenceDate: day,
-                    });
+                  setReferenceDate(day);
                 }}
               />
             </div>

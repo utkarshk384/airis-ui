@@ -1,25 +1,31 @@
-import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 /* API */
-import { Dashboard } from "../handlers/paitentList";
+import { Dashboard } from "../handlers/patientList";
 
 /* Hooks */
 import { useGetId } from "./useGetId";
 
 /* Types */
-import type {
-  PatientListResponse,
-  PatientListPayload,
-} from "../types/patientList";
+import type { PatientListResponse } from "../types/patientList";
+import { useRouter } from "next/router";
 
 export const usePatientList = () => {
   const { orgId, branchId } = useGetId();
+  const router = useRouter();
 
-  const PatientListMutation = useMutation<
-    PatientListResponse,
-    PatientListResponse,
-    PatientListPayload
-  >(Dashboard as any);
+  const [referenceDate, setReferenceDate] = useState<Date>(new Date());
 
-  return { PatientListMutation, orgId, branchId };
+  const PatientList = useQuery<PatientListResponse, PatientListResponse>(
+    ["get-patient-list", orgId, branchId, referenceDate],
+    () =>
+      Dashboard({
+        orgId,
+        branchId,
+        referenceDate,
+      }) as any
+  );
+
+  return { PatientList, setReferenceDate };
 };

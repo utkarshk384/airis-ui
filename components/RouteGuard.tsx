@@ -47,8 +47,17 @@ export const RouteGuard: React.FC<Props> = (props) => {
   );
 
   useEffect(() => {
-    setAuthorized(authCheck(router.pathname));
-  }, [authCheck, router.pathname]);
+    let path = router.pathname;
+    const isDynamic = path.includes("[") || path.includes("]");
+
+    if (isDynamic) {
+      const param = router.asPath.split("/").at(-1);
+      if (param) path = path.replace(/\[.*\]/, param);
+    }
+
+    console.log({ path });
+    setAuthorized(authCheck(path));
+  }, [authCheck, router.asPath, router.pathname]);
 
   // useEffect(() => {
   //   const interval = setTimeout(() => {
@@ -59,7 +68,6 @@ export const RouteGuard: React.FC<Props> = (props) => {
   //     if (!validity) return;
 
   //     let expiry = parseISO(validity);
-  //     console.log({ expiry });
   //     if (isBefore(new Date(), expiry)) setAuthorized(true);
   //     else {
   //       setAuthorized(false);
