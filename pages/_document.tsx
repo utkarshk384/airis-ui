@@ -6,6 +6,7 @@ export default function Document() {
       <Head />
       <body className="bg-slate-100">
         <Main />
+        <div id="main-portal" />
         <NextScript />
       </body>
     </Html>

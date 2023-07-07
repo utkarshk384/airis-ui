@@ -12,7 +12,7 @@ import { BorderedContainer } from "./components/styled";
 import { usePatientList } from "@src/api";
 
 /* Utils */
-import { ParseStringDate } from "@utils/dates-fns";
+import { GetAge, ParseStringDate } from "@utils/dates-fns";
 
 /* Contexts */
 import { TabProvider } from "./context/tabs";
@@ -25,14 +25,22 @@ type Props = {
   children?: React.ReactNode;
 };
 
+type PatientType = PatientListType & {
+  age: string;
+};
+
 export const ReportingComponent: React.FC<Props> = (props) => {
   const {} = props;
 
+  /* Hooks */
   const router = useRouter();
 
+  /* APIs */
   const { PatientList, setReferenceDate } = usePatientList();
 
-  const [patient, setPatient] = useState<PatientListType | null>(null);
+  /* States */
+  const [patient, setPatient] = useState<PatientType | null>(null);
+  const [activeTab, setActiveTab] = useState<number>(0);
 
   useEffect(() => {
     const id = router.query.report as string;
@@ -42,26 +50,31 @@ export const ReportingComponent: React.FC<Props> = (props) => {
       (item) => item.patientIndexId.toString() === id
     );
 
-    if (item && item?.length > 0) setPatient(item[0]);
+    if (item && item?.length > 0) {
+      const Patient = item[0] as PatientType;
+      const parsedDate = ParseStringDate(Patient.dateofBirth, "dd-MM-yyyy");
+      Patient.age = `${GetAge(parsedDate).toString()}/${
+        parsedDate.getMonth() + 1
+      }`;
+      setPatient(Patient);
+    }
   }, [PatientList.data, router.query, router.query.report, setReferenceDate]);
-
-  console.log({ patient });
 
   return (
     <div className="container gap-y-5 grid grid-rows-[1fr_2fr_3fr_1fr]">
       <ReportingHeader
         data={{
-          age: "20/11",
-          gender: "Male",
-          name: "John Doe",
-          id: "S767676767D",
+          age: patient?.age || "",
+          gender: patient?.administrativeSexText || "",
+          name: patient?.patientName || "",
+          id: patient?.patientIndexId.toString() || "",
         }}
       />
       <TabProvider>
         <BorderedContainer className="overflow-hidden">
           <Tabbar />
           <div className="my-2" />
-          <TabContent />
+          <TabContent patient={patient} />
         </BorderedContainer>
         <BorderedContainer>
           <RichTextEditor height="20rem" />

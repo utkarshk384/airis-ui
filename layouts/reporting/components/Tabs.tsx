@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 /* Components */
-import { Text } from "@components";
+import { Text, Preloader } from "@components";
 
 /* Contexts */
 import { useTab } from "../context/tabs";
@@ -9,6 +9,9 @@ import { useTab } from "../context/tabs";
 /* Types */
 import { TabProps } from "../types";
 import { StyledIndicator } from "./styled";
+import { usePatientHistory } from "@src/api";
+import { useRouter } from "next/router";
+import { FormatDate, parseISO } from "@utils/dates-fns";
 
 type Props = {
   children?: React.ReactNode;
@@ -17,13 +20,27 @@ type Props = {
 export const Tabbar: React.FC<Props> = (props) => {
   const {} = props;
 
+  /* Hooks */
+  const router = useRouter();
+
+  /* APIs */
+  const { getPatientHistory, setPatientId } = usePatientHistory();
+
+  /* Effects */
+  useEffect(() => {
+    const patientId = router.query.report;
+    setPatientId(patientId as string);
+  }, [router.query.report, setPatientId]);
+
+  if (getPatientHistory.isLoading) return <Preloader />;
+
   return (
     <div className="w-full overflow-x-scroll custom-scroll-bar flex">
-      {new Array(15).fill(0).map((_, i) => (
+      {getPatientHistory.data?.map((history, i) => (
         <Tab
           index={i}
-          date="20/11/2023"
-          modality="CT Scan"
+          date={history.visitDate}
+          modality={history.modalityText}
           status="active"
           key={i}
         />
@@ -42,6 +59,11 @@ const Tab: React.FC<TabProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
 
+  const date = useMemo(() => {
+    const d = parseISO(props.date);
+    return FormatDate(d, "dd/MM/yyyy");
+  }, [props.date]);
+
   return (
     <button
       onClick={handleClick}
@@ -51,12 +73,12 @@ const Tab: React.FC<TabProps> = (props) => {
     >
       <div className="flex gap-2 items-center">
         <Text size="sm" color={tab === index ? "white" : "black"} weight="600">
-          {props.date}
+          {date}
         </Text>
         <StyledIndicator color={props.status} />
       </div>
       <Text color={tab === index ? "white" : "black"} size="sm">
-        {props.modality}
+        {props.modality || "No Modality"}
       </Text>
     </button>
   );

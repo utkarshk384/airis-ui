@@ -1,5 +1,14 @@
 export type ListRadiologistTemplateResponse = TemplateType[];
 
+export type listRadiologistPayloadType = {
+  orgId: string;
+  branchId: string;
+  bodyPart: string | null;
+  reportTemplateTags: string | null;
+  radiologistMCRID: string | null;
+  procedureMasterId: number | null;
+};
+
 export type TemplateType = {
   reportTemplateId: number;
   organizationId: number;

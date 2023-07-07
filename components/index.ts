@@ -15,3 +15,4 @@ export * from "./Accordion";
 export * from "./RichTextEditor";
 export * from "./RadioGroup";
 export * from "./Select";
+export * from "./preloader";

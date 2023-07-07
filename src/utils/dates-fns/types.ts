@@ -7,6 +7,7 @@ export type ParseStringDateInterface = (
 
 export type FormatOpts =
   | "dd-MM-yyyy"
+  | "dd/MM/yyyy"
   | "dd-MM-yyyy HH:mm"
   | "HH:mm"
   | "MMM"

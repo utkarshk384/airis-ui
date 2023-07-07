@@ -19,5 +19,5 @@ export type TabProps = {
   date: string;
   index: number;
   status: "active" | "new" | "progress" | "inactive";
-  modality: string;
+  modality: string | null;
 };

@@ -1,6 +1,6 @@
 export type PatientHistoryResponse = PatientHistory[];
 
-type PatientHistory = {
+export type PatientHistory = {
   patientVisitIndexId: number;
   patientIndexId: number;
   referringDoctor: string | null;

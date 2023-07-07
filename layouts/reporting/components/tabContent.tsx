@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 
 /* Components */
@@ -15,25 +15,59 @@ import {
 } from "@components";
 
 /* APIs */
-import { useTemplates } from "@src/api";
+import { usePatientHistory, useTemplates } from "@src/api";
 
 /* Types */
+import type { PatientListType, PatientHistory } from "@src/api/types";
 import type { DropdownOption } from "@components/sharedTypes";
+import { useTab } from "../context/tabs";
+import { FormatDate } from "@utils/dates-fns";
+import { parseISO } from "date-fns";
+import { useRouter } from "next/router";
 
 type Props = {
   children?: React.ReactNode;
+  patient: PatientListType | null;
 };
 
 export const TabContent: React.FC<Props> = (props) => {
-  const {} = props;
+  const { patient } = props;
+
+  /* Hooks */
+  const { tab } = useTab();
+  const router = useRouter();
 
   /* States */
   const [isAllergyOpen, setIsAllergyOpen] = useState(false);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [templates, setTemplates] = useDropdown();
+  const [history, setHistory] = useState<PatientHistory | null>(null);
 
-  const { getRadiologistTemplate } = useTemplates();
+  const { getRadiologistTemplate, setListRadiologistPayload } = useTemplates();
+  const { getPatientHistory, setPatientId } = usePatientHistory();
+
+  /* Effects */
+  useEffect(() => {
+    const patientId = router.query.report;
+    setPatientId(patientId as string);
+  }, [router.query.report, setPatientId]);
+
+  useEffect(() => {
+    const item = getPatientHistory.data?.[tab];
+    if (item) {
+      setListRadiologistPayload((prev) => {
+        const payload = {
+          ...prev,
+          procedureMasterId: item.procedure,
+        };
+        return payload;
+      });
+
+      setHistory(item);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getPatientHistory.data, tab]);
 
   useEffect(() => {
     if (getRadiologistTemplate.isSuccess)
@@ -45,6 +79,16 @@ export const TabContent: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getRadiologistTemplate.isSuccess]);
 
+  const examDate = useMemo(() => {
+    console.log({ history });
+    if (history && history.visitDate) {
+      const parsedDate = parseISO(history.visitDate);
+      console.log({ parsedDate });
+      return FormatDate(parsedDate, "dd-MM-yyyy HH:mm");
+    }
+    return "Failed to load exam date";
+  }, [history]);
+
   return (
     <>
       <TechnicalNotesDrawer setOpen={setIsNotesOpen} open={isNotesOpen} />
@@ -52,14 +96,22 @@ export const TabContent: React.FC<Props> = (props) => {
       <DrFormDrawer open={isFormOpen} setOpen={setIsFormOpen} />
       <div className="flex flex-col gap-10">
         <div className="flex justify-between px-4">
-          <ListItem color="black" title="Acc Number" value="3213123132" />
-          <ListItem color="black" title="Examination Name" value="EXAM2020" />
           <ListItem
             color="black"
-            title="Examination Date"
-            value="02-02-2023 09:30"
+            title="Acc Number"
+            value={patient?.accessionNumber || ""}
           />
-          <ListItem color="black" title="Referral Doctor" value="Dr. Kumar" />
+          <ListItem
+            color="black"
+            title="Examination Name"
+            value={history?.procedureText || "Failed to load procedure"}
+          />
+          <ListItem color="black" title="Examination Date" value={examDate} />
+          <ListItem
+            color="black"
+            title="Referral Doctor"
+            value={history?.referringDoctor || "Failed to load referral doctor"}
+          />
         </div>
         <div className="grid grid-cols-[1fr_1fr] px-4">
           <div className="flex gap-4">

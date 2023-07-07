@@ -3,13 +3,26 @@ import { ENDPOINTS } from "../endpoints";
 
 /* Types */
 import type { GetIdType } from "../types/getId";
-import type { TemplateBody, TemplatePayload } from "../types";
+import type {
+  TemplateBody,
+  TemplatePayload,
+  listRadiologistPayloadType,
+} from "../types";
 
-export const ListRadiologistTemplate = async () => {
+export const ListRadiologistTemplate = async (
+  data: listRadiologistPayloadType
+) => {
+  const body = {
+    ...data,
+    orgId: parseInt(data.orgId),
+    branchId: parseInt(data.branchId),
+  };
+
   return await AxiosWrapper({
     url: ENDPOINTS.getRadioloistTemplate,
-    method: "GET",
+    method: "POST",
     needsAuth: true,
+    body,
   });
 };
 

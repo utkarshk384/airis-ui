@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 /* Hooks */
@@ -9,20 +10,31 @@ import {
   AddUpdateTemplate,
 } from "../handlers/templates";
 
+/* Types */
 import type {
   TemplatePayload,
   AddUpdateTemplateResponse,
+  listRadiologistPayloadType,
   ListRadiologistTemplateResponse,
 } from "../types/templates";
 
 export const useTemplates = () => {
   const ids = useGetId();
 
+  const [listRadiologistPayload, setListRadiologistPayload] =
+    useState<listRadiologistPayloadType>({
+      ...ids,
+      bodyPart: null,
+      reportTemplateTags: null,
+      radiologistMCRID: null,
+      procedureMasterId: null,
+    });
+
   const getRadiologistTemplate = useQuery<
     ListRadiologistTemplateResponse,
     unknown
-  >(["radiologist-template"], {
-    queryFn: ListRadiologistTemplate as any,
+  >(["radiologist-template", listRadiologistPayload], {
+    queryFn: () => ListRadiologistTemplate(listRadiologistPayload) as any,
   });
 
   const addUpdateTemplate = useMutation<
@@ -31,5 +43,9 @@ export const useTemplates = () => {
     TemplatePayload
   >((data) => AddUpdateTemplate({ ...data, ...ids }) as any);
 
-  return { getRadiologistTemplate, addUpdateTemplate };
+  return {
+    getRadiologistTemplate,
+    addUpdateTemplate,
+    setListRadiologistPayload,
+  };
 };
