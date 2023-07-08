@@ -40,7 +40,6 @@ export const ReportingComponent: React.FC<Props> = (props) => {
 
   /* States */
   const [patient, setPatient] = useState<PatientType | null>(null);
-  const [activeTab, setActiveTab] = useState<number>(0);
 
   useEffect(() => {
     const id = router.query.report as string;

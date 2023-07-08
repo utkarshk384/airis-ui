@@ -6,3 +6,5 @@ export * from "./useRadiologistList";
 export * from "./usePatientHistory";
 export * from "./useLogout";
 export * from "./useOptionList";
+export * from "./useTechnicalNotes";
+export * from "./useAllergy";

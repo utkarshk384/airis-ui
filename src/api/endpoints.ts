@@ -9,4 +9,8 @@ export const ENDPOINTS = {
   getPatientHistory: "/risGateway/api/getPatientVisitHistory",
   logout: "/risGateway/user/logout",
   optionList: "/risGateway/api/getOptionList",
+  getTechnicalNotes: "/risGateway/api/getPatientClinicalNotesList",
+  addUpdateTechnicalNotes: "/risGateway/api/addUpdatePatientClinicalNotes",
+  getAllergies: "/risGateway/api/getPatientAllergyList",
+  addUpdateAllergy: "/risGateway/api/addUpdatePatientAllergy",
 };

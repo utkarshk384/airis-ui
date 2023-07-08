@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { FormatDate } from "@utils/dates-fns";
 
 /* Types */
-import type { AllergyNotesItemType } from "./types";
+import type { AllergyNotesItemType } from "../types";
 
 type AddNewItemType = () => void;
 

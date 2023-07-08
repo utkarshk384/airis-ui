@@ -9,10 +9,10 @@ import { Accordion, Drawer, Button, Text, RichTextEditor } from "@components";
 
 /* Hooks */
 import { useUniqueId } from "@src/hooks";
-import { useNewItem } from "./useNewItem";
+import { useNewItem } from "../shared/useNewItem";
 
 /* Types */
-import type { AllergyNotesItemType } from "./types";
+import type { AllergyNotesItemType } from "../types";
 import type { AccordionItemType } from "@components/types";
 
 type DrawerProps = {

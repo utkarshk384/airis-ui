@@ -3,8 +3,8 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 
 /* Components */
 import { ListItem } from "./shared";
-import { DrFormDrawer } from "@layouts/shared/drawer/drFormDrawer";
-import { TechnicalNotesDrawer, AllergyDrawer } from "@layouts/shared/drawer";
+import { DrFormDrawer } from "@layouts/modals/drForm";
+import { TechnicalNotesDrawer, AllergyDrawer } from "@layouts/modals/";
 import {
   AllergyIcon,
   Button,

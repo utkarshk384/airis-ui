@@ -7,3 +7,5 @@ export type * from "./radiologistlist";
 export type * from "./patienthistory";
 export type * from "./logout";
 export type * from "./optionList";
+export type * from "./technicalNotes";
+export type * from "./allergy";
