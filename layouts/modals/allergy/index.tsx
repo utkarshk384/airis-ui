@@ -14,10 +14,13 @@ import { useNewItem } from "../shared/useNewItem";
 /* Types */
 import type { AllergyNotesItemType } from "../types";
 import type { AccordionItemType } from "@components/types";
+import { useAllergies } from "@src/api";
+import { useEffect } from "react";
 
 type DrawerProps = {
   open: boolean;
   setOpen: (val: boolean) => void;
+  patientId: string | number;
 };
 
 type AllergyItemProps = {
@@ -26,24 +29,30 @@ type AllergyItemProps = {
 };
 
 export const AllergyDrawer: React.FC<DrawerProps> = (props) => {
-  const { open, setOpen } = props;
+  const { open, setOpen, patientId } = props;
 
-  const { items, addNewItem, setItems } = useNewItem(open, [
-    {
-      title: "Item One",
-      date: "02-02-2023 09:30",
-      content: "<p>Testing string one </p>",
-    },
-    {
-      title: "Item Two",
-      date: "02-02-2023 09:30",
-      content: "<p>Testing string two </p>",
-    },
-    {
-      title: "Item Three",
-      date: "02-02-2023 09:30",
-    },
-  ]);
+  /* APIs */
+  const { allergyQuery, setAllergyPatientId } = useAllergies();
+
+  const { items, addNewItem, setItems } = useNewItem(open);
+
+  /* Effects */
+  useEffect(() => {
+    if (!patientId) return;
+    const id = typeof patientId === "number" ? patientId.toString() : patientId;
+    setAllergyPatientId(id);
+  }, [patientId, setAllergyPatientId]);
+
+  useEffect(() => {
+    if (!allergyQuery.isSuccess) return;
+
+    const items = allergyQuery.data.map((item) => ({
+      title: "Item",
+      date: item.lastUpdatedDate,
+      content: item.allergyText,
+    }));
+    setItems(items);
+  }, [allergyQuery.data, allergyQuery.isSuccess, setItems]);
 
   /* Memos */
   const uniqueId = useUniqueId("mapped-item-");

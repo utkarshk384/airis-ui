@@ -19,7 +19,7 @@ import { parseISO, FormatDate } from "@utils/dates-fns";
 /* Types */
 import type { Patient } from "./types";
 
-export const COLUMNS: Column[] = [
+export const COLUMNS: Column<any>[] = [
   {
     Header: "Patient Name",
     accessor: "patient_name",

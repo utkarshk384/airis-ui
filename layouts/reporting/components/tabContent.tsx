@@ -80,10 +80,8 @@ export const TabContent: React.FC<Props> = (props) => {
   }, [getRadiologistTemplate.isSuccess]);
 
   const examDate = useMemo(() => {
-    console.log({ history });
     if (history && history.visitDate) {
       const parsedDate = parseISO(history.visitDate);
-      console.log({ parsedDate });
       return FormatDate(parsedDate, "dd-MM-yyyy HH:mm");
     }
     return "Failed to load exam date";
@@ -91,7 +89,11 @@ export const TabContent: React.FC<Props> = (props) => {
 
   return (
     <>
-      <TechnicalNotesDrawer setOpen={setIsNotesOpen} open={isNotesOpen} />
+      <TechnicalNotesDrawer
+        patientId={patient?.patientIndexId || ""}
+        setOpen={setIsNotesOpen}
+        open={isNotesOpen}
+      />
       <AllergyDrawer setOpen={setIsAllergyOpen} open={isAllergyOpen} />
       <DrFormDrawer open={isFormOpen} setOpen={setIsFormOpen} />
       <div className="flex flex-col gap-10">
@@ -103,14 +105,14 @@ export const TabContent: React.FC<Props> = (props) => {
           />
           <ListItem
             color="black"
-            title="Examination Name"
-            value={history?.procedureText || "Failed to load procedure"}
+            title="Modality & Examination"
+            value={history?.procedureText || ""}
           />
           <ListItem color="black" title="Examination Date" value={examDate} />
           <ListItem
             color="black"
             title="Referral Doctor"
-            value={history?.referringDoctor || "Failed to load referral doctor"}
+            value={history?.referringDoctor || ""}
           />
         </div>
         <div className="grid grid-cols-[1fr_1fr] px-4">
@@ -127,9 +129,7 @@ export const TabContent: React.FC<Props> = (props) => {
               variant="solid"
               size="base"
               rightIcon={() => <PlusIcon width={24} height={24} />}
-            >
-              Add Template
-            </Button>
+            ></Button>
           </div>
           <div className="flex gap-4 justify-self-end">
             <Button

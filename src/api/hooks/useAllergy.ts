@@ -10,16 +10,16 @@ import { getAllergy, addUpdateAllergy } from "../handlers/allergy";
 /* Types */
 import type { AllergyResponse, AllergyType, AllergyPayload } from "../types";
 
-export const useTechnicalNotes = () => {
+export const useAllergies = () => {
   const ids = useGetId();
-  const [patientId, setTNPatientId] = useState("");
+  const [patientId, setAllergyPatientId] = useState("");
 
-  const TNQuery = useQuery<AllergyResponse, unknown>(
+  const allergyQuery = useQuery<AllergyResponse, unknown>(
     ["technicalNotes", patientId],
     () => getAllergy({ ...ids, patientId }) as any
   );
 
-  const TNMutation = useMutation<AllergyType, unknown, AllergyPayload>(
+  const allergyMutation = useMutation<AllergyType, unknown, AllergyPayload>(
     (data) =>
       addUpdateAllergy({
         organizationId: ids.orgId,
@@ -28,5 +28,5 @@ export const useTechnicalNotes = () => {
       }) as any
   );
 
-  return { TNQuery, setTNPatientId, TNMutation };
+  return { allergyQuery, setAllergyPatientId, allergyMutation };
 };

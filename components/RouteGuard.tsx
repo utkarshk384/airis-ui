@@ -37,7 +37,7 @@ export const RouteGuard: React.FC<Props> = (props) => {
       if (token && userId && isBefore(new Date(), expiry)) return true;
       else {
         if (!path.includes("/login"))
-          router.push(`/login?redirect_uri=${path}`);
+          router.replace(`/login?redirect_uri=${path}`);
         return false;
       }
     },

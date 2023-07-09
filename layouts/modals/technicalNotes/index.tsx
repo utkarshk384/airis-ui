@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   ArrowTopRightOnSquareIcon as ExternalLinkIcon,
   PlusIcon,
@@ -11,6 +12,9 @@ import { Accordion, Drawer, Button, Text, RichTextEditor } from "@components";
 import { useUniqueId } from "@src/hooks";
 import { useNewItem } from "../shared/useNewItem";
 
+/* APIs */
+import { useTechnicalNotes } from "@src/api";
+
 /* Types */
 import type { AccordionItemType } from "@components/types";
 import type { AllergyNotesItemType } from "../types";
@@ -18,6 +22,7 @@ import type { AllergyNotesItemType } from "../types";
 type DrawerProps = {
   open: boolean;
   setOpen: (val: boolean) => void;
+  patientId: string | number;
 };
 
 type TechnicalNotesItemProps = {
@@ -26,24 +31,29 @@ type TechnicalNotesItemProps = {
 };
 
 export const TechnicalNotesDrawer: React.FC<DrawerProps> = (props) => {
-  const { open, setOpen } = props;
+  const { open, setOpen, patientId } = props;
 
-  const { items, addNewItem } = useNewItem(open, [
-    {
-      title: "Item One",
-      date: "02-02-2023 09:30",
-      content: "<p>Testing string one </p>",
-    },
-    {
-      title: "Item Two",
-      date: "02-02-2023 09:30",
-      content: "<p>Testing string two </p>",
-    },
-    {
-      title: "Item Three",
-      date: "02-02-2023 09:30",
-    },
-  ]);
+  /* APIs */
+  const { TNQuery, setTNPatientId } = useTechnicalNotes();
+
+  const { items, addNewItem, setItems } = useNewItem(open);
+
+  useEffect(() => {
+    if (!patientId) return;
+    const id = typeof patientId === "number" ? patientId.toString() : patientId;
+    setTNPatientId(id);
+  }, [patientId, setTNPatientId]);
+
+  useEffect(() => {
+    if (!TNQuery.isSuccess) return;
+
+    const items = TNQuery.data.map((item) => ({
+      title: "Item",
+      date: item.lastUpdatedDate,
+      content: item.clinicalNotesText,
+    }));
+    setItems(items);
+  }, [TNQuery.data, TNQuery.isSuccess, setItems]);
 
   /* Memos */
   const uniqueId = useUniqueId("mapped-item-");

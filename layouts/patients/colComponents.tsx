@@ -4,14 +4,27 @@ import React, { useState } from "react";
 import { AllergyIcon, Button, WritingIcon } from "@components";
 import { TechnicalNotesDrawer, AllergyDrawer } from "@layouts/modals";
 
-export const NotesComponent: React.FC = (props) => {
+/* Types */
+import type { Patient } from "./types";
+import type { CellProps } from "react-table";
+
+type Props = CellProps<Patient>;
+
+export const NotesComponent: React.FC<Props> = (props) => {
+  const row = props.row.original as Patient;
+
   const [openAllergy, setOpenAllergy] = useState(false);
   const [openTechnicalNotes, setOpenTechnicalNotes] = useState(false);
 
   return (
     <>
-      <AllergyDrawer open={openAllergy} setOpen={setOpenAllergy} />
+      <AllergyDrawer
+        patientId={row.patient_id}
+        open={openAllergy}
+        setOpen={setOpenAllergy}
+      />
       <TechnicalNotesDrawer
+        patientId={row.patient_id}
         open={openTechnicalNotes}
         setOpen={setOpenTechnicalNotes}
       />
