@@ -19,21 +19,28 @@ import { parseISO, FormatDate } from "@utils/dates-fns";
 /* Types */
 import type { Patient } from "./types";
 
-export const COLUMNS: Column<any>[] = [
+type CustomColumnType = Column<any> & {
+  disableHiding?: boolean;
+};
+
+export const COLUMNS: CustomColumnType[] = [
   {
     Header: "Patient Name",
     accessor: "patient_name",
     disableFilters: true,
+    disableHiding: true,
   },
   {
     Header: "Patient ID",
     accessor: "patient_id",
     disableFilters: true,
+    disableHiding: true,
   },
   {
     Header: "Acc No",
     accessor: "acc_no",
     disableFilters: true,
+    disableHiding: true,
     Cell: (props) => {
       const row = props.row.original as Patient;
 

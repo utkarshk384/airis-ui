@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { EyeIcon } from "@heroicons/react/20/solid";
 
 /* Types */
@@ -17,8 +17,16 @@ type Props = {
 export const ColumnVisibility: React.FC<Props> = (props) => {
   const { table } = props;
 
-  const { allColumns, set } = table;
+  const { allColumns, columns } = table;
 
+  const [hideableCols, setHideableCols] = useState(allColumns);
+
+  useEffect(() => {
+    const cols = [];
+    for (const col of columns) if (!(col as any).disableHiding) cols.push(col);
+
+    setHideableCols(cols);
+  }, [columns]);
   return (
     <Dropdown
       contentMaxHeight="20rem"
@@ -30,7 +38,7 @@ export const ColumnVisibility: React.FC<Props> = (props) => {
     >
       {(Dropdown) => (
         <>
-          {allColumns.map((column) => (
+          {hideableCols.map((column) => (
             <Dropdown.CheckboxItem
               key={column.id}
               {...column.getToggleHiddenProps()}
