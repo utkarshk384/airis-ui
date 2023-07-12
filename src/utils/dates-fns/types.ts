@@ -11,6 +11,7 @@ export type FormatOpts =
   | "dd-MM-yyyy HH:mm"
   | "HH:mm"
   | "MMM"
+  | "MMM dd"
   | "MMMM"
   | "yyyy";
 

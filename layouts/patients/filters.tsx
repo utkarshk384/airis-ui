@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Select } from "@components/Select/Single";
 import { FunnelIcon } from "@heroicons/react/20/solid";
 
 /* Components */
-import { Datepicker, DropdownButton } from "@components";
+import { CalendarIcon, Datepicker, DropdownButton, Text } from "@components";
 
 /* APIs */
 import { usePatientList } from "@src/api";
@@ -11,6 +11,7 @@ import { usePatientList } from "@src/api";
 /* Types */
 import type { TableComponent } from "@components/types";
 import type { DropdownOption } from "@components/sharedTypes";
+import { FormatDate } from "@utils/dates-fns";
 
 type Props = {} & TableComponent;
 
@@ -61,47 +62,75 @@ export const DropdownContent: React.FC<Props> = (props) => {
     );
   }, [filters]);
 
+  console.log();
+  /* States */
+  const [visitTime, setVisitTime] = useState<string>(
+    FormatDate(vistDateDefaultValue, "MMM dd")
+  );
+
   return (
-    <DropdownButton
-      dropdownContentProps={{
-        className: "w-96",
-        side: "left",
-        alignOffset: 45,
-        sideOffset: -40,
-        align: "start",
-      }}
-      DropdownContent={(Dropdown) => (
-        <>
-          <div className="flex flex-col min-h-[24rem] !w-[24rem] p-4 gap-4">
-            <div className="flex gap-2 flex-col">
-              <Dropdown.Label>Status</Dropdown.Label>
-              <Select
-                name="status"
-                options={statusOption}
-                onChange={(val) =>
-                  setFilter("status", val.value === "All" ? "" : val.value)
-                }
-                defaultValue={statusDefaultValue}
-              />
+    <>
+      <DropdownButton
+        variant="outline"
+        dropdownContentProps={{
+          className: "w-96",
+          side: "left",
+          alignOffset: 45,
+          sideOffset: -100,
+          align: "start",
+        }}
+        DropdownContent={(Dropdown) => (
+          <>
+            <Datepicker
+              defaultValue={vistDateDefaultValue}
+              mode="single"
+              onChange={(day) => {
+                setFilter("visit_time", day);
+                setVisitTime(FormatDate(day, "MMM dd"));
+                setReferenceDate(day);
+              }}
+            />
+          </>
+        )}
+      >
+        <div className="flex gap-4 justify-center">
+          <CalendarIcon className="fill-accent" />
+          <Text color="accent" size="sm">
+            {visitTime}
+          </Text>
+        </div>
+      </DropdownButton>
+
+      <DropdownButton
+        dropdownContentProps={{
+          className: "w-96",
+          side: "left",
+          alignOffset: 45,
+          sideOffset: -40,
+          align: "start",
+        }}
+        DropdownContent={(Dropdown) => (
+          <>
+            <div className="flex flex-col min-h-[24rem] !w-[24rem] p-4 gap-4">
+              <div className="flex gap-2 flex-col">
+                <Dropdown.Label>Status</Dropdown.Label>
+                <Select
+                  name="status"
+                  options={statusOption}
+                  onChange={(val) =>
+                    setFilter("status", val.value === "All" ? "" : val.value)
+                  }
+                  defaultValue={statusDefaultValue}
+                />
+              </div>
             </div>
-            <div className="gap-2 flex flex-col">
-              <Dropdown.Label>Visit Date</Dropdown.Label>
-              <Datepicker
-                defaultValue={vistDateDefaultValue}
-                mode="single"
-                onChange={(day) => {
-                  setFilter("visit_time", day);
-                  setReferenceDate(day);
-                }}
-              />
-            </div>
-          </div>
-        </>
-      )}
-      variant="solid"
-      iconButton
-    >
-      <FunnelIcon width={24} height={24} />
-    </DropdownButton>
+          </>
+        )}
+        variant="solid"
+        iconButton
+      >
+        <FunnelIcon width={24} height={24} />
+      </DropdownButton>
+    </>
   );
 };
