@@ -2,7 +2,7 @@ import { AxiosWrapper } from "../axios";
 import { ENDPOINTS } from "../endpoints";
 
 /* Types */
-import type { getAllergyRequest, AllergyType } from "../types";
+import type { getAllergyRequest, AllergyBody } from "../types";
 
 export const getAllergy = async (body: getAllergyRequest) => {
   return await AxiosWrapper({
@@ -14,7 +14,7 @@ export const getAllergy = async (body: getAllergyRequest) => {
   });
 };
 
-export const addUpdateAllergy = async (body: AllergyType) => {
+export const addUpdateAllergy = async (body: AllergyBody) => {
   return await AxiosWrapper({
     method: "POST",
     url: ENDPOINTS.addUpdateAllergy,

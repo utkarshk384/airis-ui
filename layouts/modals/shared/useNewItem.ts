@@ -26,8 +26,7 @@ export const useNewItem = (
 
     const newItem: AllergyNotesItemType = {
       date: FormatDate(new Date()),
-      title: `New Item ${count.current++}`,
-      content: "",
+      content: `Untitled text ${count.current++}`,
     };
 
     newItems.unshift(newItem);

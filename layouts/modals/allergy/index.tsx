@@ -1,5 +1,8 @@
+import { useEffect, useMemo, useState } from "react";
 import {
+  CheckIcon,
   ArrowTopRightOnSquareIcon as ExternalLinkIcon,
+  PencilSquareIcon,
   PlusIcon,
 } from "@heroicons/react/20/solid";
 
@@ -11,21 +14,23 @@ import { Accordion, Drawer, Button, Text, RichTextEditor } from "@components";
 import { useUniqueId } from "@src/hooks";
 import { useNewItem } from "../shared/useNewItem";
 
+/* APIs */
+import { useAllergies } from "@src/api";
+
 /* Types */
 import type { AllergyNotesItemType } from "../types";
 import type { AccordionItemType } from "@components/types";
-import { useAllergies } from "@src/api";
-import { useEffect } from "react";
 
 type DrawerProps = {
   open: boolean;
-  setOpen: (val: boolean) => void;
   patientId: string | number;
+  setOpen: (val: boolean) => void;
 };
 
 type AllergyItemProps = {
   Item: AccordionItemType;
   data: AllergyNotesItemType;
+  setOpen: (val: boolean) => void;
 };
 
 export const AllergyDrawer: React.FC<DrawerProps> = (props) => {
@@ -59,7 +64,7 @@ export const AllergyDrawer: React.FC<DrawerProps> = (props) => {
 
   return (
     <Drawer size="large" open={open} onOpenChange={(val) => setOpen(val)}>
-      {({ Header, Footer }) => (
+      {({ Header }) => (
         <>
           <Header title="Allergy" />
           <div className="p-4 gap-4 flex flex-col">
@@ -77,39 +82,83 @@ export const AllergyDrawer: React.FC<DrawerProps> = (props) => {
               {(Item) => (
                 <>
                   {items.map((item, i) => (
-                    <AllergyItem key={uniqueId + i} Item={Item} data={item} />
+                    <AllergyItem
+                      key={uniqueId + i}
+                      setOpen={setOpen}
+                      Item={Item}
+                      data={item}
+                    />
                   ))}
                 </>
               )}
             </Accordion.Multiple>
           </div>
-          <Footer>
-            <FooterComponent onCancel={() => setOpen(false)} />
-          </Footer>
         </>
       )}
     </Drawer>
   );
 };
 
-const AllergyItem: React.FC<AllergyItemProps> = ({ Item, data }) => {
+const AllergyItem: React.FC<AllergyItemProps> = (props) => {
+  const { Item, data, setOpen } = props;
   const uniqueId = useUniqueId("accordion-id-");
+
+  /* APIs */
+  const { allergyMutation } = useAllergies();
+
+  /* States */
+  const [isEdit, setIsEdit] = useState(false);
+  const [text, setText] = useState(data.content || "");
+
+  const titleText = useMemo(() => text.replace(/<[^>]*>/g, ""), [text]);
 
   return (
     <Item value={uniqueId}>
       <Item.Trigger>
-        <div className="flex items-center justify-between w-full">
-          <Text size="base">{data.title}</Text>
-          <div className="flex items-center">
+        <div className="grid grid-cols-2 items-center w-full">
+          <div className="justify-self-start w-full">
+            <Text
+              size="base"
+              className="text-ellipsis text-left overflow-hidden"
+            >
+              {titleText}
+            </Text>
+          </div>
+          <div className="flex items-center justify-self-end">
             <Text size="base">{data.date}</Text>
-            <Button as="a" className="text-accent" variant="icon" iconButton>
-              <ExternalLinkIcon fill="currentColor" width={16} />
+            <Button
+              as="a"
+              className="text-accent"
+              variant="icon"
+              iconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsEdit(!isEdit);
+              }}
+            >
+              {isEdit && <CheckIcon fill="currentColor" width={16} />}
+              {!isEdit && <PencilSquareIcon fill="currentColor" width={16} />}
             </Button>
           </div>
         </div>
       </Item.Trigger>
       <Item.Content>
-        <RichTextEditor height="15rem" defaultValue={data.content} />
+        <RichTextEditor
+          readOnly={!isEdit}
+          height="15rem"
+          onChange={(val) => setText(val)}
+          value={text}
+        />
+        {isEdit && (
+          <div className="flex gap-4 mt-5">
+            <FooterComponent
+              onCancel={() => {
+                setText(data.content || "");
+                setIsEdit(false);
+              }}
+            />
+          </div>
+        )}
       </Item.Content>
     </Item>
   );

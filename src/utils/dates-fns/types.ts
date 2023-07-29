@@ -9,6 +9,7 @@ export type FormatOpts =
   | "dd-MM-yyyy"
   | "dd/MM/yyyy"
   | "dd-MM-yyyy HH:mm"
+  | "dd-MM-yyyy HH:mm:ss"
   | "HH:mm"
   | "MMM"
   | "MMM dd"

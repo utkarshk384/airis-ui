@@ -1,3 +1,5 @@
+import type { AccordionItemProps } from "@radix-ui/react-accordion";
+
 export type BaseAccordionProps<T = string> = {
   children?: (Item: AccordionItemType) => React.ReactNode;
   value?: T;
@@ -20,7 +22,9 @@ export type ItemProps = {
   disabled?: boolean;
 } & HTMLAttributes;
 
-export type AccordionItemType = React.FC<ItemProps> & {
+export type AccordionItemType = React.FC<
+  AccordionItemProps & React.RefAttributes<HTMLDivElement>
+> & {
   Content: React.FC<ContentProps>;
   Trigger: React.FC<TriggerProps>;
 };

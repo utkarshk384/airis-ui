@@ -19,6 +19,15 @@ export type AllergyType = {
   allergyText: string;
 };
 
-export type AllergyPayload = Omit<AllergyType, "organizationId" | "branchId">;
+export type AllergyBody = {
+  patientAllergyId?: number | null;
+} & Omit<AllergyType, "patientAllergyId">;
+
+export type AllergyPayload = Omit<
+  AllergyType,
+  "organizationId" | "branchId" | "patientAllergyId"
+> & {
+  patientAllergyId?: number | null;
+};
 
 export type AllergyResponse = AllergyType[];
