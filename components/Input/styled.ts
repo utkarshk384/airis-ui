@@ -13,6 +13,10 @@ export const StyledInput = styled("input", {
     outline: "$accent 1px solid",
   },
 
+  "&[type='file']": {
+    opacity: 1,
+  },
+
   variants: {
     variant: {
       underlined: {

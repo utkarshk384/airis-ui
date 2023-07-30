@@ -22,7 +22,10 @@ const BaseButton = React.forwardRef<HTMLButtonElement, Props>((props, ref) => {
     <StyledButton
       ref={ref}
       {...rest}
-      data-state={rest.disabled ? "disabled" : "active"}
+      disabled={isLoading || rest.disabled}
+      data-state={
+        rest.disabled ? "disabled" : isLoading ? "disabled " : "active"
+      }
     >
       {LeftIcon && <LeftIcon />}
       {typographyProps ? (

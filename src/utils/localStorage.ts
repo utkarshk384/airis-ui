@@ -1,8 +1,11 @@
 export const getLocalStoragevalue = (key: string) => {
-  const value = localStorage.getItem(key);
+  try {
+    const value = localStorage.getItem(key);
 
-  if (value) return JSON.parse(value);
-
+    if (value) return JSON.parse(value);
+  } catch (e) {
+    return null;
+  }
   return null;
 };
 

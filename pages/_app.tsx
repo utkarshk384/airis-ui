@@ -42,7 +42,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <QueryClientProvider client={queryClient}>
       <main className={inter.variable}>
-        <RouteGuard>{getLayout(<Component {...pageProps} />)}</RouteGuard>
+        {/* <RouteGuard> */}
+        {getLayout(<Component {...pageProps} />)}
+        {/* </RouteGuard> */}
       </main>
       <Toaster toastOptions={defaultToastOpts} />
     </QueryClientProvider>

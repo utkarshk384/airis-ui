@@ -1,5 +1,5 @@
 import { useField } from "formik";
-import React, { ChangeEventHandler, useMemo, useState } from "react";
+import React, { ChangeEventHandler, useMemo, useRef, useState } from "react";
 
 /* Components */
 import { Label } from "@components/shared";
@@ -19,6 +19,7 @@ type Props = {
   wrapperClassName?: string;
   variant?: "underlined" | "filled";
   errorBeforeTouch?: boolean;
+  inputWrapperClassName?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 };
 
@@ -32,12 +33,17 @@ export const Input: React.FC<Props> = (props) => {
     variant,
     errorBeforeTouch = false,
     wrapperClassName,
+    inputWrapperClassName,
     ...rest
   } = DefaultProps(props);
 
   const [field, meta] = useField(rest);
   const [type, setType] = useState(rest.type);
   const error = useMemo(() => meta.error || "", [meta.error]);
+
+  /* Refs */
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <fieldset
       className={`fieldset-grid ${
@@ -45,9 +51,23 @@ export const Input: React.FC<Props> = (props) => {
       } ${wrapperClassName}`}
     >
       <Label label={label} htmlFor={field.name} />
-      <div className="flex flex-col gap-2">
+      <div className={`flex flex-col gap-2 ${inputWrapperClassName}`}>
         <span className="relative">
-          <StyledInput variant={variant} {...field} {...rest} type={type} />
+          {rest.type === "file" && (
+            <button
+              onClick={() => inputRef.current?.click()}
+              className="absolute left-0 bg-accent h-full text-white rounded-lg w-[32%]" // 32% is a magic number that is just perfect
+            >
+              Browse
+            </button>
+          )}
+          <StyledInput
+            ref={inputRef}
+            variant={variant}
+            {...field}
+            {...rest}
+            type={type}
+          />
           {rest.type === "password" && (
             <button
               onClick={(e) => {
@@ -94,6 +114,7 @@ const DefaultProps = (props: Props) => {
   const defaultProps: Props = {
     ...props,
     wrapperClassName: props.wrapperClassName || "",
+    inputWrapperClassName: props.inputWrapperClassName || "",
     className: props.className || "",
     type: props.type || "text",
   };

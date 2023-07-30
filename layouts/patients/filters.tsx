@@ -62,7 +62,6 @@ export const DropdownContent: React.FC<Props> = (props) => {
     );
   }, [filters]);
 
-  console.log();
   /* States */
   const [visitTime, setVisitTime] = useState<string>(
     FormatDate(vistDateDefaultValue, "MMM dd")
