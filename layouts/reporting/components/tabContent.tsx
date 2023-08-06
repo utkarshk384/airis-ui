@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 
 /* Components */
@@ -15,7 +21,7 @@ import {
 } from "@components";
 
 /* APIs */
-import { usePatientHistory, useTemplates } from "@src/api";
+import { useDocumentUpload, usePatientHistory, useTemplates } from "@src/api";
 
 /* Types */
 import type { PatientListType, PatientHistory } from "@src/api/types";
@@ -46,6 +52,9 @@ export const TabContent: React.FC<Props> = (props) => {
 
   const { getRadiologistTemplate, setListRadiologistPayload } = useTemplates();
   const { getPatientHistory, setPatientId } = usePatientHistory();
+  const { getUploadDocument, setGetUploadBody } = useDocumentUpload();
+
+  const imgRef = useRef(null);
 
   /* Effects */
   useEffect(() => {
@@ -70,6 +79,14 @@ export const TabContent: React.FC<Props> = (props) => {
   }, [getPatientHistory.data, tab]);
 
   useEffect(() => {
+    setGetUploadBody({
+      id: patient?.patientVisitIndexId || "",
+      patientId: patient?.patientIndexId || "",
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [patient?.patientIndexId, patient?.patientVisitIndexId]);
+
+  useEffect(() => {
     if (getRadiologistTemplate.isSuccess)
       setTemplates(getRadiologistTemplate.data, [
         "reportTemplate",
@@ -87,6 +104,15 @@ export const TabContent: React.FC<Props> = (props) => {
     return "Failed to load exam date";
   }, [history]);
 
+  /* Callbacks */
+  const loadDocument = useCallback(() => {
+    // setIsFormOpen(true);
+    const blob = new Blob([getUploadDocument.data as string], {
+      type: "image/jpeg",
+    });
+    const url = URL.createObjectURL(blob);
+  }, [getUploadDocument.data]);
+
   return (
     <>
       <TechnicalNotesDrawer
@@ -94,7 +120,11 @@ export const TabContent: React.FC<Props> = (props) => {
         setOpen={setIsNotesOpen}
         open={isNotesOpen}
       />
-      <AllergyDrawer setOpen={setIsAllergyOpen} open={isAllergyOpen} />
+      <AllergyDrawer
+        patientId={patient?.patientIndexId || ""}
+        setOpen={setIsAllergyOpen}
+        open={isAllergyOpen}
+      />
       <DrFormDrawer open={isFormOpen} setOpen={setIsFormOpen} />
       <div className="flex flex-col gap-10">
         <div className="flex justify-between px-4">
@@ -151,7 +181,7 @@ export const TabContent: React.FC<Props> = (props) => {
               <AllergyIcon fill="currentColor" />
             </Button>
             <Button
-              onClick={() => setIsFormOpen(true)}
+              // onClick={() => loadDocument()}
               tooltip="Doctor's Form"
               variant="outline"
               iconButton

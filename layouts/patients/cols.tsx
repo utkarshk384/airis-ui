@@ -18,6 +18,8 @@ import { parseISO, FormatDate } from "@utils/dates-fns";
 
 /* Types */
 import type { Patient } from "./types";
+import { useDocumentUpload } from "@src/api";
+import { useCookie } from "@src/hooks";
 
 type CustomColumnType = Column<any> & {
   disableHiding?: boolean;
@@ -156,8 +158,11 @@ export const COLUMNS: CustomColumnType[] = [
     accessor: "action",
     disableGlobalFilter: true,
     disableFilters: true,
-    Cell: () => {
+    Cell: (props) => {
       const fileRef = useRef<HTMLInputElement>(null);
+
+      const { UploadDocument } = useDocumentUpload();
+      const { getCookie, COOKIE_KEYS } = useCookie();
 
       /* Handlers */
       const UploadeFile = () => {
@@ -171,10 +176,16 @@ export const COLUMNS: CustomColumnType[] = [
             name="dr-form"
             ref={fileRef}
             onChange={(e) => {
-              const formData = new FormData();
-              formData.append("file", e.target.files?.[0] as File);
-
+              const file = e.target.files?.[0] as File;
+              const now = FormatDate(new Date(), "dd-MM-yyyy HH:mm:ss");
               // Call API to upload.
+              UploadDocument.mutate({
+                file,
+                documentUploadedDate: now,
+                documentUploadedBy: getCookie(COOKIE_KEYS.id),
+                patientIndexId: props.row.original.patient_id,
+                patientVisitIndexId: props.row.original.patient_visit_id,
+              });
 
               // References: https://stackoverflow.com/questions/72832238/how-to-upload-file-from-frontend-to-backend
             }}

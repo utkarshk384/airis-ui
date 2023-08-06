@@ -8,3 +8,4 @@ export * from "./useLogout";
 export * from "./useOptionList";
 export * from "./useTechnicalNotes";
 export * from "./useAllergy";
+export * from "./useDocumentUpload";

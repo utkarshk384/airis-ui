@@ -28,6 +28,7 @@ const TransformToTableRows = (data: PatientListResponse): Patient[] => {
     examination: item.procedureText,
     modality: item.modalityText,
     patient_id: item.patientIndexId,
+    patient_visit_id: item.patientVisitIndexId,
     patient_name: item.patientName,
     referral_doctor: item.referringDoctor,
     gender: item.administrativeSexText,
