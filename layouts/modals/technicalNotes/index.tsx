@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import {
   ArrowTopRightOnSquareIcon as ExternalLinkIcon,
   PlusIcon,
@@ -11,6 +11,7 @@ import { Accordion, Drawer, Button, Text, RichTextEditor } from "@components";
 /* Hooks */
 import { useUniqueId } from "@src/hooks";
 import { useNewItem } from "../shared/useNewItem";
+import { useIsModalsOpen } from "@layouts/patients/modalContext";
 
 /* APIs */
 import { useTechnicalNotes } from "@src/api";
@@ -19,11 +20,7 @@ import { useTechnicalNotes } from "@src/api";
 import type { AccordionItemType } from "@components/types";
 import type { AllergyNotesItemType } from "../types";
 
-type DrawerProps = {
-  open: boolean;
-  setOpen: (val: boolean) => void;
-  patientId: string | number;
-};
+type DrawerProps = {};
 
 type TechnicalNotesItemProps = {
   Item: AccordionItemType;
@@ -31,18 +28,21 @@ type TechnicalNotesItemProps = {
 };
 
 export const TechnicalNotesDrawer: React.FC<DrawerProps> = (props) => {
-  const { open, setOpen, patientId } = props;
-
   /* APIs */
   const { TNQuery, setTNPatientId } = useTechnicalNotes();
 
-  const { items, addNewItem, setItems } = useNewItem(open);
+  /* Hooks */
+  const { isModelsOpen, setIsModelOpen } = useIsModalsOpen();
+  const { items, addNewItem, setItems } = useNewItem(isModelsOpen.isTNOpen);
 
   useEffect(() => {
-    if (!patientId) return;
-    const id = typeof patientId === "number" ? patientId.toString() : patientId;
+    if (!isModelsOpen.patientId) return;
+    const id =
+      typeof isModelsOpen.patientId === "number"
+        ? isModelsOpen.patientId.toString()
+        : isModelsOpen.patientId;
     setTNPatientId(id);
-  }, [patientId, setTNPatientId]);
+  }, [isModelsOpen.patientId, setTNPatientId]);
 
   useEffect(() => {
     if (!TNQuery.isSuccess) return;
@@ -55,11 +55,24 @@ export const TechnicalNotesDrawer: React.FC<DrawerProps> = (props) => {
     setItems(items);
   }, [TNQuery.data, TNQuery.isSuccess, setItems]);
 
-  /* Memos */
+  /* Memos and Callbacks */
   const uniqueId = useUniqueId("mapped-item-");
+  const setOpen = useCallback(
+    (val: boolean) => {
+      setIsModelOpen({
+        type: val ? "OPEN_TN" : "CLOSE",
+        payload: isModelsOpen.patientId,
+      });
+    },
+    [isModelsOpen.patientId, setIsModelOpen]
+  );
 
   return (
-    <Drawer size="large" open={open} onOpenChange={(val) => setOpen(val)}>
+    <Drawer
+      size="large"
+      open={isModelsOpen.isTNOpen}
+      onOpenChange={(val) => setOpen(val)}
+    >
       {({ Header, Footer }) => (
         <>
           <Header title="Technical Notes" />

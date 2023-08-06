@@ -1,3 +1,6 @@
+import { parseISO } from "date-fns";
+import { useRouter } from "next/router";
+import { PlusIcon } from "@heroicons/react/20/solid";
 import React, {
   useCallback,
   useEffect,
@@ -5,7 +8,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { PlusIcon } from "@heroicons/react/20/solid";
 
 /* Components */
 import { ListItem } from "./shared";
@@ -20,16 +22,18 @@ import {
   useDropdown,
 } from "@components";
 
+/* Hooks */
+import { useTab } from "../context/tabs";
+import { useIsModalsOpen } from "@layouts/patients/modalContext";
+
+/* Utils */
+import { FormatDate } from "@utils/dates-fns";
+
 /* APIs */
 import { useDocumentUpload, usePatientHistory, useTemplates } from "@src/api";
 
 /* Types */
 import type { PatientListType, PatientHistory } from "@src/api/types";
-import type { DropdownOption } from "@components/sharedTypes";
-import { useTab } from "../context/tabs";
-import { FormatDate } from "@utils/dates-fns";
-import { parseISO } from "date-fns";
-import { useRouter } from "next/router";
 
 type Props = {
   children?: React.ReactNode;
@@ -42,10 +46,9 @@ export const TabContent: React.FC<Props> = (props) => {
   /* Hooks */
   const { tab } = useTab();
   const router = useRouter();
+  const { setIsModelOpen } = useIsModalsOpen();
 
   /* States */
-  const [isAllergyOpen, setIsAllergyOpen] = useState(false);
-  const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [templates, setTemplates] = useDropdown();
   const [history, setHistory] = useState<PatientHistory | null>(null);
@@ -115,16 +118,8 @@ export const TabContent: React.FC<Props> = (props) => {
 
   return (
     <>
-      <TechnicalNotesDrawer
-        patientId={patient?.patientIndexId || ""}
-        setOpen={setIsNotesOpen}
-        open={isNotesOpen}
-      />
-      <AllergyDrawer
-        patientId={patient?.patientIndexId || ""}
-        setOpen={setIsAllergyOpen}
-        open={isAllergyOpen}
-      />
+      <TechnicalNotesDrawer />
+      <AllergyDrawer />
       <DrFormDrawer open={isFormOpen} setOpen={setIsFormOpen} />
       <div className="flex flex-col gap-10">
         <div className="flex justify-between px-4">
@@ -163,7 +158,12 @@ export const TabContent: React.FC<Props> = (props) => {
           </div>
           <div className="flex gap-4 justify-self-end">
             <Button
-              onClick={() => setIsNotesOpen(true)}
+              onClick={() =>
+                setIsModelOpen({
+                  type: "OPEN_TN",
+                  payload: patient?.patientIndexId as number,
+                })
+              }
               tooltip="Technical Notes"
               variant="outline"
               iconButton
@@ -172,7 +172,12 @@ export const TabContent: React.FC<Props> = (props) => {
               <WritingIcon fill="currentColor" />
             </Button>
             <Button
-              onClick={() => setIsAllergyOpen(true)}
+              onClick={() =>
+                setIsModelOpen({
+                  type: "OPEN_ALLERGY",
+                  payload: patient?.patientIndexId as number,
+                })
+              }
               tooltip="Allergies"
               variant="outline"
               iconButton

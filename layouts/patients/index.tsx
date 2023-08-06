@@ -5,7 +5,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { COLUMNS } from "./cols";
 import { DropdownContent } from "./filters";
 import { Button, Table } from "@components";
-import { AddTemplate } from "@layouts/modals";
+import {
+  AddTemplate,
+  AllergyDrawer,
+  TechnicalNotesDrawer,
+} from "@layouts/modals";
 
 import MOCK_DATA from "./MOCK_DATA.json";
 
@@ -13,8 +17,8 @@ import MOCK_DATA from "./MOCK_DATA.json";
 import { usePatientList } from "@src/api";
 
 /* Types */
-import { PatientListResponse } from "@src/api/types";
-import { Patient } from "./types";
+import type { Patient } from "./types";
+import type { PatientListResponse } from "@src/api/types";
 
 /* Types */
 type Props = {
@@ -55,25 +59,29 @@ export const PatientsTab: React.FC<Props> = (props) => {
   }, [PatientList.data, PatientList.isSuccess]);
 
   return (
-    <div className="container !bg-white rounded-lg p-4 !mb-16">
-      <Button
-        variant="solid"
-        rightIcon={() => <PlusIcon width={24} height={24} />}
-        onClick={() => setOpen(true)}
-      >
-        Add Template
-      </Button>
-      <AddTemplate open={open} setOpen={setOpen} />
-      <Table
-        searchPlaceholder="Search patient id, name, acc no, referral doctor..."
-        cols={cols}
-        searchClassName="w-7/12"
-        rows={data}
-        defaultFilters={[{ id: "visit_time", value: new Date() }]}
-        title="Patients"
-      >
-        {(table) => <DropdownContent table={table} />}
-      </Table>
-    </div>
+    <>
+      <AllergyDrawer />
+      <TechnicalNotesDrawer />
+      <div className="container !bg-white rounded-lg p-4 !mb-16">
+        <Button
+          variant="solid"
+          rightIcon={() => <PlusIcon width={24} height={24} />}
+          onClick={() => setOpen(true)}
+        >
+          Add Template
+        </Button>
+        <AddTemplate open={open} setOpen={setOpen} />
+        <Table
+          searchPlaceholder="Search patient id, name, acc no, referral doctor..."
+          cols={cols}
+          searchClassName="w-7/12"
+          rows={data}
+          defaultFilters={[{ id: "visit_time", value: new Date() }]}
+          title="Patients"
+        >
+          {(table) => <DropdownContent table={table} />}
+        </Table>
+      </div>
+    </>
   );
 };

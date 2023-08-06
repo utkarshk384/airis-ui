@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   CheckIcon,
   ArrowTopRightOnSquareIcon as ExternalLinkIcon,
@@ -13,6 +13,7 @@ import { Accordion, Drawer, Button, Text, RichTextEditor } from "@components";
 /* Hooks */
 import { useUniqueId } from "@src/hooks";
 import { useNewItem } from "../shared/useNewItem";
+import { useIsModalsOpen } from "@layouts/patients/modalContext";
 
 /* APIs */
 import { useAllergies } from "@src/api";
@@ -21,11 +22,7 @@ import { useAllergies } from "@src/api";
 import type { AllergyNotesItemType } from "../types";
 import type { AccordionItemType } from "@components/types";
 
-type DrawerProps = {
-  open: boolean;
-  patientId: string | number;
-  setOpen: (val: boolean) => void;
-};
+type DrawerProps = {};
 
 type AllergyItemProps = {
   Item: AccordionItemType;
@@ -34,19 +31,24 @@ type AllergyItemProps = {
 };
 
 export const AllergyDrawer: React.FC<DrawerProps> = (props) => {
-  const { open, setOpen, patientId } = props;
-
   /* APIs */
   const { allergyQuery, setAllergyPatientId } = useAllergies();
 
-  const { items, addNewItem, setItems } = useNewItem(open);
+  /* Hooks */
+  const { isModelsOpen, setIsModelOpen } = useIsModalsOpen();
+  const { items, addNewItem, setItems } = useNewItem(
+    isModelsOpen.isAllergyOpen
+  );
 
   /* Effects */
   useEffect(() => {
-    if (!patientId) return;
-    const id = typeof patientId === "number" ? patientId.toString() : patientId;
+    if (!isModelsOpen.patientId) return;
+    const id =
+      typeof isModelsOpen.patientId === "number"
+        ? isModelsOpen.patientId.toString()
+        : isModelsOpen.patientId;
     setAllergyPatientId(id);
-  }, [patientId, setAllergyPatientId]);
+  }, [isModelsOpen.patientId, setAllergyPatientId]);
 
   useEffect(() => {
     if (!allergyQuery.isSuccess) return;
@@ -59,11 +61,24 @@ export const AllergyDrawer: React.FC<DrawerProps> = (props) => {
     setItems(items);
   }, [allergyQuery.data, allergyQuery.isSuccess, setItems]);
 
-  /* Memos */
+  /* Memos and Callbacks */
   const uniqueId = useUniqueId("mapped-item-");
+  const setOpen = useCallback(
+    (val: boolean) => {
+      setIsModelOpen({
+        type: val ? "OPEN_ALLERGY" : "CLOSE",
+        payload: isModelsOpen.patientId,
+      });
+    },
+    [isModelsOpen.patientId, setIsModelOpen]
+  );
 
   return (
-    <Drawer size="large" open={open} onOpenChange={(val) => setOpen(val)}>
+    <Drawer
+      size="large"
+      open={isModelsOpen.isAllergyOpen}
+      onOpenChange={setOpen}
+    >
       {({ Header }) => (
         <>
           <Header title="Allergy" />

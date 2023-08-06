@@ -33,7 +33,7 @@ export const CellCSS = css({
   "&:has([aria-selected])": {
     backgroundColor: "$accent",
   },
-
+  borderRadius: "8px",
   fontWeight: "$400",
   fontSize: "$sm",
 });

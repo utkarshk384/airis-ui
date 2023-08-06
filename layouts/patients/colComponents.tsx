@@ -2,35 +2,26 @@ import React, { useState } from "react";
 
 /* Components */
 import { AllergyIcon, Button, WritingIcon } from "@components";
-import { TechnicalNotesDrawer, AllergyDrawer } from "@layouts/modals";
 
 /* Types */
 import type { Patient } from "./types";
 import type { CellProps } from "react-table";
+import { useIsModalsOpen } from "./modalContext";
 
 type Props = CellProps<Patient>;
 
 export const NotesComponent: React.FC<Props> = (props) => {
   const row = props.row.original as Patient;
 
-  const [openAllergy, setOpenAllergy] = useState(false);
-  const [openTechnicalNotes, setOpenTechnicalNotes] = useState(false);
+  const { setIsModelOpen } = useIsModalsOpen();
 
   return (
     <>
-      <AllergyDrawer
-        patientId={row.patient_id}
-        open={openAllergy}
-        setOpen={setOpenAllergy}
-      />
-      <TechnicalNotesDrawer
-        patientId={row.patient_id}
-        open={openTechnicalNotes}
-        setOpen={setOpenTechnicalNotes}
-      />
       <div className="flex gap-2">
         <Button
-          onClick={() => setOpenAllergy(true)}
+          onClick={() =>
+            setIsModelOpen({ type: "OPEN_ALLERGY", payload: row.patient_id })
+          }
           iconButton
           variant="icon"
           noPadding
@@ -38,7 +29,9 @@ export const NotesComponent: React.FC<Props> = (props) => {
           <AllergyIcon fill="currentColor" width={20} height={20} />
         </Button>
         <Button
-          onClick={() => setOpenTechnicalNotes(true)}
+          onClick={() =>
+            setIsModelOpen({ type: "OPEN_TN", payload: row.patient_id })
+          }
           iconButton
           variant="icon"
           noPadding

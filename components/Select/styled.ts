@@ -101,7 +101,7 @@ export const DropdownContainer = styled("div", {
   display: "grid",
   gridTemplateRows: "repeat(1fr)",
   width: "100%",
-  zIndex: 20,
+  zIndex: 10,
   cursor: "default",
   maxHeight: "var(--max-height, 20rem)",
   overflow: "hidden auto",

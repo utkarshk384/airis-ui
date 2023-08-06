@@ -7,5 +7,4 @@ export const NavigationContainer = styled("nav", {
   justifyContent: "space-between",
   position: "sticky",
   top: 0,
-  zIndex: 50,
 });

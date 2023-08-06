@@ -14,7 +14,7 @@ export const StyledDrawerHeader = styled("header", {
   padding: "1rem 2rem",
   backgroundColor: "$primary",
   color: "$white",
-  zIndex: 10,
+  zIndex: 20,
   position: "sticky",
   top: 0,
 });
