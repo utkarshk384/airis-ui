@@ -120,7 +120,7 @@ const TechnicalNotesItem: React.FC<TechnicalNotesItemProps> = ({
     <Item value={uniqueId}>
       <Item.Trigger>
         <div className="flex items-center justify-between w-full">
-          <Text size="base">{data.title}</Text>
+          <Text size="base">{(data as any).title}</Text>
           <div className="flex items-center">
             <Text size="base">{data.date}</Text>
             <Button as="a" className="text-accent" variant="icon" iconButton>
