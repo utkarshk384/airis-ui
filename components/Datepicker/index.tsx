@@ -29,14 +29,12 @@ function Calendar({
 }: Props) {
   const [selectedDay, setSelectedDay] = useState<Date[]>([defaultValue]);
 
-  useEffect(() => {
-    onChange?.(selectedDay[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <DayPicker
-      onDayClick={(day) => setSelectedDay([day])}
+      onDayClick={(day) => {
+        setSelectedDay([day]);
+        onChange?.(day);
+      }}
       selected={selectedDay as any}
       showOutsideDays={showOutsideDays}
       className="p-4 w-full m-0"

@@ -16,6 +16,8 @@ type Props = CaptionProps;
 
 type ChangeMonthButtonProps = {
   children: React.ReactNode;
+  setMonth: (month: string) => void;
+  setYear: (year: string) => void;
   month?: Date;
   state: ReturnType<typeof useMonthYear>;
 };
@@ -45,6 +47,10 @@ export const Caption: React.FC<Props> = (props) => {
   const { nextMonth, previousMonth } = useNavigation();
 
   const state = useMonthYear(displayMonth);
+  const [stringMonth, setStringMonth] = useState(
+    FormatDate(new Date(), "MMMM")
+  );
+  const [stringYear, setStringYear] = useState(FormatDate(new Date(), "yyyy"));
 
   const DropdownOptions = useMemo(() => GetYearMonthDropdown(), []);
 
@@ -58,11 +64,13 @@ export const Caption: React.FC<Props> = (props) => {
   /* Handlers */
   const handleMonthChange = (val: string) => {
     const parsed = ParseStringDate(val, "MMMM");
+    setStringMonth(val);
     state.setMonth(parsed);
   };
 
   const handleYearChange = (val: string) => {
     const parsed = ParseStringDate(val, "yyyy");
+    setStringYear(val);
     state.setYear(parsed);
   };
 
@@ -77,12 +85,18 @@ export const Caption: React.FC<Props> = (props) => {
 
   return (
     <div className="flex justify-between">
-      <ChangeMonthButton state={state} month={previousMonth}>
+      <ChangeMonthButton
+        setYear={setStringYear}
+        setMonth={setStringMonth}
+        state={state}
+        month={previousMonth}
+      >
         <ChevronLeftIcon width={24} height={24} />
       </ChangeMonthButton>
       <div className="grid grid-cols-[2fr_1fr] px-2">
         <Select
           {...SelectSharedProps}
+          value={stringMonth}
           onChange={(val) => handleMonthChange(val.label)}
           name="datepicker-month"
           options={DropdownOptions.months}
@@ -93,6 +107,7 @@ export const Caption: React.FC<Props> = (props) => {
         <Select
           {...SelectSharedProps}
           onChange={(val) => handleYearChange(val.label)}
+          value={stringYear}
           name="datepicker-year"
           options={DropdownOptions.years}
           defaultValue={DropdownOptions.years.find(
@@ -100,7 +115,12 @@ export const Caption: React.FC<Props> = (props) => {
           )}
         />
       </div>
-      <ChangeMonthButton state={state} month={nextMonth}>
+      <ChangeMonthButton
+        setYear={setStringYear}
+        setMonth={setStringMonth}
+        state={state}
+        month={nextMonth}
+      >
         <ChevronRightIcon width={24} height={24} />
       </ChangeMonthButton>
     </div>
@@ -108,12 +128,15 @@ export const Caption: React.FC<Props> = (props) => {
 };
 
 const ChangeMonthButton: React.FC<ChangeMonthButtonProps> = (props) => {
-  const { month, state } = props;
+  const { month, state, setMonth, setYear } = props;
   const { goToMonth } = useNavigation();
 
   const handler = () => {
     if (!month) return;
+    setYear(FormatDate(month, "yyyy"));
+    setMonth(FormatDate(month, "MMMM"));
 
+    state.setYear(month);
     state.setMonth(month);
     goToMonth(month);
   };

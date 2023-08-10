@@ -26,10 +26,11 @@ type Props = {
   defaultValue?: DropdownOption;
   unstyled?: boolean;
   dropdownIconSize?: number;
+  value?: string;
 } & SelectSharedProps;
 
 export const Select: React.FC<Props> = (props) => {
-  const { input, label, unstyled, dropdownIconSize, ...rest } =
+  const { input, label, unstyled, dropdownIconSize, value, ...rest } =
     DefaultProps(props);
 
   if (!rest.options) throw new Error("Options is required");
@@ -40,6 +41,7 @@ export const Select: React.FC<Props> = (props) => {
 
   const ComboBox = useCombobox({
     items,
+    inputValue: value ? value : undefined,
     defaultInputValue: rest.defaultValue?.label,
     itemToString: (item) => item?.label || "",
     onSelectedItemChange: ({ selectedItem }) => {

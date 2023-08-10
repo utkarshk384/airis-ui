@@ -78,19 +78,23 @@ export const DropdownContent: React.FC<Props> = (props) => {
           sideOffset: -100,
           align: "start",
         }}
-        DropdownContent={(Dropdown) => (
-          <>
-            <Datepicker
-              defaultValue={vistDateDefaultValue}
-              mode="single"
-              onChange={(day) => {
-                setFilter("visit_time", day);
-                setVisitTime(FormatDate(day, "MMM dd"));
-                setReferenceDate(day);
-              }}
-            />
-          </>
-        )}
+        DropdownContent={(Dropdown) => {
+          const { setDropdownOpen } = Dropdown.Context();
+          return (
+            <>
+              <Datepicker
+                defaultValue={vistDateDefaultValue}
+                mode="single"
+                onChange={(day) => {
+                  setDropdownOpen(false);
+                  setFilter("visit_time", day);
+                  setVisitTime(FormatDate(day, "MMM dd"));
+                  setReferenceDate(day);
+                }}
+              />
+            </>
+          );
+        }}
       >
         <div className="flex gap-4 justify-center">
           <CalendarIcon className="fill-accent" />

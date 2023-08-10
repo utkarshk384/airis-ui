@@ -38,6 +38,8 @@ interface Props {
   searchPlaceholder?: string;
   defaultFilters?: DefaultFilter[];
   searchClassName?: string;
+  errorHeading?: string;
+  errorText?: string;
 }
 
 export const Table: React.FC<Props> = (props) => {
@@ -47,6 +49,8 @@ export const Table: React.FC<Props> = (props) => {
     hasStickyHeader = true,
     children,
     defaultFilters,
+    errorHeading,
+    errorText,
   } = DefaultProps(props);
 
   /* Memos */
@@ -96,7 +100,12 @@ export const Table: React.FC<Props> = (props) => {
         <TableContainer>
           <StyledTable {...table.getTableProps()}>
             <TableHead hasStickyHeader={hasStickyHeader} table={table} />
-            <TableBody table={table} onRowClick={props.onRowClick} />
+            <TableBody
+              errorHeading={errorHeading}
+              errorText={errorText}
+              table={table}
+              onRowClick={props.onRowClick}
+            />
           </StyledTable>
         </TableContainer>
       </TableWrapper>
@@ -108,11 +117,12 @@ export const Table: React.FC<Props> = (props) => {
 const DefaultProps = (props: Props) => {
   const defaultProps = {
     ...props,
+    errorHeading: props.errorHeading || "Oops, Nothing was Found!",
     defaultFilters: props.defaultFilters || [],
     title: props.title || "",
     hasStickyHeader: props.hasStickyHeader || true,
     searchClassName: props.searchClassName || "",
   };
 
-  return defaultProps;
+  return defaultProps as typeof defaultProps;
 };

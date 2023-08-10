@@ -12,13 +12,22 @@ type DropdownBtnProps = Props & {
 };
 
 export const DropdownButton: React.FC<DropdownBtnProps> = (props) => {
-  const { DropdownContent, dropdownContentProps, ...rest } =
+  const { DropdownContent, children, dropdownContentProps, ...rest } =
     DefaultProps(props);
 
   return (
     <Dropdown
       dropdownContentProps={dropdownContentProps}
-      TriggerComponent={() => <Button {...rest} as="a" />}
+      TriggerComponent={(props) => (
+        <Button
+          {...rest}
+          as="a"
+          className={`${rest.className} cursor-pointer select-none`}
+          onClick={() => props.setOpen(!props.open)}
+        >
+          {children}
+        </Button>
+      )}
     >
       {DropdownContent}
     </Dropdown>

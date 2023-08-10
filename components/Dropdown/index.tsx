@@ -11,6 +11,7 @@ import {
   CheckboxItem as StyledCheckboxItem,
   DropdownItemGroup,
 } from "./styled";
+import { DropdownContextProvider, useDropdownOpen } from "./context";
 
 /* Types */
 
@@ -25,8 +26,13 @@ type SharedProps = {
   contentMaxHeight?: string | number;
 };
 
+type TriggerComponentProps = {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean;
+};
+
 type Props = {
-  TriggerComponent: React.FC;
+  TriggerComponent: React.FC<TriggerComponentProps>;
   portal?: boolean;
 } & SharedProps;
 
@@ -34,7 +40,7 @@ type CheckboxItemProps = {
   children: React.ReactNode;
 } & React.RefAttributes<HTMLInputElement>;
 
-export const Dropdown: React.FC<Props> = (props) => {
+const CustomDropdown: React.FC<Props> = (props) => {
   const {
     portal,
     children,
@@ -42,10 +48,13 @@ export const Dropdown: React.FC<Props> = (props) => {
     contentMaxHeight,
     dropdownContentProps = {},
   } = props;
+
+  const { isDropdownOpen, setDropdownOpen } = useDropdownOpen();
+
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root modal={false} open={isDropdownOpen}>
       <DropdownMenu.Trigger className="focus-visible:outline-none">
-        <TriggerComponent />
+        <TriggerComponent open={isDropdownOpen} setOpen={setDropdownOpen} />
       </DropdownMenu.Trigger>
       {portal ? (
         <DropdownMenu.Portal>
@@ -102,3 +111,16 @@ Menu.Group = DropdownItemGroup;
 Menu.Label = DropdownLabel;
 Menu.Separator = DropdownSeparator;
 Menu.CheckboxItem = CheckboxItem;
+Menu.Context = useDropdownOpen;
+
+const withDropdownContext = (Component: React.FC<Props>) => {
+  return function withDropdown(props: Props) {
+    return (
+      <DropdownContextProvider>
+        <Component {...props} />
+      </DropdownContextProvider>
+    );
+  };
+};
+
+export const Dropdown = withDropdownContext(CustomDropdown);

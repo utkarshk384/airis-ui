@@ -13,6 +13,8 @@ import type { TableComponent } from "../types";
 
 type Props = {
   onRowClick?: (original: Object) => void;
+  errorHeading: string;
+  errorText?: string;
 } & TableComponent;
 
 export const TableBody: React.FC<Props> = (props) => {
@@ -41,13 +43,13 @@ export const TableBody: React.FC<Props> = (props) => {
         );
       })}
       {page.length === 0 && (
-        <div className="w-full absolute inset-0 m-auto pl-12 pt-4">
-          <Player autoplay className="w-64 h-64" src={animationData} loop />
+        <div className="w-full absolute inset-0 m-auto pl-12 pt-44">
+          {/* <Player autoplay className="w-64 h-64" src={animationData} loop /> */}
           <div className="flex flex-col items-center gap-2">
             <Heading size="xl" weight="500">
-              Oops, Nothing was Found!
+              {props.errorHeading}
             </Heading>
-            <Text>Maybe select another date?</Text>
+            {props.errorText && <Text>{props.errorText}</Text>}
           </div>
         </div>
       )}

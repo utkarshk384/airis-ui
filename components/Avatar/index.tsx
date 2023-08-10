@@ -22,7 +22,15 @@ export const Avatar: React.FC<Props> = (props) => {
 
   if (hasDropdown)
     return (
-      <Dropdown TriggerComponent={() => <UserIcon />}>
+      <Dropdown
+        TriggerComponent={(props) => (
+          <UserIcon
+            role="button"
+            tabIndex={0}
+            onClick={() => props.setOpen(!props.open)}
+          />
+        )}
+      >
         {DropdownContent}
       </Dropdown>
     );

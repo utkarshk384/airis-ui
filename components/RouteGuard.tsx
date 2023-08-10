@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useIdleTimer } from "react-idle-timer";
 import { useState, useEffect, useCallback } from "react";
 
 /* Components */
@@ -6,11 +7,9 @@ import { Preloader } from "./preloader";
 
 /* Utils */
 import { getCookie } from "@utils/cookie";
-import { parseISO, isBefore } from "@utils/dates-fns";
-import { getLocalStoragevalue } from "@utils/localStorage";
 
 /* Consts */
-import { COOKIE_KEYS, LOCAL_STORAGE_KEYS, PUBLIC_PATHS } from "@src/consts";
+import { COOKIE_KEYS, PUBLIC_PATHS } from "@src/consts";
 
 /* Types */
 type Props = {
@@ -23,24 +22,36 @@ export const RouteGuard: React.FC<Props> = (props) => {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
 
+  const { start, pause } = useIdleTimer({
+    debounce: 10000,
+    timeout: 1000 * 60 * 15,
+    startManually: true,
+    onIdle: () => {
+      router.push("/login");
+    },
+  });
+
   const authCheck = useCallback(
     (path: string) => {
-      if (PUBLIC_PATHS.includes(path)) return true;
+      if (PUBLIC_PATHS.includes(path)) {
+        pause();
+        return true;
+      }
 
-      const validity = getLocalStoragevalue(LOCAL_STORAGE_KEYS.tokenValidity);
       const token = getCookie(COOKIE_KEYS.token);
       const userId = getCookie(COOKIE_KEYS.userId);
 
-      let expiry = new Date();
-      if (validity) expiry = parseISO(validity);
-
-      if (token && userId && isBefore(new Date(), expiry)) return true;
-      else {
+      if (token && userId) {
+        start(); // Start activity monitor
+        return true;
+      } else {
+        pause();
         if (!path.includes("/login"))
           router.replace(`/login?redirect_uri=${path}`);
         return false;
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [router]
   );
 
@@ -55,25 +66,6 @@ export const RouteGuard: React.FC<Props> = (props) => {
 
     setAuthorized(authCheck(path));
   }, [authCheck, router.asPath, router.pathname]);
-
-  // useEffect(() => {
-  //   const interval = setTimeout(() => {
-  //     const path = Router.pathname;
-  //     if (PUBLIC_PATHS.includes(path)) return true;
-
-  //     const validity = getLocalStoragevalue(LOCAL_STORAGE_KEYS.tokenValidity);
-  //     if (!validity) return;
-
-  //     let expiry = parseISO(validity);
-  //     if (isBefore(new Date(), expiry)) setAuthorized(true);
-  //     else {
-  //       setAuthorized(false);
-  //       Router.push(`/login?redirect_uri=${path}`);
-  //     }
-  //   }, 1000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
 
   return <>{authorized ? children : <Preloader />}</>;
 };

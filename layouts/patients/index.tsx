@@ -63,17 +63,19 @@ export const PatientsTab: React.FC<Props> = (props) => {
       <AllergyDrawer />
       <TechnicalNotesDrawer />
       <div className="container !bg-white rounded-lg p-4 !mb-16">
-        <Button
+        {/* <Button
           variant="solid"
           rightIcon={() => <PlusIcon width={24} height={24} />}
           onClick={() => setOpen(true)}
         >
           Add Template
         </Button>
-        <AddTemplate open={open} setOpen={setOpen} />
+        <AddTemplate open={open} setOpen={setOpen} /> */}
         <Table
           searchPlaceholder="Search patient id, name, acc no, referral doctor..."
           cols={cols}
+          errorHeading="Nothing was found in the selected date."
+          errorText="Try selecting a different date range or removing the filters."
           searchClassName="w-7/12"
           rows={data}
           defaultFilters={[{ id: "visit_time", value: new Date() }]}
