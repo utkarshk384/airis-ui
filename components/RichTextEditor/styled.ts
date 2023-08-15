@@ -11,7 +11,15 @@ export const QuillCSS = css({
     borderTopLeftRadius: "8px",
     borderTopRightRadius: "8px",
   },
+
+  ".ql-toolbar": {
+    border: "1px solid var(--border-color) !important",
+    borderBottom: "none !important",
+  },
+
   ".ql-container": {
+    border: "1px solid var(--border-color) !important",
+    borderTop: "1px solid #ccc !important",
     borderEndStartRadius: "8px",
     borderEndEndRadius: "8px",
     height: "var(--height, auto) !important",

@@ -16,6 +16,7 @@ type Props = {
   scrollable?: boolean;
   readOnly?: boolean;
   value?: string;
+  borderColor?: string;
 };
 
 const MODULES: QuillOptions["modules"] = {
@@ -23,7 +24,7 @@ const MODULES: QuillOptions["modules"] = {
 };
 
 export const RichTextEditor: React.FC<Props> = (props) => {
-  const { onChange, height, scrollable, maxHeight, ...rest } =
+  const { onChange, height, scrollable, borderColor, maxHeight, ...rest } =
     DefaultProps(props);
 
   const [value, setValue] = useState(rest.value || "");
@@ -41,6 +42,7 @@ export const RichTextEditor: React.FC<Props> = (props) => {
         css: {
           "--height": height,
           maxHeight,
+          "--border-color": borderColor,
           cursor: rest.readOnly ? "default" : "text",
         },
       })}`}
@@ -64,6 +66,7 @@ const DefaultProps = (props: Props) => {
     scrollable: props.scrollable || false,
     height: props.height || "auto",
     value: props.value || "",
+    borderColor: props.borderColor || "#ccc",
     maxHeight: props.maxHeight || "auto",
     placeholder: props.placeholder || "Write something...",
   };

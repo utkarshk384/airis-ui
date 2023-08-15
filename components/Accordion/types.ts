@@ -1,4 +1,5 @@
 import type { AccordionItemProps } from "@radix-ui/react-accordion";
+import React from "react";
 
 export type BaseAccordionProps<T = string> = {
   children?: (Item: AccordionItemType) => React.ReactNode;
@@ -14,6 +15,7 @@ export type ContentProps = {
 };
 
 export type TriggerProps = {
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   children?: React.ReactNode;
 } & Pick<HTMLAttributes, "className" | "style">;
 

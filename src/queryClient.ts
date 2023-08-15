@@ -7,7 +7,7 @@ export const queryClient = new QueryClient({
       refetchOnReconnect: true,
       refetchOnMount: true,
       staleTime: 300000,
-      retry: 2,
+      retry: 0,
     },
   },
 });

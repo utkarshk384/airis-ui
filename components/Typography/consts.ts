@@ -60,6 +60,9 @@ export const FONT_COLORS = {
   black: {
     color: "#000000",
   },
+  red: {
+    color: "rgb(239 68 68)",
+  },
 };
 
 export const FONT_TEXT_CASE = {
