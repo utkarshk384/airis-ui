@@ -45,11 +45,16 @@ const setValues = (res: LoginResult) => {
   const parsed = new Date();
   const expiryDate = addMinutes(parsed, 14).toISOString();
 
-  setCookies([
-    { name: COOKIE_KEYS.token, value: token },
-    { name: COOKIE_KEYS.userId, value: userId },
-    { name: COOKIE_KEYS.id, value: id },
-  ]);
+  setCookies(
+    [
+      { name: COOKIE_KEYS.token, value: token },
+      { name: COOKIE_KEYS.userId, value: userId },
+      { name: COOKIE_KEYS.id, value: id },
+    ],
+    {
+      hours: 6,
+    }
+  );
 
   setLocalStoragevalue(LOCAL_STORAGE_KEYS.name, fullName);
   setLocalStoragevalue(LOCAL_STORAGE_KEYS.branchId, branchId.toString());

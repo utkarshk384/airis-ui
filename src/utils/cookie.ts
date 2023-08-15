@@ -4,33 +4,31 @@ export type CookieType = {
 } & CookieOpts;
 
 type CookieOpts = {
-  days?: number;
+  hours?: number;
   path?: string;
 };
 
 export const setCookie = (cookie: CookieType) => {
   if (typeof window === "undefined") return;
 
-  const { name, value, days = 1, path = "/" } = cookie;
+  const { name, value, hours = 24, path = "/" } = cookie;
 
-  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  const maxAge = hours * 60 * 60;
   document.cookie =
     name +
     "=" +
     encodeURIComponent(value) +
-    "; expires=" +
-    expires +
+    "; max-age=" +
+    maxAge +
     "; path=" +
     path;
 };
 
-export const setCookies = (
-  cookies: CookieType[],
-  defaultOpts: CookieOpts = { days: 1, path: "/" }
-) => {
+export const setCookies = (cookies: CookieType[], defaultOpts: CookieOpts) => {
+  const { hours = 24, path = "/" } = defaultOpts;
   cookies.forEach((cookie) => {
-    if (!cookie.path) cookie.path = defaultOpts.path;
-    if (!cookie.days) cookie.days = defaultOpts.days;
+    if (!cookie.path) cookie.path = path;
+    if (!cookie.hours) cookie.hours = hours;
 
     setCookie(cookie);
   });
@@ -48,5 +46,5 @@ export const getCookie = (name: string) => {
 };
 
 export const deleteCookie = (name: string, path?: string) => {
-  setCookie({ name, value: "", days: -1, path });
+  setCookie({ name, value: "", hours: 0, path });
 };
