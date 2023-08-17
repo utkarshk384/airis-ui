@@ -1,37 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 
-/* Utils */
-import { FormatDate } from "@utils/dates-fns";
-
 /* Types */
 import type { AllergyNotesItemType } from "../types";
 
-type AddNewItemType = () => void;
-
-export const useNewItem = (
+export const useNewItem = <
+  T extends Record<string, unknown> = AllergyNotesItemType
+>(
   open: boolean,
-  defaultValue: AllergyNotesItemType[] = []
+  defaultValue: T[] = []
 ) => {
   const count = useRef<number>(1);
 
-  const [items, setItems] = useState<AllergyNotesItemType[]>(defaultValue);
+  const [items, setItems] = useState<T[]>(defaultValue);
 
   useEffect(() => {
     if (!open) setItems(defaultValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  const addNewItem: AddNewItemType = () => {
-    const newItems = [...items];
-
-    const newItem: AllergyNotesItemType = {
-      date: FormatDate(new Date()),
-      content: `Untitled text ${count.current++}`,
-    };
-
-    newItems.unshift(newItem);
-    setItems(newItems);
-  };
-
-  return { items, addNewItem, setItems };
+  return { items, count, setItems };
 };

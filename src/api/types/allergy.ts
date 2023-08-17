@@ -11,7 +11,7 @@ export type AllergyType = {
   organizationId: string;
   branchId: string;
   patientIndexId: number | null;
-  createdBy: number | null;
+  createdBy: number | null | string;
   lastUpdatedBy: number | null;
   createdDate: string;
   lastUpdatedDate: string;
@@ -25,7 +25,7 @@ export type AllergyBody = {
 
 export type AllergyPayload = Omit<
   AllergyType,
-  "organizationId" | "branchId" | "patientAllergyId"
+  "organizationId" | "branchId" | "patientAllergyId" | "lastUpdatedDate"
 > & {
   patientAllergyId?: number | null;
 };

@@ -18,7 +18,7 @@ export type TechnicalNotesType = {
   organizationId: string;
   branchId: string;
   patientIndexId: number;
-  createdBy: number;
+  createdBy: number | string;
   lastUpdatedBy: number;
   notesDate: string;
   createdDate: string;
