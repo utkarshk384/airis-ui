@@ -4,6 +4,9 @@ import React from "react";
 import { AppLayout } from "@layouts/layout";
 import { ReportingComponent } from "@layouts/reporting";
 
+/* Contexts */
+import { TableModelProvider } from "@layouts/patients/modalContext";
+
 type Props = {
   children?: React.ReactNode;
 };
@@ -14,7 +17,11 @@ type Page = React.FC<Props> & {
 
 const ReportingPage: Page = (props) => {
   const {} = props;
-  return <ReportingComponent />;
+  return (
+    <TableModelProvider>
+      <ReportingComponent />
+    </TableModelProvider>
+  );
 };
 
 ReportingPage.getLayout = (page) => {

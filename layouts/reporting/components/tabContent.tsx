@@ -12,7 +12,11 @@ import React, {
 /* Components */
 import { ListItem } from "./shared";
 import { DrFormDrawer } from "@layouts/modals/drForm";
-import { TechnicalNotesDrawer, AllergyDrawer } from "@layouts/modals/";
+import {
+  TechnicalNotesDrawer,
+  AllergyDrawer,
+  AddTemplate,
+} from "@layouts/modals/";
 import {
   AllergyIcon,
   Button,
@@ -30,7 +34,12 @@ import { useIsModalsOpen } from "@layouts/patients/modalContext";
 import { FormatDate } from "@utils/dates-fns";
 
 /* APIs */
-import { useDocumentUpload, usePatientHistory, useTemplates } from "@src/api";
+import {
+  useDocumentUpload,
+  usePatientHistory,
+  useRadiologistList,
+  useTemplates,
+} from "@src/api";
 
 /* Types */
 import type { PatientListType, PatientHistory } from "@src/api/types";
@@ -38,24 +47,39 @@ import type { PatientListType, PatientHistory } from "@src/api/types";
 type Props = {
   children?: React.ReactNode;
   patient: PatientListType | null;
+  setEditorText: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const TabContent: React.FC<Props> = (props) => {
-  const { patient } = props;
+  const { patient, setEditorText } = props;
 
   /* Hooks */
   const { tab } = useTab();
   const router = useRouter();
   const { setIsModelOpen } = useIsModalsOpen();
+  const [dropdownData, setDropdownData] = useDropdown();
 
   /* States */
-  const [isFormOpen, setIsFormOpen] = useState(false);
   const [templates, setTemplates] = useDropdown();
+  const [isTemplateOpen, setTemplateOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [history, setHistory] = useState<PatientHistory | null>(null);
 
-  const { getRadiologistTemplate, setListRadiologistPayload } = useTemplates();
+  /* APIs */
+  const { getRadiologistList } = useRadiologistList();
   const { getPatientHistory, setPatientId } = usePatientHistory();
   const { getUploadDocument, setGetUploadBody } = useDocumentUpload();
+  const { getRadiologistTemplate, setListRadiologistPayload } = useTemplates();
+
+  useEffect(() => {
+    if (getRadiologistList.isSuccess)
+      setDropdownData(getRadiologistList.data, [
+        "radiologistSignatureName",
+        "radiologistId",
+      ]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getRadiologistList.isSuccess]);
 
   const imgRef = useRef(null);
 
@@ -121,6 +145,7 @@ export const TabContent: React.FC<Props> = (props) => {
       <TechnicalNotesDrawer />
       <AllergyDrawer />
       <DrFormDrawer open={isFormOpen} setOpen={setIsFormOpen} />
+      <AddTemplate open={isTemplateOpen} setOpen={setTemplateOpen} />
       <div className="flex flex-col gap-10">
         <div className="flex justify-between px-4">
           <ListItem
@@ -140,22 +165,35 @@ export const TabContent: React.FC<Props> = (props) => {
             value={history?.referringDoctor || ""}
           />
         </div>
-        <div className="grid grid-cols-[1fr_1fr] px-4">
+        <div className="grid grid-cols-[2fr_2fr_1fr] px-4">
           <div className="flex gap-4">
             <Select
               label="Template:"
               containerClassName="!w-2/3"
               labelClassName="!justify-self-start"
               name="template"
+              onChange={(vals) => {
+                const item = getRadiologistTemplate.data?.find(
+                  (item) => item.reportTemplateId === vals.value
+                );
+                if (item)
+                  setEditorText((prev) => `${prev}\n ${item.reportTemplate}`);
+              }}
               placeholder="Select Template..."
               options={templates}
             />
             <Button
               variant="solid"
               size="base"
+              onClick={() => setTemplateOpen(true)}
               rightIcon={() => <PlusIcon width={24} height={24} />}
-            ></Button>
+            />
           </div>
+          <Select
+            name="radiologist"
+            label="Consultant Radiologist:"
+            options={dropdownData}
+          />
           <div className="flex gap-4 justify-self-end">
             <Button
               onClick={() =>

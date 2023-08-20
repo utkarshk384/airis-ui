@@ -27,7 +27,7 @@ export const RichTextEditor: React.FC<Props> = (props) => {
   const { onChange, height, scrollable, borderColor, maxHeight, ...rest } =
     DefaultProps(props);
 
-  const [value, setValue] = useState(rest.value || "");
+  const [value, setValue] = useState(rest.defaultValue || "");
   const modules = useMemo(() => MODULES, []);
 
   const handleChange = (value: string) => {
@@ -52,7 +52,7 @@ export const RichTextEditor: React.FC<Props> = (props) => {
         {...rest}
         modules={modules}
         theme={undefined}
-        value={value}
+        value={rest.value || value}
         onChange={handleChange}
       />
     </div>

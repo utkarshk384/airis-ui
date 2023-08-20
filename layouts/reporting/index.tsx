@@ -40,6 +40,7 @@ export const ReportingComponent: React.FC<Props> = (props) => {
 
   /* States */
   const [patient, setPatient] = useState<PatientType | null>(null);
+  const [text, setText] = useState("");
 
   useEffect(() => {
     const id = router.query.report as string;
@@ -73,10 +74,14 @@ export const ReportingComponent: React.FC<Props> = (props) => {
         <BorderedContainer className="overflow-hidden">
           <Tabbar />
           <div className="my-2" />
-          <TabContent patient={patient} />
+          <TabContent setEditorText={setText} patient={patient} />
         </BorderedContainer>
         <BorderedContainer>
-          <RichTextEditor height="20rem" />
+          <RichTextEditor
+            value={text}
+            onChange={(newText) => setText(newText)}
+            height="20rem"
+          />
         </BorderedContainer>
       </TabProvider>
       <Footer />
