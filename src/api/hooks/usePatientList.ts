@@ -9,11 +9,9 @@ import { useGetId } from "./useGetId";
 
 /* Types */
 import type { PatientListResponse } from "../types/patientList";
-import { useRouter } from "next/router";
 
 export const usePatientList = () => {
   const { orgId, branchId } = useGetId();
-  const router = useRouter();
 
   const [referenceDate, setReferenceDate] = useState<Date>(new Date());
 
@@ -27,5 +25,5 @@ export const usePatientList = () => {
       }) as any
   );
 
-  return { PatientList, setReferenceDate };
+  return { referenceDate, PatientList, setReferenceDate };
 };

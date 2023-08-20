@@ -13,12 +13,13 @@ import type { TableComponent } from "@components/types";
 import type { DropdownOption } from "@components/sharedTypes";
 import { FormatDate } from "@utils/dates-fns";
 
-type Props = {} & TableComponent;
+type Props = {
+  referenceDate: Date;
+  setReferenceDate: React.Dispatch<React.SetStateAction<Date>>;
+} & TableComponent;
 
 export const DropdownContent: React.FC<Props> = (props) => {
-  const { table } = props;
-
-  const { setReferenceDate } = usePatientList();
+  const { table, setReferenceDate, referenceDate } = props;
 
   const statusOption: DropdownOption[] = useMemo(
     () => [
@@ -56,15 +57,10 @@ export const DropdownContent: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
-  const vistDateDefaultValue = useMemo(() => {
-    return (
-      filters.find((filter) => filter.id === "visit_time")?.value || undefined
-    );
-  }, [filters]);
-
   /* States */
-  const [visitTime, setVisitTime] = useState<string>(
-    FormatDate(vistDateDefaultValue, "MMM dd")
+  const visitTime = useMemo(
+    () => FormatDate(referenceDate, "MMM dd"),
+    [referenceDate]
   );
 
   return (
@@ -83,12 +79,10 @@ export const DropdownContent: React.FC<Props> = (props) => {
           return (
             <>
               <Datepicker
-                defaultValue={vistDateDefaultValue}
+                defaultValue={referenceDate}
                 mode="single"
                 onChange={(day) => {
                   setDropdownOpen(false);
-                  setFilter("visit_time", day);
-                  setVisitTime(FormatDate(day, "MMM dd"));
                   setReferenceDate(day);
                 }}
               />

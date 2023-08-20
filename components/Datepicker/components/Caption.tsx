@@ -44,7 +44,7 @@ const useMonthYear = (date: Date) => {
 export const Caption: React.FC<Props> = (props) => {
   const { displayMonth } = props;
 
-  const { nextMonth, previousMonth } = useNavigation();
+  const { nextMonth, previousMonth, goToDate } = useNavigation();
 
   const state = useMonthYear(displayMonth);
   const [stringMonth, setStringMonth] = useState(
@@ -61,15 +61,25 @@ export const Caption: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [displayMonth]);
 
+  useEffect(() => {
+    /* Set initial month and year */
+    setStringMonth(FormatDate(displayMonth, "MMMM"));
+    setStringYear(FormatDate(displayMonth, "yyyy"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   /* Handlers */
   const handleMonthChange = (val: string) => {
     const parsed = ParseStringDate(val, "MMMM");
+    goToDate(parsed);
     setStringMonth(val);
     state.setMonth(parsed);
   };
 
   const handleYearChange = (val: string) => {
     const parsed = ParseStringDate(val, "yyyy");
+    parsed.setMonth(ParseStringDate(state.month, "MMMM").getMonth());
+    goToDate(parsed);
     setStringYear(val);
     state.setYear(parsed);
   };

@@ -55,12 +55,11 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
+      defaultMonth={defaultValue}
       captionLayout="dropdown-buttons"
       fromYear={2015}
       toYear={2025}
-      components={{
-        Caption: Caption,
-      }}
+      components={{ Caption }}
       {...props}
       mode="single"
       onSelect={(day) => {

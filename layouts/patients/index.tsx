@@ -44,33 +44,23 @@ const TransformToTableRows = (data: PatientListResponse): Patient[] => {
 export const PatientsTab: React.FC<Props> = (props) => {
   const {} = props;
 
-  const rows = useMemo(() => MOCK_DATA, []);
   const cols = useMemo(() => COLUMNS, []);
-  const [open, setOpen] = React.useState(false);
 
   const [data, setData] = useState<Patient[]>([]);
-  const { PatientList } = usePatientList();
+  const { PatientList, setReferenceDate, referenceDate } = usePatientList();
 
   useEffect(() => {
-    if (PatientList.isSuccess) {
+    if (PatientList.status === "success") {
       const formattedData = TransformToTableRows(PatientList.data);
       setData(formattedData);
     }
-  }, [PatientList.data, PatientList.isSuccess]);
+  }, [PatientList.data, PatientList.status]);
 
   return (
     <>
       <AllergyDrawer />
       <TechnicalNotesDrawer />
       <div className="container !bg-white rounded-lg p-4 !mb-16">
-        {/* <Button
-          variant="solid"
-          rightIcon={() => <PlusIcon width={24} height={24} />}
-          onClick={() => setOpen(true)}
-        >
-          Add Template
-        </Button>
-        <AddTemplate open={open} setOpen={setOpen} /> */}
         <Table
           searchPlaceholder="Search patient id, name, acc no, referral doctor..."
           cols={cols}
@@ -78,10 +68,15 @@ export const PatientsTab: React.FC<Props> = (props) => {
           errorText="Try selecting a different date range or removing the filters."
           searchClassName="w-7/12"
           rows={data}
-          defaultFilters={[{ id: "visit_time", value: new Date() }]}
           title="Patients"
         >
-          {(table) => <DropdownContent table={table} />}
+          {(table) => (
+            <DropdownContent
+              referenceDate={referenceDate}
+              setReferenceDate={setReferenceDate}
+              table={table}
+            />
+          )}
         </Table>
       </div>
     </>
