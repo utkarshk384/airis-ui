@@ -10,3 +10,4 @@ export type * from "./optionList";
 export type * from "./technicalNotes";
 export type * from "./allergy";
 export type * from "./documentUpload";
+export type * from "./patientReport";

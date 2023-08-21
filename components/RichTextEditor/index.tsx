@@ -6,9 +6,18 @@ import { TOOLBAR_OPTS } from "./toolbar";
 import { QuillCSS } from "./styled";
 
 /* Types */
-import type { QuillOptions } from "react-quill";
+import type { DeltaStatic, Sources } from "quill";
+import type { QuillOptions, UnprivilegedEditor } from "react-quill";
+
+type OnChangeRQ = (
+  value: string,
+  delta: DeltaStatic,
+  source: Sources,
+  editor: UnprivilegedEditor
+) => void;
+
 type Props = {
-  onChange?: (value: string) => void;
+  onChange?: OnChangeRQ;
   placeholder?: string;
   defaultValue?: string;
   height?: string;
@@ -30,9 +39,9 @@ export const RichTextEditor: React.FC<Props> = (props) => {
   const [value, setValue] = useState(rest.defaultValue || "");
   const modules = useMemo(() => MODULES, []);
 
-  const handleChange = (value: string) => {
+  const handleChange: OnChangeRQ = (value: string, delta, source, editor) => {
     setValue(value);
-    onChange?.(value);
+    onChange?.(value, delta, source, editor);
   };
 
   return (

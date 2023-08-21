@@ -15,4 +15,6 @@ export const ENDPOINTS = {
   addUpdateAllergy: "/risGateway/api/addUpdatePatientAllergy",
   uploadPatientDocument: "/risGateway/api/uploadPatientDocument",
   getUploadedDocument: "/risGateway/api/getPatientDocument",
+  addUpdatePatientReport: "/risGateway/api/addUpdatePatientReport",
+  getAlPatientReports: "/risGateway/api/getAllPatientReports",
 };
