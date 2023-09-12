@@ -16,17 +16,21 @@ export const ReportingHeader: React.FC<HeaderProps> = (props) => {
 
   return (
     <StyledHeader>
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center">
         <Button variant="icon" iconButton onClick={() => router.back()}>
           <ChevronLeftIcon fill="white" width={36} height={36} />
         </Button>
         <Heading color="white" size="lg" weight="600">
-          Radiologist Report
+          Work List
         </Heading>
       </div>
-      <ListItem title="Patient Name" value={data.name} />
-      <ListItem title="Patient ID" value={data.id} />
-      <ListItem title={`Age(Year/Month): ${data.age}`} value={data.gender}>
+      <ListItem title="Patient Name" headingSize="base" value={data.name} />
+      <ListItem title="Patient ID" headingSize="base" value={data.id} />
+      <ListItem
+        title={`Gender | Age(Year/Month): `}
+        value={`${data.gender} | ${data.age}`}
+        headingSize="base"
+      >
         {data.gender === "Male" && <GenderMaleIcon />}
         {data.gender === "Female" && <GenderFemaleIcon />}
       </ListItem>

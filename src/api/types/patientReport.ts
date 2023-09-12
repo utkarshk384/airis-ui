@@ -14,6 +14,7 @@ export type PatientReportPayload = {
   resultsSecondaryDateTime: string | null;
   templateContent: string;
   verifiedBy: string | number | null;
+  referringDoctor: string | number | null;
   verifiedDateTime: string | number | null;
 };
 

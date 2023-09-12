@@ -20,7 +20,7 @@ export const GlobalFilter: React.FC<Props> = (props) => {
     setGlobalFilter,
   } = table;
 
-  const [value, setValue] = useState(globalFilter);
+  const [value, setValue] = useState(globalFilter || "");
 
   const onChange = useDebouncedCallback((value) => {
     setGlobalFilter(value || undefined);

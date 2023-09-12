@@ -21,6 +21,11 @@ type Props = {
 export const DropdownContent: React.FC<Props> = (props) => {
   const { table, setReferenceDate, referenceDate } = props;
 
+  const {
+    setFilter,
+    state: { filters },
+  } = table;
+
   const statusOption: DropdownOption[] = useMemo(
     () => [
       {
@@ -43,11 +48,6 @@ export const DropdownContent: React.FC<Props> = (props) => {
     []
   );
 
-  const {
-    setFilter,
-    state: { filters },
-  } = table;
-
   const statusDefaultValue = useMemo(() => {
     const filter = filters.find((filter) => filter.id === "status");
     if (!filter) return statusOption[0];
@@ -57,11 +57,17 @@ export const DropdownContent: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
-  /* States */
   const visitTime = useMemo(
     () => FormatDate(referenceDate, "MMM dd"),
     [referenceDate]
   );
+
+  /* Effects */
+  useEffect(() => {
+    if(!table.state.globalFilter) return;
+
+    
+  }, [table.state.globalFilter])
 
   return (
     <>
@@ -90,7 +96,7 @@ export const DropdownContent: React.FC<Props> = (props) => {
           );
         }}
       >
-        <div className="flex gap-4 justify-center">
+        <div className="flex justify-center gap-4">
           <CalendarIcon className="fill-accent" />
           <Text color="accent" size="sm">
             {visitTime}
@@ -109,7 +115,7 @@ export const DropdownContent: React.FC<Props> = (props) => {
         DropdownContent={(Dropdown) => (
           <>
             <div className="flex flex-col min-h-[24rem] !w-[24rem] p-4 gap-4">
-              <div className="flex gap-2 flex-col">
+              <div className="flex flex-col gap-2">
                 <Dropdown.Label>Status</Dropdown.Label>
                 <Select
                   name="status"

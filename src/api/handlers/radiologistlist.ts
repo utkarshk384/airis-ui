@@ -2,9 +2,9 @@ import { AxiosWrapper } from "../axios";
 import { ENDPOINTS } from "../endpoints";
 
 /* Types */
-import type { GetIdType } from "../types/getId";
+import type { RadiologistRequest } from "../types";
 
-export const RadiologistList = async (ids: GetIdType) => {
+export const RadiologistList = async (ids: RadiologistRequest) => {
   return await AxiosWrapper({
     method: "POST",
     url: ENDPOINTS.getRadiologistList,

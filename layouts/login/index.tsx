@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import Link from "next/link";
 import { Formik } from "formik";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 
 /* Components */
@@ -18,7 +18,7 @@ import { setLocalStoragevalue } from "@utils/localStorage";
 import { ParseStringDate, addMinutes } from "@utils/dates-fns";
 
 /* Types */
-import type { LoginPayload, LoginResult } from "@src/api/types";
+import type { LoginPayload, LoginResult, RoleType } from "@src/api/types";
 
 type FormValues = {
   userName: string;
@@ -31,25 +31,18 @@ const validationSchema = yup.object().shape({
 });
 
 const setValues = (res: LoginResult) => {
-  const {
-    token,
-    userId,
-    organizationId,
-    branchId,
-    fullName,
-    otpExpiryDatetime,
-    id,
-  } = res;
+  const { token, userId, organizationId, branchId, fullName, id, roleId } = res;
 
-  /* TODO: Get Expiry from backend */
   const parsed = new Date();
   const expiryDate = addMinutes(parsed, 14).toISOString();
 
+  // If you add an item to this array then make sure to remove it from the logout function
   setCookies(
     [
       { name: COOKIE_KEYS.token, value: token },
       { name: COOKIE_KEYS.userId, value: userId },
       { name: COOKIE_KEYS.id, value: id },
+      { name: COOKIE_KEYS.roleId, value: roleId },
     ],
     {
       hours: 6,
@@ -62,10 +55,21 @@ const setValues = (res: LoginResult) => {
   setLocalStoragevalue(LOCAL_STORAGE_KEYS.tokenValidity, expiryDate.toString());
 };
 
+const transformRoles = (roles: RoleType[]) => {
+  const mappedRoles: Record<string, RoleType> = {};
+  roles.forEach((role) => {
+    mappedRoles[role.featureIdentifier] = role;
+  });
+
+  return mappedRoles;
+};
+
 export const LoginForm: React.FC = (props) => {
   const {
     LoginMutation: { mutate, isLoading },
     IPQuery,
+    getRoles,
+    setRolesPayload,
   } = useLogin();
 
   const router = useRouter();
@@ -81,6 +85,21 @@ export const LoginForm: React.FC = (props) => {
           const res = data.success.result;
           const redirect = router.query["redirect_uri"];
           setValues(res);
+          setRolesPayload({
+            appRoleId: res.roleId,
+            orgId: res.organizationId,
+            branchId: res.branchId,
+            userId: res.id,
+            designationId: res.designationId,
+          });
+
+          getRoles.refetch().then((res) => {
+            if (res.isSuccess) {
+              const mappedRoles = transformRoles(res.data);
+              setLocalStoragevalue(LOCAL_STORAGE_KEYS.roles, mappedRoles);
+            }
+          });
+
           Toast.success("Logged in successfully", { id: toastId });
 
           if (typeof redirect === "string") router.push(redirect);
@@ -98,6 +117,7 @@ export const LoginForm: React.FC = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [IPQuery.data, mutate]
   );
+
   return (
     <Formik
       validationSchema={validationSchema}
@@ -107,7 +127,7 @@ export const LoginForm: React.FC = (props) => {
       validateOnChange={false}
     >
       {({ handleSubmit }) => (
-        <form className="flex flex-col items-center gap-4 w-3/5">
+        <form className="flex flex-col items-center w-3/5 gap-4">
           <Input
             variant="underlined"
             placeholder="Username"

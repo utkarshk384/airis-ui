@@ -1,3 +1,5 @@
+import type { GetIdType } from "./getId";
+
 export type RadiologistListResponse = RadiologistType[];
 
 export type RadiologistType = {
@@ -10,3 +12,8 @@ export type RadiologistType = {
   radiologistSignatureName: string;
   mcrnumber: string;
 };
+
+
+export type RadiologistRequest = {
+  userId: string
+} & GetIdType;

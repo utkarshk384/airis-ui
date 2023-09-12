@@ -5,4 +5,5 @@ export const ClearStorages = () => {
   deleteCookie("id");
   deleteCookie("token");
   deleteCookie("userId");
+  deleteCookie("roleId");
 };

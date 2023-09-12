@@ -15,20 +15,23 @@ export type { ButtonSizes, ButtonVariants, CompoundVariant };
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export type Props = {
+export type BaseProps = {
   isLoading?: boolean;
   tooltip?: string;
   children?: React.ReactNode;
   leftIcon?: React.FC;
   rightIcon?: React.FC;
-  variant?: ButtonVariants;
   iconButton?: boolean;
   size?: ButtonSizes;
   as?: "button" | "a" | React.FC;
   noPadding?: boolean;
   typographyProps?: TypographyProps;
-  color?: ButtonColors;
 } & Omit<ButtonProps, "color">;
+
+export type Props = {
+  variant?: ButtonVariants;
+  color?: ButtonColors;
+} & BaseProps;
 
 type TypographyProps = {
   size?: FontSizes;

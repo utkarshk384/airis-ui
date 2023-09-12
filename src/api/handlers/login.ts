@@ -5,7 +5,7 @@ import { ENDPOINTS } from "../endpoints";
 import { encodeBase64 } from "@src/utils";
 
 /* Types */
-import type { LoginPayload } from "../types";
+import type { LoginPayload, RolesPayload } from "../types";
 
 export const LoginUser = async (data: LoginPayload) => {
   // data.password = encodeBase64(data.password);
@@ -23,5 +23,15 @@ export const getIPAddress = async () => {
     method: "GET",
     url: "https://geolocation-db.com/json/",
     defaultHeaders: true,
+  });
+};
+
+export const getRolesList = async (body: RolesPayload) => {
+  return AxiosWrapper({
+    method: "POST",
+    url: ENDPOINTS.getAllRolePermission,
+    needsAuth: true,
+    defaultHeaders: true,
+    body,
   });
 };

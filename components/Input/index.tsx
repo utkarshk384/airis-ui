@@ -77,9 +77,9 @@ export const Input: React.FC<Props> = (props) => {
               }}
             >
               {type === "password" ? (
-                <EyeIcon className="w-4 h-4 absolute my-auto inset-0 left-auto" />
+                <EyeIcon className="absolute inset-0 left-auto w-4 h-4 my-auto" />
               ) : (
-                <EyeSlashIcon className="w-4 h-4 absolute my-auto inset-0 left-auto" />
+                <EyeSlashIcon className="absolute inset-0 left-auto w-4 h-4 my-auto" />
               )}
             </button>
           )}
@@ -103,7 +103,7 @@ export const RawInput: React.FC<RawInputProps> = (props) => {
           <Text>{label}</Text>
         </label>
       )}
-      <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-col w-full gap-2">
         <StyledInput variant={variant} {...rest} />
       </div>
     </fieldset>

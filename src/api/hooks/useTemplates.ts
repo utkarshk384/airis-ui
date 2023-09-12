@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 /* Hooks */
 import { useGetId } from "./useGetId";
+import { useCookie } from "@src/hooks";
 
 /* API */
 import {
@@ -20,6 +21,9 @@ import type {
 
 export const useTemplates = () => {
   const ids = useGetId();
+  const { COOKIE_KEYS, getCookie } = useCookie();
+
+  const userId = useMemo(() => getCookie(COOKIE_KEYS.id), [])
 
   const [listRadiologistPayload, setListRadiologistPayload] =
     useState<listRadiologistPayloadType>({
@@ -41,7 +45,7 @@ export const useTemplates = () => {
     AddUpdateTemplateResponse,
     unknown,
     TemplatePayload
-  >((data) => AddUpdateTemplate({ ...data, ...ids }) as any);
+  >((data) => AddUpdateTemplate({ ...data, ...ids, userId }) as any);
 
   return {
     getRadiologistTemplate,

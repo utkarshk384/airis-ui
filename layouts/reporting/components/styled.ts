@@ -23,17 +23,14 @@ export const StyledIndicator = styled("div", {
 
   variants: {
     color: {
-      active: {
+      APPROVED: {
         backgroundColor: "$green",
       },
-      new: {
-        backgroundColor: "$blue",
-      },
-      progress: {
+      DRAFT: {
         backgroundColor: "$orange",
       },
-      inactive: {
-        backgroundColor: "$red",
+      NOT_STARTED: {
+        backgroundColor: "$blue",
       },
     },
   },

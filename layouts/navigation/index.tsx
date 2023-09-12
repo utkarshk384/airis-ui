@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 
 /* Stores */
 import { useNavigationStore } from "@stores/navigation";
@@ -66,7 +66,7 @@ export const NavigationBar: React.FC<Props> = (props) => {
         <NavigationItem route="patients" text="Patients" />
         <NavigationItem route="adminstration" text="Adminstration" />
       </div>
-      <div className="flex flex-col gap-1 items-center justify-center">
+      <div className="flex flex-col items-center justify-center gap-1">
         <Avatar hasDropdown DropdownContent={DropdownContent} />
         <Text size="sm">{name}</Text>
       </div>
@@ -82,11 +82,13 @@ const DropdownContent = (Dropdown: MenuType) => {
 
   const clearValues = useCallback(ClearStorages, []);
 
+  const toastId = useMemo(() => "logout-toast-id", []);
+
   const logoutUser = () => {
     const userId = getCookie("id");
     const token = getCookie("token");
     if (userId && token) {
-      const toastId = Toast.loading("Logging out...");
+      Toast.loading("Logging out...", { id: toastId });
       userLogout.mutate(
         { userId, token },
         {

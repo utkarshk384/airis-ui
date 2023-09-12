@@ -1,9 +1,12 @@
 import React from "react";
 
-/* Styled */
-import { StyledButton } from "./styled";
+/* Components */
+import { Spinner } from "./shared";
 import { withTooltip } from "./hoc";
 import { Text } from "@components/Typography";
+
+/* Styled */
+import { StyledButton } from "./styled";
 
 /* Types */
 import type { Props } from "./types";
@@ -53,18 +56,6 @@ const DefaultProps = (props: Props) => {
   };
 
   return defaultProps;
-};
-
-const Spinner: React.FC<Props> = (props) => {
-  const {} = props;
-  return (
-    <div>
-      <div
-        style={{ borderTopColor: "transparent" }}
-        className="-mt-1 ml-2 w-4 h-4 border-2 border-white border-solid rounded-full animate-spin"
-      ></div>
-    </div>
-  );
 };
 
 export const Button = withTooltip(BaseButton);

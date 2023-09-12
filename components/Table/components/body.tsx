@@ -43,15 +43,15 @@ export const TableBody: React.FC<Props> = (props) => {
         );
       })}
       {page.length === 0 && (
-        <div className="w-full absolute inset-0 m-auto pl-12 pt-44">
+        <tr className="absolute inset-0 w-full pl-12 m-auto pt-44">
           {/* <Player autoplay className="w-64 h-64" src={animationData} loop /> */}
-          <div className="flex flex-col items-center gap-2">
+          <td className="flex flex-col items-center gap-2">
             <Heading size="xl" weight="500">
               {props.errorHeading}
             </Heading>
             {props.errorText && <Text>{props.errorText}</Text>}
-          </div>
-        </div>
+          </td>
+        </tr>
       )}
     </tbody>
   );

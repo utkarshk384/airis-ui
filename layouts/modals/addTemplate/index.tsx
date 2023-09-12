@@ -17,6 +17,7 @@ type DrawerProps = {
   open: boolean;
   isEdit?: boolean;
   setOpen: (val: boolean) => void;
+  refetchFn?: () => void
 };
 
 type ContentProps = {
@@ -29,11 +30,11 @@ type FormProps = Omit<TemplatePayload, "text"> & {
 };
 
 export const AddTemplate: React.FC<DrawerProps> = (props) => {
-  const { open, setOpen, isEdit } = props;
+  const { open, setOpen, isEdit, refetchFn } = props;
 
   const [text, setText] = useState("");
 
-  /* APis */
+  /* APIs */
   const { addUpdateTemplate } = useTemplates();
 
   /* Handlers */
@@ -46,6 +47,7 @@ export const AddTemplate: React.FC<DrawerProps> = (props) => {
     const toastId = Toast.loading("Saving template...");
     await addUpdateTemplate.mutateAsync(data, {
       onSuccess: () => {
+        refetchFn?.();
         setOpen(false);
         Toast.success("Template saved successfully", { id: toastId });
       },
@@ -122,17 +124,17 @@ const Content: React.FC<ContentProps> = (props) => {
   return (
     <>
       <div className="grid grid-rows-[1fr_2fr]">
-        <div className="p-4 gap-4 grid grid-cols-2 justify-items-end">
+        <div className="grid grid-cols-2 gap-4 p-4 justify-items-end">
           <Input
             name="templateName"
             placeholder="eg:  Hand Injury template"
-            label="Template Name:"
+            label="Template Name* :"
             variant="filled"
           />
           <Select
             name="radiologist"
             placeholder="Select radiologist"
-            label="Radiologist / Author:"
+            label="Radiologist / Author* :"
             isSearchable
             options={radiologistDropdown}
             onChange={(val) => setFieldValue("radiologist", val.value)}
@@ -140,7 +142,7 @@ const Content: React.FC<ContentProps> = (props) => {
           <Select
             name="modality"
             placeholder="eg: CT Scan"
-            label="Modality:"
+            label="Modality* :"
             isSearchable
             options={modalityDropdown}
             onChange={(val) => {

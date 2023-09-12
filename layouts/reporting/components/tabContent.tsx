@@ -145,7 +145,7 @@ export const TabContent: React.FC<Props> = (props) => {
       <TechnicalNotesDrawer />
       <AllergyDrawer />
       <DrFormDrawer open={isFormOpen} setOpen={setIsFormOpen} />
-      <AddTemplate open={isTemplateOpen} setOpen={setTemplateOpen} />
+      <AddTemplate refetchFn={getRadiologistTemplate.refetch} open={isTemplateOpen} setOpen={setTemplateOpen} />
       <div className="flex flex-col gap-10">
         <div className="flex justify-between px-4">
           <ListItem
@@ -165,9 +165,10 @@ export const TabContent: React.FC<Props> = (props) => {
             value={history?.referringDoctor || ""}
           />
         </div>
-        <div className="grid grid-cols-[2fr_2fr_1fr] px-4">
-          <div className="flex gap-4">
+        <div className="grid grid-cols-[2fr_2fr_1fr] mx-4">
+          <div className="flex w-full gap-4">
             <Select
+              isSearchable
               label="Template:"
               containerClassName="!w-2/3"
               labelClassName="!justify-self-start"
@@ -194,7 +195,7 @@ export const TabContent: React.FC<Props> = (props) => {
             label="Consultant Radiologist:"
             options={dropdownData}
           />
-          <div className="flex gap-4 justify-self-end">
+          <div className="flex justify-end w-full gap-4">
             <Button
               onClick={() =>
                 setIsModelOpen({

@@ -83,6 +83,7 @@ export const ReportingComponent: React.FC<Props> = (props) => {
           resultsSecondarySignedBy: null,
           resultsSecondaryDateTime: now,
           templateContent: text,
+          referringDoctor: patient.referringDoctor,
           visitId: patient.patientVisitIndexId,
           verifiedBy: getCookie(COOKIE_KEYS.id),
           verifiedDateTime: new Date().toISOString(),
@@ -111,8 +112,10 @@ export const ReportingComponent: React.FC<Props> = (props) => {
         }}
       />
       <TabProvider>
-        <BorderedContainer className="overflow-hidden">
-          <Tabbar />
+        <BorderedContainer>
+          <div className="grid w-full overflow-hidden">
+            <Tabbar />
+          </div>
           <div className="my-2" />
           <TabContent setEditorText={setText} patient={patient} />
         </BorderedContainer>

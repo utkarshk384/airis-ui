@@ -17,4 +17,5 @@ export const ENDPOINTS = {
   getUploadedDocument: "/risGateway/api/getPatientDocument",
   addUpdatePatientReport: "/risGateway/api/addUpdatePatientReport",
   getAlPatientReports: "/risGateway/api/getAllPatientReports",
+  getAllRolePermission: "/risGateway/api/getAllRolePermission",
 };

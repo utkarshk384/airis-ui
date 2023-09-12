@@ -26,7 +26,7 @@ export const ListRadiologistTemplate = async (
   });
 };
 
-export const AddUpdateTemplate = async (data: TemplatePayload & GetIdType) => {
+export const AddUpdateTemplate = async (data: TemplatePayload & GetIdType & { userId: string }) => {
   const body: TemplateBody = {
     reportTemplateId: data.reportTemplateId || 0,
     organizationId: data.orgId ? parseInt(data.orgId) : -1,
@@ -38,7 +38,7 @@ export const AddUpdateTemplate = async (data: TemplatePayload & GetIdType) => {
     radiologistMCRID: data.radiologist.toString(),
     abnormalityTags: null,
     bodyPart: null,
-    enteredBy: null,
+    enteredBy: data.userId as unknown as number,
     templateLocked: null,
     templateStatus: null,
   };

@@ -9,6 +9,7 @@ export type PatientHistory = {
   modalityText: string | null;
   modality: number | null;
   reportStatus: "In Progress" | "Not Started" | "Completed" | null;
+  reportStatusText: "NOT_STARTED" | "DRAFT" | "APPROVED";
   orgId: number;
   branchId: number;
   visitDate: string;

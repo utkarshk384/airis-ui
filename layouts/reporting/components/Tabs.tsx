@@ -1,17 +1,24 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import React, { useCallback, useEffect, useMemo } from "react";
 
 /* Components */
-import { Text, Preloader } from "@components";
+import { Text, Preloader, UnstyledButton } from "@components";
 
 /* Contexts */
 import { useTab } from "../context/tabs";
 
+/* Styled */
+import { StyledIndicator } from "./styled";
+
+/* Utils */
+import { SnakeCaseToTitleCase } from "@utils/text";
+import { FormatDate, parseISO } from "@utils/dates-fns";
+
+/* APIs */
+import { usePatientHistory } from "@src/api";
+
 /* Types */
 import { TabProps } from "../types";
-import { StyledIndicator } from "./styled";
-import { usePatientHistory } from "@src/api";
-import { useRouter } from "next/router";
-import { FormatDate, parseISO } from "@utils/dates-fns";
 
 type Props = {
   children?: React.ReactNode;
@@ -35,13 +42,13 @@ export const Tabbar: React.FC<Props> = (props) => {
   if (getPatientHistory.isLoading) return <Preloader />;
 
   return (
-    <div className="w-full overflow-x-scroll custom-scroll-bar flex">
+    <div className="flex w-full overflow-x-scroll custom-scroll-bar">
       {getPatientHistory.data?.map((history, i) => (
         <Tab
           index={i}
           date={history.visitDate}
           modality={history.modalityText}
-          status="active"
+          status={history.reportStatusText}
           key={i}
         />
       ))}
@@ -64,22 +71,34 @@ const Tab: React.FC<TabProps> = (props) => {
     return FormatDate(d, "dd/MM/yyyy");
   }, [props.date]);
 
+  const tooltip = useMemo(() => {
+    switch (props.status) {
+      case "DRAFT":
+        return "Draft";
+      case "NOT_STARTED":
+        return "New";
+      case "APPROVED":
+        return "Approved";
+    }
+  }, [props.status]);
+
   return (
-    <button
+    <UnstyledButton
+      tooltip={tooltip}
       onClick={handleClick}
-      className={`flex flex-col px-4 transition-colors duration-200 ease-in-out ${
+      className={`flex flex-col px-4 min-h-[3rem] transition-colors duration-200 ease-in-out ${
         tab === index ? "bg-accent rounded-lg" : "bg-transparent"
       }`}
     >
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center h-full gap-2">
         <Text size="sm" color={tab === index ? "white" : "black"} weight="600">
           {date}
         </Text>
         <StyledIndicator color={props.status} />
       </div>
       <Text color={tab === index ? "white" : "black"} size="sm">
-        {props.modality || "No Modality"}
+        {props.modality}
       </Text>
-    </button>
+    </UnstyledButton>
   );
 };

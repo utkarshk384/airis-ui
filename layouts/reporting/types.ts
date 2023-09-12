@@ -1,7 +1,11 @@
+import type { FontSizes } from "@components/types";
+import type { PatientHistory } from "@src/api/types";
+
 export type ListItemProps = {
   title: string;
   value: string;
   color?: "white" | "black";
+  headingSize?: FontSizes;
   children?: React.ReactNode;
 };
 
@@ -18,6 +22,6 @@ export type HeaderProps = {
 export type TabProps = {
   date: string;
   index: number;
-  status: "active" | "new" | "progress" | "inactive";
+  status: PatientHistory["reportStatusText"];
   modality: string | null;
 };

@@ -27,6 +27,8 @@ export type LoginResult = {
   fullName: string;
   gender: number;
   contactNo: string;
+  roleId: string | number;
+  designationId: number | string;
   mobileNo: string;
   userEMail: string;
   otp: string;
@@ -45,3 +47,26 @@ export interface IPAddressResponse {
   IPv4: string;
   state: string;
 }
+
+export type RolesPayload = {
+  orgId: number | string | null;
+  branchId: number | string | null;
+  userId: number | string | null;
+  appRoleId: number | string | null;
+  designationId: number | string | null;
+};
+
+export interface RoleType {
+  rolePermissionId: number | null;
+  organizationId: number | null;
+  branchId: number | null;
+  featureId: number | null;
+  featureIdentifier: string;
+  appRoleId: string;
+  permissions: string;
+  recActive: boolean;
+  createdDateTime: string | null;
+  createdBy: number | string | null;
+}
+
+export type RoleResponse = RoleType[];
