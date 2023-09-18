@@ -29,7 +29,7 @@ export const COLS: CustomColumnType[] = [
   },
   {
     Header: "Created Date",
-    accessor: "field is missing",
+    accessor: "createdDate",
     disableFilters: true,
   },
   {

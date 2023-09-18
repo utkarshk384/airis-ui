@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 
 /* Components */
+import { Text } from "@components";
 import { ReactQuill } from "./rte";
 import { TOOLBAR_OPTS } from "./toolbar";
 import { QuillCSS } from "./styled";
@@ -23,6 +24,7 @@ type Props = {
   height?: string;
   maxHeight?: string;
   scrollable?: boolean;
+  errorText?: string;
   readOnly?: boolean;
   value?: string;
   borderColor?: string;
@@ -33,8 +35,15 @@ const MODULES: QuillOptions["modules"] = {
 };
 
 export const RichTextEditor: React.FC<Props> = (props) => {
-  const { onChange, height, scrollable, borderColor, maxHeight, ...rest } =
-    DefaultProps(props);
+  const {
+    onChange,
+    height,
+    scrollable,
+    borderColor,
+    maxHeight,
+    errorText,
+    ...rest
+  } = DefaultProps(props);
 
   const [value, setValue] = useState(rest.defaultValue || "");
   const modules = useMemo(() => MODULES, []);
@@ -64,6 +73,7 @@ export const RichTextEditor: React.FC<Props> = (props) => {
         value={rest.value || value}
         onChange={handleChange}
       />
+      <Text className="!text-red-500">{errorText}</Text>
     </div>
   );
 };

@@ -64,8 +64,8 @@ export const PatientsTab: React.FC<Props> = (props) => {
         <Table
           searchPlaceholder="Search patient id, name, acc no, referral doctor..."
           cols={cols}
-          errorHeading="Nothing was found in the selected date."
-          errorText="Try selecting a different date range or removing the filters."
+          errorHeading="No new radiology orders for the selected date"
+          errorText="Try selecting a different date or reset filters."
           searchClassName="w-7/12"
           rows={data}
           title="Patients"

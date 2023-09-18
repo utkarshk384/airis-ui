@@ -4,6 +4,7 @@ import debounce from "lodash.debounce";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 /* Components */
+import { Text } from "@components";
 import { Label } from "@components/shared";
 import { Button } from "@components/Button";
 import {
@@ -30,8 +31,15 @@ type Props = {
 } & SelectSharedProps;
 
 export const Select: React.FC<Props> = (props) => {
-  const { input, label, unstyled, dropdownIconSize, value, ...rest } =
-    DefaultProps(props);
+  const {
+    input,
+    label,
+    unstyled,
+    dropdownIconSize,
+    value,
+    errorText,
+    ...rest
+  } = DefaultProps(props);
 
   if (!rest.options) throw new Error("Options is required");
 
@@ -141,6 +149,7 @@ export const Select: React.FC<Props> = (props) => {
               <DropdownItem>No items found</DropdownItem>
             ))}
         </DropdownContainer>
+        <Text className="!text-red-500">{errorText}</Text>
       </div>
     </fieldset>
   );

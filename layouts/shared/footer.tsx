@@ -14,14 +14,14 @@ export const FooterComponent: React.FC<Props> = (props) => {
   const { onCancel, onConfirm, onDraft } = props;
   return (
     <>
-      <Button onClick={onCancel} variant="outline" color="red">
-        Cancel
+      <Button type="submit" onClick={onConfirm}>
+        Confirm
       </Button>
       <Button type="submit" onClick={onDraft} variant="outline">
         Save as Draft
       </Button>
-      <Button type="submit" onClick={onConfirm}>
-        Confirm
+      <Button onClick={onCancel} variant="outline" color="red">
+        Cancel
       </Button>
     </>
   );

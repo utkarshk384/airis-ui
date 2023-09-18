@@ -17,7 +17,7 @@ type DrawerProps = {
   open: boolean;
   isEdit?: boolean;
   setOpen: (val: boolean) => void;
-  refetchFn?: () => void
+  refetchFn?: () => void;
 };
 
 type ContentProps = {
@@ -136,6 +136,7 @@ const Content: React.FC<ContentProps> = (props) => {
             placeholder="Select radiologist"
             label="Radiologist / Author* :"
             isSearchable
+            errorText={formikProps.errors.radiologist}
             options={radiologistDropdown}
             onChange={(val) => setFieldValue("radiologist", val.value)}
           />
@@ -144,7 +145,11 @@ const Content: React.FC<ContentProps> = (props) => {
             placeholder="eg: CT Scan"
             label="Modality* :"
             isSearchable
-            options={modalityDropdown}
+            errorText={formikProps.errors.modality}
+            options={(() => {
+              console.log(modalityDropdown);
+              return modalityDropdown;
+            })()}
             onChange={(val) => {
               setFieldValue("modality", val.value);
             }}
@@ -152,6 +157,7 @@ const Content: React.FC<ContentProps> = (props) => {
           <Select
             name="exam"
             placeholder="eg:  EXM2020"
+            errorText={formikProps.errors.exam}
             label="Exam Name:"
             options={[]}
             onChange={(val) => setFieldValue("exam", val.value)}

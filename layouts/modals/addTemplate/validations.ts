@@ -4,8 +4,8 @@ export const validationSchema = Yup.object({
   templateName: Yup.string().required().label("Template Name"),
   radiologist: Yup.string().required().label("Radiologist"),
   modality: Yup.string().required().label("Modality"),
-  exam: Yup.string().required().label("Exam Name"),
-  bodyPart: Yup.string().required().label("Body Part"),
+  exam: Yup.string().label("Exam Name"),
+  bodyPart: Yup.string().label("Body Part"),
   tags: Yup.string().label("Tags"),
   visibilty: Yup.string()
     .matches(/(public|private)/, "Invalid visibilty")

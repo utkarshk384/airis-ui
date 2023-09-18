@@ -5,6 +5,7 @@ export type SelectSharedProps = {
   placeholder?: string;
   isSearchable?: boolean;
   label?: string;
+  errorText?: string;
   name: string;
   width?: string | number;
   containerClassName?: string;

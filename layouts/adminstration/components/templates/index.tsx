@@ -4,13 +4,14 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useGetTemplates } from "@src/api";
 
 /* Components */
-import { Table } from "@components";
+import { Button, Table } from "@components";
 
 /* Utils */
 import { COLS } from "./cols";
 
 /* Types */
 import type { GetTemplatesResponse } from "@src/api/types";
+import { AddTemplate } from "@layouts/modals";
 
 type Props = {
   children?: React.ReactNode;
@@ -28,13 +29,14 @@ type TransformedRowsType = {
 
 const transformRows = (templates: GetTemplatesResponse) => {
   return templates.map((template) => ({
-    reportTemplate: template.reportTemplate,
-    enteredBy: template.enteredBy,
-    procedureMasterId: template.procedureMasterId,
-    modalityId: template.modalityId,
+    reportTemplate: template.templateName,
+    enteredBy: template.enteredByText,
+    procedureMasterId: template.procedureMasterText,
+    modalityId: template.modalityText,
     isPrivate: template.isPrivate ? "Private" : "Public",
     bodyPart: template.bodyPart,
     reportTemplateTags: template.reportTemplateTags,
+    createdDate: template.enteredDateTime,
   }));
 };
 
@@ -58,16 +60,17 @@ export const Templates: React.FC<Props> = (props) => {
 
   /* States */
   const [rows, setRows] = useState<TransformedRowsType>([]);
+  const [open, setOpen] = useState(false);
 
   /* Memos */
   const cols = useMemo(() => COLS, []);
 
   useEffect(() => {
-    // if (getTemplates.isSuccess) {
-    const transformedRows = transformRows(mockData as any);
+    if (getTemplates.isSuccess) {
+      const transformedRows = transformRows(getTemplates.data);
 
-    setRows(transformedRows);
-    // }
+      setRows(transformedRows as any);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getTemplates.isSuccess]);
 
@@ -78,7 +81,25 @@ export const Templates: React.FC<Props> = (props) => {
           searchPlaceholder="Search patient id, name, acc no, referral doctor..."
           rows={rows}
           cols={cols}
-        />
+        >
+          {() => (
+            <>
+              <AddTemplate
+                open={open}
+                setOpen={setOpen}
+                refetchFn={getTemplates.refetch}
+              />
+              <Button
+                size="sm"
+                className="w-40"
+                tooltip="Add new template"
+                onClick={() => setOpen(true)}
+              >
+                Add Template
+              </Button>
+            </>
+          )}
+        </Table>
       }
     </div>
   );

@@ -25,7 +25,7 @@ export const useOptionList = (lookup: LookupType) => {
 
   useEffect(() => {
     if (getOptionList.data) {
-      setDropdown(getOptionList.data, ["displayText", "name"]);
+      setDropdown(getOptionList.data, ["displayText", "id"]);
     }
   }, [getOptionList.data, setDropdown]);
 

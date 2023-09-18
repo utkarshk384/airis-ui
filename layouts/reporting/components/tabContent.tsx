@@ -116,7 +116,7 @@ export const TabContent: React.FC<Props> = (props) => {
   useEffect(() => {
     if (getRadiologistTemplate.isSuccess)
       setTemplates(getRadiologistTemplate.data, [
-        "reportTemplate",
+        "templateName",
         "reportTemplateId",
       ]);
 
@@ -145,7 +145,11 @@ export const TabContent: React.FC<Props> = (props) => {
       <TechnicalNotesDrawer />
       <AllergyDrawer />
       <DrFormDrawer open={isFormOpen} setOpen={setIsFormOpen} />
-      <AddTemplate refetchFn={getRadiologistTemplate.refetch} open={isTemplateOpen} setOpen={setTemplateOpen} />
+      <AddTemplate
+        refetchFn={getRadiologistTemplate.refetch}
+        open={isTemplateOpen}
+        setOpen={setTemplateOpen}
+      />
       <div className="flex flex-col gap-10">
         <div className="flex justify-between px-4">
           <ListItem

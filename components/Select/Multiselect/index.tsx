@@ -4,6 +4,7 @@ import debounce from "lodash.debounce";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
 /* Components */
+import { Text } from "@components";
 import { Label } from "@components/shared";
 import { Button } from "@components/Button";
 import {
@@ -30,7 +31,7 @@ type Props = {
 } & SelectSharedProps;
 
 export const MultiSelect: React.FC<Props> = (props) => {
-  const { input, label, ...rest } = DefaultProps(props);
+  const { input, label, errorText, ...rest } = DefaultProps(props);
   if (!rest.options) throw new Error("Options is required");
 
   /* States */
@@ -212,6 +213,7 @@ export const MultiSelect: React.FC<Props> = (props) => {
               <DropdownItem>No items found</DropdownItem>
             ))}
         </DropdownContainer>
+        <Text className="!text-red-500">{errorText}</Text>
       </div>
     </fieldset>
   );

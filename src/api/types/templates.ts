@@ -16,7 +16,11 @@ export type listRadiologistPayloadType = {
 };
 
 export type TemplateType = {
+  templateName: string;
+  enteredByText: string;
   reportTemplateId: number;
+  procedureMasterText: string | null;
+  modalityText: string | null;
   organizationId: number;
   modalityId: number;
   reportTemplate: string;
@@ -45,12 +49,14 @@ export type TemplatePayload = {
 };
 
 export type TemplateBody = {
+  templateName: string;
   reportTemplateId: number;
   organizationId: number;
   branchId: number;
+  modalityId: number | null;
   reportTemplate: string;
   reportTemplateTags: string;
-  procedureMasterId: number;
+  procedureMasterId: number | null;
   isPrivate: number;
   radiologistMCRID: string;
   abnormalityTags: string | null;
