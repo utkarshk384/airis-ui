@@ -64,7 +64,7 @@ export const Templates: React.FC<Props> = (props) => {
 
   useEffect(() => {
     // if (getTemplates.isSuccess) {
-    const transformedRows = transformRows(mockData);
+    const transformedRows = transformRows(mockData as any);
 
     setRows(transformedRows);
     // }
