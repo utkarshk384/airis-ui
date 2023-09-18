@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { UserIcon } from "@heroicons/react/20/solid";
 
 /* Components */
-import { OrganizationBranch } from "./components";
+import { OrganizationBranch, Templates } from "./components";
 import {
   BuildingIcon,
   Button,
@@ -43,7 +43,7 @@ const CONTENT = [
   () => <div>Content 3</div>,
   () => <div>Content 4</div>,
   () => <div>Content 5</div>,
-  () => <div>Content 6</div>,
+  () => <Templates />,
 ];
 
 const AdminTab: React.FC<Props> = (props) => {
@@ -62,13 +62,13 @@ const AdminTab: React.FC<Props> = (props) => {
           {titleText}
         </Heading>
       </div>
-      <div className="flex gap-4 h-full mb-16 relative">
-        <div className="bg-primary rounded-lg flex flex-col p-4 justify-center gap-4">
+      <div className="relative flex h-full gap-4 mb-16">
+        <div className="flex flex-col justify-center gap-4 p-4 rounded-lg bg-primary">
           {headings.map((heading, index) => (
             <Tab key={UniqId + index} heading={heading} index={index} />
           ))}
         </div>
-        <div className="bg-white rounded-lg p-4 w-full">
+        <div className="w-full p-4 bg-white rounded-lg">
           <Content />
         </div>
       </div>

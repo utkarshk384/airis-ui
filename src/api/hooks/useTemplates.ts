@@ -9,6 +9,7 @@ import { useCookie } from "@src/hooks";
 import {
   ListRadiologistTemplate,
   AddUpdateTemplate,
+  GetTemplates,
 } from "../handlers/templates";
 
 /* Types */
@@ -17,13 +18,15 @@ import type {
   AddUpdateTemplateResponse,
   listRadiologistPayloadType,
   ListRadiologistTemplateResponse,
+  GetTemplatesResponse,
+  FailedTemplateResponse,
 } from "../types/templates";
 
 export const useTemplates = () => {
   const ids = useGetId();
   const { COOKIE_KEYS, getCookie } = useCookie();
 
-  const userId = useMemo(() => getCookie(COOKIE_KEYS.id), [])
+  const userId = useMemo(() => getCookie(COOKIE_KEYS.id), []);
 
   const [listRadiologistPayload, setListRadiologistPayload] =
     useState<listRadiologistPayloadType>({
@@ -52,4 +55,17 @@ export const useTemplates = () => {
     addUpdateTemplate,
     setListRadiologistPayload,
   };
+};
+
+export const useGetTemplates = () => {
+  const ids = useGetId();
+
+  const getTemplates = useQuery<GetTemplatesResponse, FailedTemplateResponse>(
+    ["get-templates", ids.orgId],
+    {
+      queryFn: () => GetTemplates(ids.orgId) as any,
+    }
+  );
+
+  return { getTemplates };
 };

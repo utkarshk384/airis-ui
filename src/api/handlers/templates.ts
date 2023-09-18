@@ -26,7 +26,9 @@ export const ListRadiologistTemplate = async (
   });
 };
 
-export const AddUpdateTemplate = async (data: TemplatePayload & GetIdType & { userId: string }) => {
+export const AddUpdateTemplate = async (
+  data: TemplatePayload & GetIdType & { userId: string }
+) => {
   const body: TemplateBody = {
     reportTemplateId: data.reportTemplateId || 0,
     organizationId: data.orgId ? parseInt(data.orgId) : -1,
@@ -48,5 +50,14 @@ export const AddUpdateTemplate = async (data: TemplatePayload & GetIdType & { us
     method: "POST",
     needsAuth: true,
     body,
+  });
+};
+
+export const GetTemplates = async (orgId: string | number) => {
+  return await AxiosWrapper({
+    method: "POST",
+    url: ENDPOINTS.getTemplates,
+    body: { orgId },
+    needsAuth: true,
   });
 };

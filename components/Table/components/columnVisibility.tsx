@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { EyeIcon } from "@heroicons/react/20/solid";
 
-/* Types */
+/* Components */
 import { Button } from "@components/Button";
 import { Dropdown } from "@components/Dropdown";
 
 /* Types */
 import type { TableComponent } from "../types";
-import type { ColumnInstance } from "react-table";
-import type { MenuType } from "@components/Dropdown";
 
 type Props = {
   children?: React.ReactNode;
@@ -27,6 +25,7 @@ export const ColumnVisibility: React.FC<Props> = (props) => {
 
     setHideableCols(cols);
   }, [columns]);
+
   return (
     <Dropdown
       contentMaxHeight="20rem"

@@ -1,4 +1,10 @@
+import type { APIResponse } from "./shared";
+
 export type ListRadiologistTemplateResponse = TemplateType[];
+
+export type GetTemplatesResponse = TemplateType[];
+
+export type FailedTemplateResponse = APIResponse<"", string>;
 
 export type listRadiologistPayloadType = {
   orgId: string;

@@ -70,6 +70,7 @@ export const LoginForm: React.FC = (props) => {
     IPQuery,
     getRoles,
     setRolesPayload,
+    rolesPayload,
   } = useLogin();
 
   const router = useRouter();
@@ -93,13 +94,6 @@ export const LoginForm: React.FC = (props) => {
             designationId: res.designationId,
           });
 
-          getRoles.refetch().then((res) => {
-            if (res.isSuccess) {
-              const mappedRoles = transformRoles(res.data);
-              setLocalStoragevalue(LOCAL_STORAGE_KEYS.roles, mappedRoles);
-            }
-          });
-
           Toast.success("Logged in successfully", { id: toastId });
 
           if (typeof redirect === "string") router.push(redirect);
@@ -117,6 +111,18 @@ export const LoginForm: React.FC = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [IPQuery.data, mutate]
   );
+
+  useEffect(() => {
+    if (!rolesPayload.orgId) return;
+    getRoles.refetch().then((res) => {
+      if (res.isSuccess) {
+        const mappedRoles = transformRoles(res.data);
+        setLocalStoragevalue(LOCAL_STORAGE_KEYS.roles, mappedRoles);
+      }
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rolesPayload]);
 
   return (
     <Formik

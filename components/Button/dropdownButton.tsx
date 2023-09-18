@@ -18,12 +18,11 @@ export const DropdownButton: React.FC<DropdownBtnProps> = (props) => {
   return (
     <Dropdown
       dropdownContentProps={dropdownContentProps}
-      TriggerComponent={(props) => (
+      TriggerComponent={() => (
         <Button
           {...rest}
           as="a"
           className={`${rest.className} cursor-pointer select-none`}
-          onClick={() => props.setOpen(!props.open)}
         >
           {children}
         </Button>

@@ -9,3 +9,13 @@ export type Failure<T = {}> = {
 export type Success<T> = {
   result: Result<T>;
 };
+
+export type APIResponse<S = string, F = string> = {
+  statusCode: number;
+  success: {
+    result: S;
+  };
+  failure: {
+    message: F;
+  };
+};

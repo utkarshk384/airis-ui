@@ -170,7 +170,7 @@ export const COLUMNS: CustomColumnType[] = [
       };
 
       return (
-        <div className="flex gap-2 relative">
+        <div className="relative flex gap-2">
           <input
             type="file"
             name="dr-form"
@@ -189,7 +189,7 @@ export const COLUMNS: CustomColumnType[] = [
 
               // References: https://stackoverflow.com/questions/72832238/how-to-upload-file-from-frontend-to-backend
             }}
-            className="invisible absolute"
+            className="absolute invisible"
           />
           <Button onClick={UploadeFile} iconButton variant="icon" noPadding>
             <UploadIcon stroke="currentColor" width={20} height={20} />

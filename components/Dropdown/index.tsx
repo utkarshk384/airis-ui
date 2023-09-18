@@ -32,7 +32,7 @@ type TriggerComponentProps = {
 };
 
 type Props = {
-  TriggerComponent: React.FC<TriggerComponentProps>;
+  TriggerComponent: React.FC;
   portal?: boolean;
 } & SharedProps;
 
@@ -54,7 +54,13 @@ const CustomDropdown: React.FC<Props> = (props) => {
   return (
     <DropdownMenu.Root modal={false} open={isDropdownOpen}>
       <DropdownMenu.Trigger className="focus-visible:outline-none">
-        <TriggerComponent open={isDropdownOpen} setOpen={setDropdownOpen} />
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => setDropdownOpen(!isDropdownOpen)}
+        >
+          <TriggerComponent />
+        </div>
       </DropdownMenu.Trigger>
       {portal ? (
         <DropdownMenu.Portal>
