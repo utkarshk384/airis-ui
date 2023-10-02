@@ -39,7 +39,7 @@ export type TemplateType = {
 export type TemplatePayload = {
   reportTemplateId?: number;
   templateName: string;
-  radiologist: string;
+  radiologist: string | number;
   modality: string;
   exam: number;
   visibilty: "public" | "private";
@@ -82,3 +82,5 @@ export type AddUpdateTemplateResponse = {
   templateLocked: boolean;
   templateStatus: boolean;
 };
+
+export type DeleteTemplateResponse = {};

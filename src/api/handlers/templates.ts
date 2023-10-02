@@ -47,8 +47,6 @@ export const AddUpdateTemplate = async (
     templateStatus: 1,
   };
 
-  console.log({ data, body });
-
   return await AxiosWrapper({
     url: ENDPOINTS.addUpdateTemplate,
     method: "POST",
@@ -62,6 +60,18 @@ export const GetTemplates = async (orgId: string | number) => {
     method: "POST",
     url: ENDPOINTS.getTemplates,
     body: { orgId },
+    needsAuth: true,
+  });
+};
+
+export const DeleteTemplate = async (
+  orgId: string | number,
+  templateId: string | number
+) => {
+  return await AxiosWrapper({
+    method: "POST",
+    url: ENDPOINTS.deleteTemplates,
+    body: { orgId, templateId },
     needsAuth: true,
   });
 };

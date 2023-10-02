@@ -10,6 +10,7 @@ import {
   ListRadiologistTemplate,
   AddUpdateTemplate,
   GetTemplates,
+  DeleteTemplate,
 } from "../handlers/templates";
 
 /* Types */
@@ -20,6 +21,7 @@ import type {
   ListRadiologistTemplateResponse,
   GetTemplatesResponse,
   FailedTemplateResponse,
+  DeleteTemplateResponse,
 } from "../types/templates";
 
 export const useTemplates = () => {
@@ -68,4 +70,16 @@ export const useGetTemplates = () => {
   );
 
   return { getTemplates };
+};
+
+export const useDeleteTemplate = () => {
+  const ids = useGetId();
+
+  const deleteTemplate = useMutation<
+    DeleteTemplateResponse,
+    unknown,
+    string | number
+  >((templateId) => DeleteTemplate(ids.orgId, templateId) as any);
+
+  return { deleteTemplate };
 };

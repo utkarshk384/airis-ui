@@ -1,5 +1,5 @@
 import { Formik, FormikProps } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 /* Components */
 import { MultiSelect, Toast, useDropdown } from "@components";
@@ -9,30 +9,62 @@ import { Drawer, RichTextEditor, Input, Select, RadioGroup } from "@components";
 /* Valdiations */
 import { validationSchema } from "./validations";
 
-/* Types */
-import type { TemplatePayload } from "@src/api/types";
+/* APIs */
 import { useOptionList, useRadiologistList, useTemplates } from "@src/api";
 
-type DrawerProps = {
+/* Types */
+import type { TemplatePayload } from "@src/api/types";
+
+type BaseProps = {
   open: boolean;
-  isEdit?: boolean;
   setOpen: (val: boolean) => void;
   refetchFn?: () => void;
+};
+
+type DrawerProps = BaseProps &
+  (
+    | {
+        isEdit?: true;
+        defaultValue: DefaultValueType;
+      }
+    | {
+        isEdit?: false;
+        defaultValue?: never;
+      }
+  );
+
+type DefaultValueType = FormProps & {
+  reportTemplate: string;
+  id: number;
 };
 
 type ContentProps = {
   formikProps: FormikProps<FormProps>;
   onTextChange: (text: string) => void;
+  textDefaultValue?: string;
 };
 
 type FormProps = Omit<TemplatePayload, "text"> & {
   status: "draft" | "confirmed";
 };
 
-export const AddTemplate: React.FC<DrawerProps> = (props) => {
-  const { open, setOpen, isEdit, refetchFn } = props;
+const INITIAL_STATE = {
+  exam: 0,
+  bodyPart: "",
+  modality: "",
+  radiologist: "",
+  tags: "",
+  templateName: "",
+  visibilty: "private" as "private" | "public",
+  status: "draft" as "draft" | "confirmed",
+};
 
+export const AddTemplate: React.FC<DrawerProps> = (props) => {
+  const { open, setOpen, isEdit, refetchFn, defaultValue } = props;
+
+  /* States */
   const [text, setText] = useState("");
+  const [initialValues, setInitialValues] = useState<FormProps>(INITIAL_STATE);
 
   /* APIs */
   const { addUpdateTemplate } = useTemplates();
@@ -41,6 +73,7 @@ export const AddTemplate: React.FC<DrawerProps> = (props) => {
   const onSubmit = async (values: FormProps) => {
     const data: TemplatePayload = {
       ...values,
+      reportTemplateId: defaultValue?.id || 0,
       text,
     };
 
@@ -56,27 +89,25 @@ export const AddTemplate: React.FC<DrawerProps> = (props) => {
     });
   };
 
+  useEffect(() => {
+    if (defaultValue) setInitialValues(defaultValue);
+    if (defaultValue?.reportTemplate) setText(defaultValue.reportTemplate);
+  }, [defaultValue]);
+
   return (
     <Drawer size="large" open={open} onOpenChange={(val) => setOpen(val)}>
       {({ Header, Footer }) => (
         <Formik
-          initialValues={{
-            exam: 0,
-            bodyPart: "",
-            modality: "",
-            radiologist: "",
-            tags: "",
-            templateName: "",
-            visibilty: "private" as "private" | "public",
-            status: "draft",
-          }}
+          initialValues={initialValues}
           onSubmit={onSubmit}
+          enableReinitialize
           validationSchema={validationSchema}
         >
           {(formikProps) => (
             <>
               <Header title={`${isEdit ? "Edit" : "Add"} Template`} />
               <Content
+                textDefaultValue={defaultValue?.reportTemplate}
                 onTextChange={(val) => setText(val)}
                 formikProps={formikProps}
               />
@@ -102,13 +133,14 @@ export const AddTemplate: React.FC<DrawerProps> = (props) => {
 };
 
 const Content: React.FC<ContentProps> = (props) => {
-  const { onTextChange, formikProps } = props;
+  const { onTextChange, formikProps, textDefaultValue } = props;
   const { setFieldValue } = formikProps;
 
   /* APIs */
   const { getRadiologistList } = useRadiologistList();
   const { dropdown: bodyPartDropdown } = useOptionList("BODYPART");
   const { dropdown: modalityDropdown } = useOptionList("MODALITY");
+  const { dropdown: examDropdown } = useOptionList("PROCEDUREMASTER");
 
   /* States */
   const [radiologistDropdown, setRadiologistDropdown] = useDropdown();
@@ -121,6 +153,25 @@ const Content: React.FC<ContentProps> = (props) => {
       ]);
   }, [getRadiologistList.data, setRadiologistDropdown]);
 
+  const bodyPartDefaultValue = useMemo(() => {
+    if (!formikProps.values.bodyPart) return undefined;
+
+    const splitValues = formikProps.values.bodyPart.split(", ");
+
+    return bodyPartDropdown.filter((opt) =>
+      splitValues.includes(`${opt.value}`)
+    );
+  }, [bodyPartDropdown, formikProps.values.bodyPart]);
+
+  const tagsDefaultValue = useMemo(() => {
+    if (!formikProps.values.tags) return undefined;
+
+    return formikProps.values.tags
+      .split(", ")
+      .map((item) => ({ label: item, value: item }));
+  }, [formikProps.values.tags]);
+
+  // console.log(formikProps.values);
   return (
     <>
       <div className="grid grid-rows-[1fr_2fr]">
@@ -136,6 +187,9 @@ const Content: React.FC<ContentProps> = (props) => {
             placeholder="Select radiologist"
             label="Radiologist / Author* :"
             isSearchable
+            initialSelectedItem={radiologistDropdown.find(
+              (opt) => opt.value === formikProps.values.radiologist
+            )}
             errorText={formikProps.errors.radiologist}
             options={radiologistDropdown}
             onChange={(val) => setFieldValue("radiologist", val.value)}
@@ -145,11 +199,11 @@ const Content: React.FC<ContentProps> = (props) => {
             placeholder="eg: CT Scan"
             label="Modality* :"
             isSearchable
+            initialSelectedItem={modalityDropdown.find(
+              (opt) => `${opt.value}` === formikProps.values.modality
+            )}
             errorText={formikProps.errors.modality}
-            options={(() => {
-              console.log(modalityDropdown);
-              return modalityDropdown;
-            })()}
+            options={modalityDropdown}
             onChange={(val) => {
               setFieldValue("modality", val.value);
             }}
@@ -159,7 +213,7 @@ const Content: React.FC<ContentProps> = (props) => {
             placeholder="eg:  EXM2020"
             errorText={formikProps.errors.exam}
             label="Exam Name:"
-            options={[]}
+            options={examDropdown}
             onChange={(val) => setFieldValue("exam", val.value)}
           />
           <MultiSelect
@@ -167,6 +221,7 @@ const Content: React.FC<ContentProps> = (props) => {
             placeholder="Select body parts..."
             name="bodyPart"
             isSearchable
+            defaultValue={bodyPartDefaultValue}
             options={bodyPartDropdown}
             label="Body Part:"
             onChange={(opts) => {
@@ -181,6 +236,7 @@ const Content: React.FC<ContentProps> = (props) => {
             placeholder="Select tags..."
             name="tags"
             isSearchable
+            defaultValue={tagsDefaultValue}
             options={[]}
             label="Tags:"
             onChange={(opts) =>
@@ -191,7 +247,7 @@ const Content: React.FC<ContentProps> = (props) => {
             label="Visibility:"
             name="visibilty"
             variant="button"
-            defaultChecked="public"
+            defaultChecked={formikProps.values.visibilty.toLocaleLowerCase()}
             items={[
               { label: "Public", value: "public" },
               { label: "Private", value: "private" },
@@ -200,7 +256,11 @@ const Content: React.FC<ContentProps> = (props) => {
           />
         </div>
         <div className="p-4 h-full flex justify-stretch w-full max-w-[var(--drawer-width)] flex-col">
-          <RichTextEditor height="50vh" onChange={onTextChange} />
+          <RichTextEditor
+            defaultValue={textDefaultValue}
+            height="50vh"
+            onChange={onTextChange}
+          />
         </div>
       </div>
     </>

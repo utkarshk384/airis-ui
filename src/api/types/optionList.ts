@@ -8,4 +8,4 @@ export type OptionList = {
   id: number;
 };
 
-export type LookupType = "BODYPART" | "MODALITY";
+export type LookupType = "BODYPART" | "MODALITY" | "PROCEDUREMASTER";

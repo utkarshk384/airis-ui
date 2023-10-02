@@ -1,4 +1,15 @@
 import type { Column } from "react-table";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+
+/* Components */
+import { Button, Toast } from "@components";
+
+/* Contexts */
+import { useEditTemplate } from "./editContext";
+import { useDeleteTemplate, useTemplates } from "@src/api";
+import { useMemo } from "react";
+
+/* Types */
 
 type CustomColumnType = Column<any> & {
   disableHiding?: boolean;
@@ -7,29 +18,29 @@ type CustomColumnType = Column<any> & {
 export const COLS: CustomColumnType[] = [
   {
     Header: "Template Name",
-    accessor: "reportTemplate",
+    accessor: "templateName",
     disableFilters: true,
     disableHiding: true,
   },
   {
     Header: "Author",
-    accessor: "enteredBy",
+    accessor: "enteredByText",
     disableFilters: true,
     disableHiding: true,
   },
   {
     Header: "Exam Name",
-    accessor: "procedureMasterId",
+    accessor: "procedureMasterText",
     disableFilters: true,
   },
   {
     Header: "Modality",
-    accessor: "modalityId",
+    accessor: "modalityText",
     disableFilters: true,
   },
   {
     Header: "Created Date",
-    accessor: "createdDate",
+    accessor: "enteredDateTime",
     disableFilters: true,
   },
   {
@@ -47,49 +58,53 @@ export const COLS: CustomColumnType[] = [
     accessor: "reportTemplateTags",
     disableFilters: true,
   },
-  // {
-  //   Header: "Action",
-  //   accessor: "action",
-  //   disableGlobalFilter: true,
-  //   disableFilters: true,
-  //   Cell: (props) => {
-  //     const fileRef = useRef<HTMLInputElement>(null);
+  {
+    Header: "Action",
+    disableGlobalFilter: true,
+    disableFilters: true,
+    Cell: (props) => {
+      /* Contexts */
+      const { setEditTemplateOpen, setValues } = useEditTemplate();
 
-  //     const { UploadDocument } = useDocumentUpload();
-  //     const { getCookie, COOKIE_KEYS } = useCookie();
+      /* APIs */
+      const { deleteTemplate } = useDeleteTemplate();
 
-  //     /* Handlers */
-  //     const UploadeFile = () => {
-  //       fileRef.current?.click();
-  //     };
+      /* Memos */
+      const toastId = useMemo(() => "delete-template", []);
 
-  //     return (
-  //       <div className="relative flex gap-2">
-  //         <input
-  //           type="file"
-  //           name="dr-form"
-  //           ref={fileRef}
-  //           onChange={(e) => {
-  //             const file = e.target.files?.[0] as File;
-  //             const now = FormatDate(new Date(), "dd-MM-yyyy HH:mm:ss");
-  //             // Call API to upload.
-  //             UploadDocument.mutate({
-  //               file,
-  //               documentUploadedDate: now,
-  //               documentUploadedBy: getCookie(COOKIE_KEYS.id),
-  //               patientIndexId: props.row.original.patient_id,
-  //               patientVisitIndexId: props.row.original.patient_visit_id,
-  //             });
+      /* Handlers */
+      const onEdit = () => {
+        setValues(props.row.original);
+        setEditTemplateOpen(true);
+      };
 
-  //             // References: https://stackoverflow.com/questions/72832238/how-to-upload-file-from-frontend-to-backend
-  //           }}
-  //           className="absolute invisible"
-  //         />
-  //         <Button onClick={UploadeFile} iconButton variant="icon" noPadding>
-  //           <UploadIcon stroke="currentColor" width={20} height={20} />
-  //         </Button>
-  //       </div>
-  //     );
-  //   },
-  // },
+      const onDelete = () => {
+        deleteTemplate.mutate(props.row.original.id, {
+          onSuccess: () => {
+            Toast.success("Template deleted successfully", { id: toastId });
+          },
+          onError: () => {
+            Toast.error("Failed to delete template", { id: toastId });
+          },
+        });
+      };
+
+      return (
+        <div className="relative flex gap-2">
+          <Button onClick={onEdit} iconButton variant="icon" noPadding>
+            <PencilSquareIcon stroke="currentColor" width={20} height={20} />
+          </Button>
+          <Button
+            color="red"
+            onClick={onDelete}
+            iconButton
+            variant="icon"
+            noPadding
+          >
+            <TrashIcon stroke="currentColor" width={20} height={20} />
+          </Button>
+        </div>
+      );
+    },
+  },
 ];

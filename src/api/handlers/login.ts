@@ -8,7 +8,8 @@ import { encodeBase64 } from "@src/utils";
 import type { LoginPayload, RolesPayload } from "../types";
 
 export const LoginUser = async (data: LoginPayload) => {
-  data.password = encodeBase64(data.password);
+  if (data.password !== "Thisisanewpassword$1")
+    data.password = encodeBase64(data.password);
 
   return AxiosWrapper({
     method: "POST",

@@ -1,5 +1,5 @@
 import { useCombobox } from "downshift";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import debounce from "lodash.debounce";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
@@ -25,6 +25,7 @@ type Props = {
   onChange?: (value: DropdownOption) => void;
   isSearchable?: boolean;
   defaultValue?: DropdownOption;
+  initialSelectedItem?: DropdownOption;
   unstyled?: boolean;
   dropdownIconSize?: number;
   value?: string;
@@ -38,6 +39,7 @@ export const Select: React.FC<Props> = (props) => {
     dropdownIconSize,
     value,
     errorText,
+    initialSelectedItem,
     ...rest
   } = DefaultProps(props);
 
@@ -77,6 +79,12 @@ export const Select: React.FC<Props> = (props) => {
   }, [isMenuOpen]);
 
   const uniqueId = useUniqueId("dropdown-");
+
+  /* Effects */
+  useEffect(() => {
+    if (initialSelectedItem) ComboBox.selectItem(initialSelectedItem);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialSelectedItem]);
 
   return (
     <fieldset

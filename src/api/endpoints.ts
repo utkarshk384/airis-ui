@@ -19,4 +19,5 @@ export const ENDPOINTS = {
   getAlPatientReports: "/risGateway/api/getAllPatientReports",
   getAllRolePermission: "/risGateway/api/getAllRolePermission",
   getTemplates: "/risGateway/api/getAllReportTemplates",
+  deleteTemplates: "/risGateway/api/getAllReportTemplates",
 };

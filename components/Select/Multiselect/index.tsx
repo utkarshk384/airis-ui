@@ -45,7 +45,7 @@ export const MultiSelect: React.FC<Props> = (props) => {
 
   const MultiSelectBox = useMultipleSelection({
     itemToString: (item) => item?.label || "",
-    defaultSelectedItems: rest.defaultValue,
+    initialSelectedItems: rest.defaultValue,
     onSelectedItemsChange: ({ selectedItems }) => {
       rest.onChange?.(selectedItems as DropdownOption[]);
       const hashSet = new Set();
